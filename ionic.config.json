@@ -1,0 +1,7 @@
+{
+  "name": "gym-bro-client",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
