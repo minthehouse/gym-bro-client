@@ -12,6 +12,8 @@ import { AddExerciseModalComponent } from '../add-exercise-modal/add-exercise-mo
   imports: [IonicModule, FormsModule, CommonModule, AddExerciseModalComponent],
 })
 export class WorkoutTrackPage implements OnInit {
+  selectedIcons: { [key: string]: boolean }[] = [];
+
   public workoutLists: {
     [key: number]: {
       set: number;
@@ -19,6 +21,7 @@ export class WorkoutTrackPage implements OnInit {
       reps: string;
       exercise_type_id: number;
       exercise_name: string;
+      completed?: boolean;
     }[];
   } = {};
 
@@ -46,7 +49,6 @@ export class WorkoutTrackPage implements OnInit {
       this.addExerciseTable(exercise);
     }
   }
-
   addExerciseTable(exercise: any) {
     this.workoutLists[exercise.type_id] = [
       {
@@ -57,8 +59,6 @@ export class WorkoutTrackPage implements OnInit {
         exercise_name: exercise.name,
       },
     ];
-    console.log('hit add exercise table');
-    console.log('and workoutLists', this.workoutLists);
   }
 
   getObjectKeys(obj: any): number[] {
@@ -67,5 +67,13 @@ export class WorkoutTrackPage implements OnInit {
 
   finish() {
     console.log('this.workoutLists in finish', this.workoutLists);
+  }
+
+  completeSet(index: number, listIndex: number): void {
+    const key = listIndex.toString();
+    if (!this.selectedIcons[listIndex]) {
+      this.selectedIcons[listIndex] = {};
+    }
+    this.selectedIcons[listIndex][index.toString()] = true;
   }
 }

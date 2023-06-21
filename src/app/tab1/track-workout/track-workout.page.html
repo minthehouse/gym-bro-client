@@ -11,8 +11,10 @@
   >
     <ion-list class="flex flex-col">
       <!-- Table header -->
-      <ion-text> {{workoutLists[exerciseTypeId][0].exercise_name}} </ion-text>
-      <ion-row>
+      <ion-text class="ion-text-center">
+        {{workoutLists[exerciseTypeId][0].exercise_name}}
+      </ion-text>
+      <ion-row class="ion-text-center">
         <ion-col size="4">
           <ion-label>Set</ion-label>
         </ion-col>
@@ -22,20 +24,45 @@
         <ion-col size="4">
           <ion-label>Reps</ion-label>
         </ion-col>
+        <ion-col size="4">
+          <ion-label></ion-label>
+        </ion-col>
       </ion-row>
 
       <!-- Table rows -->
       <ion-row
         *ngFor="let workout of workoutLists[exerciseTypeId] let i = index"
+        class="ion-text-center"
       >
         <ion-col size="4">
-          <ion-input [value]="workout.set" readonly></ion-input>
+          <ion-input
+            class="rounded-lg bg-slate-200"
+            [value]="workout.set"
+            readonly
+          ></ion-input>
         </ion-col>
         <ion-col size="4">
-          <ion-input [(ngModel)]="workout.weight"></ion-input>
+          <ion-input
+            class="rounded-lg bg-slate-200"
+            [(ngModel)]="workout.weight"
+            autofocus
+          ></ion-input>
         </ion-col>
         <ion-col size="4">
-          <ion-input [(ngModel)]="workout.reps"></ion-input>
+          <ion-input
+            class="rounded-lg bg-slate-200"
+            [(ngModel)]="workout.reps"
+          ></ion-input>
+        </ion-col>
+        <ion-col size="4">
+          <i type="submit" (click)="completeSet(i, listIndex)">
+            <ion-icon
+              id="check-icon-{{ i }}"
+              class="check-icon gray"
+              [class.success]="selectedIcons[listIndex]?.[i.toString()]"
+              name="checkmark-circle"
+            ></ion-icon>
+          </i>
         </ion-col>
       </ion-row>
     </ion-list>
