@@ -1,5 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { WorkoutTrackPage } from './workout-track.page';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { WorkoutTrackPage } from './track-workout.page';
 
 describe('WorkoutTrackPage', () => {
   let component: WorkoutTrackPage;

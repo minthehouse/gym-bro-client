@@ -1,37 +1,46 @@
 import { Injectable } from '@angular/core';
 import { stateMachine } from 'state/state-machine/state-machine';
-import { interpret } from 'xstate';
+import { interpret, State } from 'xstate';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class StateMachineService {
   private machine = interpret(stateMachine).start();
+  private stateChangeSubject = new Subject<State<any>>();
 
-  constructor() {
+  public stateChange$: Observable<State<any>> =
+    this.stateChangeSubject.asObservable();
+
+  constructor(private router: Router, private route: ActivatedRoute) {
     this.machine.onTransition((state: any) => {
       const url = this.getStateUrl(state.value);
-      this.navigateTo(url);
+      this.stateChangeSubject.next(state);
     });
   }
 
   private getStateUrl(state: string): string {
     // Map the state names to the corresponding URLs in your application
     switch (state) {
-      case 'home':
-        return '/home';
-      case 'about':
-        return '/about';
-      case 'contact':
-        return '/contact';
+      case 'workout':
+        return '/workout';
+      case 'food':
+        return '/food';
+      case 'user':
+        return '/user';
+      case 'track':
+        return '/track';
       default:
-        return '/home'; // Default URL
+        return '/workout'; // Default URL
     }
   }
 
-  private navigateTo(url: string): void {
-    // Use the Angular router to navigate to the specified URL
-    // Ensure you have imported and injected the Angular router service
-    // into this service before using it here
-    // Example: this.router.navigate([url]);
+  public navigate(state: any): void {
+    console.log('state', state);
+
+    const url = this.getStateUrl(state.event.type);
+    console.log('url', url);
+    this.router.navigate([url], { relativeTo: this.route });
   }
 
   sendEvent(event: string): void {

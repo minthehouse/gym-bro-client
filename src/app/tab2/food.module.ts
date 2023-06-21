@@ -3,18 +3,17 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FoodPage } from './food.page';
-import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
+
 
 import { FoodPageRoutingModule } from './food-routing.module';
 
 @NgModule({
-  imports: [
+    imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    ExploreContainerComponentModule,
     FoodPageRoutingModule,
-  ],
-  declarations: [FoodPage],
+    FoodPage,
+],
 })
 export class FoodPageModule {}

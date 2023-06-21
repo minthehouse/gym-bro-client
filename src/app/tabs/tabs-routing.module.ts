@@ -10,7 +10,7 @@ const routes: Routes = [
       {
         path: 'workout',
         loadChildren: () =>
-          import('../tab1/workout.module').then((m) => m.WorkoutPageModule),
+          import('../tab1/workout.routing').then((m) => m.routes),
       },
       {
         path: 'food',

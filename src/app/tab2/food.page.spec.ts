@@ -11,9 +11,8 @@ describe('FoodPage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FoodPage],
-      imports: [IonicModule.forRoot(), ExploreContainerComponentModule],
-    }).compileComponents();
+    imports: [IonicModule.forRoot(), ExploreContainerComponentModule, FoodPage],
+}).compileComponents();
 
     fixture = TestBed.createComponent(FoodPage);
     component = fixture.componentInstance;

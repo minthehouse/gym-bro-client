@@ -11,9 +11,8 @@ describe('WorkoutPage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WorkoutPage],
-      imports: [IonicModule.forRoot(), ExploreContainerComponentModule],
-    }).compileComponents();
+    imports: [IonicModule.forRoot(), ExploreContainerComponentModule, WorkoutPage],
+}).compileComponents();
 
     fixture = TestBed.createComponent(WorkoutPage);
     component = fixture.componentInstance;
