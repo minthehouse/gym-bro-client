@@ -1,8 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
-
-import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
-
 import { WorkoutPage } from './workout.page';
 
 describe('WorkoutPage', () => {
@@ -11,8 +7,8 @@ describe('WorkoutPage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [IonicModule.forRoot(), ExploreContainerComponentModule, WorkoutPage],
-}).compileComponents();
+      imports: [WorkoutPage],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(WorkoutPage);
     component = fixture.componentInstance;

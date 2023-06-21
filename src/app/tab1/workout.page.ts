@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { StateMachineService } from '../service/state-machine.service';
 
 @Component({
   selector: 'app-workout',
