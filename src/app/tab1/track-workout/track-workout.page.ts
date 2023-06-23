@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { WorkoutService } from 'src/app/service/workout.service';
 import { AddExerciseModalComponent } from '../add-exercise-modal/add-exercise-modal.component';
 
 @Component({
@@ -11,7 +12,7 @@ import { AddExerciseModalComponent } from '../add-exercise-modal/add-exercise-mo
   standalone: true,
   imports: [IonicModule, FormsModule, CommonModule, AddExerciseModalComponent],
 })
-export class WorkoutTrackPage implements OnInit {
+export class TrackWorkoutPage implements OnInit {
   selectedIcons: { [key: string]: boolean }[] = [];
 
   public workoutLists: {
@@ -27,7 +28,7 @@ export class WorkoutTrackPage implements OnInit {
 
   // example of workoutLists below:
 
-  constructor() {}
+  constructor(private workoutService: WorkoutService) {}
   exerciseTypeId: number = 1;
 
   ngOnInit() {}
@@ -66,6 +67,11 @@ export class WorkoutTrackPage implements OnInit {
   }
 
   finish() {
+    this.workoutService
+      .finishWorkout(this.workoutLists)
+      .subscribe((res: any) => {
+        console.log('res', res);
+      });
     console.log('this.workoutLists in finish', this.workoutLists);
   }
 

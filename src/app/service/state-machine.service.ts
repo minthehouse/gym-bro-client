@@ -24,8 +24,8 @@ export class StateMachineService {
     switch (state) {
       case 'workout':
         return '/workout';
-      case 'food':
-        return '/food';
+      case 'diet':
+        return '/diet';
       case 'user':
         return '/user';
       case 'track':

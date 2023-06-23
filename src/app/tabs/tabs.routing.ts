@@ -13,9 +13,9 @@ export const routes: Routes = [
           import('../tab1/workout.routing').then((m) => m.routes),
       },
       {
-        path: 'food',
+        path: 'diet',
         loadChildren: () =>
-          import('../tab2/food.routing').then((m) => m.routes),
+          import('../tab2/diet.routing').then((m) => m.routes),
       },
       {
         path: 'tab3',

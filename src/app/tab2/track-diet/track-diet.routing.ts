@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { FoodPage } from './food.page';
+import { TrackDietPage } from './track-diet.page';
 
 export const routes: Routes = [
   {
     path: '',
-    component: FoodPage,
+    component: TrackDietPage,
   },
 ];

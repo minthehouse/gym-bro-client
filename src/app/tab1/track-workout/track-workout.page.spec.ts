@@ -1,12 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { WorkoutTrackPage } from './track-workout.page';
+import { TrackWorkoutPage } from './track-workout.page';
 
-describe('WorkoutTrackPage', () => {
-  let component: WorkoutTrackPage;
-  let fixture: ComponentFixture<WorkoutTrackPage>;
+describe('TrackWorkoutPage', () => {
+  let component: TrackWorkoutPage;
+  let fixture: ComponentFixture<TrackWorkoutPage>;
 
   beforeEach(async(() => {
-    fixture = TestBed.createComponent(WorkoutTrackPage);
+    fixture = TestBed.createComponent(TrackWorkoutPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

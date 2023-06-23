@@ -1,0 +1,36 @@
+<ion-content>
+  <app-daily-calories-intake></app-daily-calories-intake>
+
+  <ion-list *ngIf="foodItems">
+    <ion-list-header *ngIf="hasFoodItems(1)"> Breakfast </ion-list-header>
+    <ion-item *ngFor="let foodItem of foodItems[1]">
+      <ion-label>{{ foodItem.name }}</ion-label>
+      <ion-label slot="end">{{ foodItem.kcal }} kcal</ion-label>
+    </ion-item>
+
+    <ion-list-header *ngIf="hasFoodItems(2)"> Lunch </ion-list-header>
+    <ion-item *ngFor="let foodItem of foodItems[2]">
+      <ion-label>{{ foodItem.name }}</ion-label>
+      <ion-label slot="end">{{ foodItem.kcal }} kcal</ion-label>
+    </ion-item>
+
+    <ion-list-header *ngIf="hasFoodItems(3)"> Dinner </ion-list-header>
+    <ion-item *ngFor="let foodItem of foodItems[3]">
+      <ion-label>{{ foodItem.name }}</ion-label>
+      <ion-label slot="end">{{ foodItem.kcal }} kcal</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-text
+    *ngIf="!foodItems || (!foodItems[1] && !foodItems[2] && !foodItems[3])"
+    class="flex justify-center"
+  >
+    You have not yet tracked your food intake.
+  </ion-text>
+
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button (click)="openAddFoodModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

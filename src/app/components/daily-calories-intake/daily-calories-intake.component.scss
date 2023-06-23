@@ -1,0 +1,30 @@
+.equation-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.equation-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px;
+  flex-direction: column;
+}
+
+.equation-value {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+}
+
+.equation-label {
+  font-size: 9px;
+  margin-top: 3px;
+}
+
+.equation-symbol {
+  font-size: 14px;
+  font-weight: bold;
+}
