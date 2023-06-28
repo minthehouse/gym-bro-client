@@ -28,8 +28,13 @@ export class TrackDietPage implements OnInit {
   } = {
     1: [
       {
-        name: 'chicken',
+        name: 'Chicken',
         kcal: '240',
+        meal_type_id: 1,
+      },
+      {
+        name: 'Rice',
+        kcal: '300',
         meal_type_id: 1,
       },
     ],
@@ -39,12 +44,22 @@ export class TrackDietPage implements OnInit {
         kcal: '240',
         meal_type_id: 2,
       },
+      {
+        name: 'Rice',
+        kcal: '300',
+        meal_type_id: 1,
+      },
     ],
     3: [
       {
         name: 'chicken',
         kcal: '240',
         meal_type_id: 3,
+      },
+      {
+        name: 'Rice',
+        kcal: '300',
+        meal_type_id: 1,
       },
     ],
   };
@@ -55,23 +70,19 @@ export class TrackDietPage implements OnInit {
     console.log('hit add food');
   }
 
-  // Define the method to get meal type name based on ID
-  public getMealTypeName(mealTypeId: number): string {
-    switch (mealTypeId) {
-      case 1:
+  public getMealType(foodGroupKey: string): string {
+    switch (foodGroupKey) {
+      case '1':
         return 'Breakfast';
-      case 2:
+      case '2':
         return 'Lunch';
-      case 3:
+      case '3':
         return 'Dinner';
       default:
         return '';
     }
-  }
+  }  
 
-  public getMealTypeIds(): number[] {
-    return Object.keys(this.foodItems).map(Number);
-  }
 
   public hasFoodItems(mealTypeId: number): boolean {
     return (
