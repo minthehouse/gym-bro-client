@@ -45,19 +45,19 @@ export class TrackWorkoutPage implements OnInit {
     });
   }
 
-  selectedExerciseHandler(exercise: any) {
-    if (!this.getObjectKeys(this.workoutLists).includes(exercise.type_id)) {
-      this.addExerciseTable(exercise);
+  selectedExerciseHandler(selectedExerciseType: any) {
+    if (!this.getObjectKeys(this.workoutLists).includes(selectedExerciseType.id)) {
+      this.addExerciseTable(selectedExerciseType);
     }
   }
-  addExerciseTable(exercise: any) {
-    this.workoutLists[exercise.type_id] = [
+  addExerciseTable(selectedExerciseType: any) {
+    this.workoutLists[selectedExerciseType.id] = [
       {
         set: 1,
         weight: '',
         reps: '',
-        exercise_type_id: exercise.type_id,
-        exercise_name: exercise.name,
+        exercise_type_id: selectedExerciseType.id,
+        exercise_name: selectedExerciseType.name,
       },
     ];
   }

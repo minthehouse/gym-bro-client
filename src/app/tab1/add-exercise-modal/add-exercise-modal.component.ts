@@ -3,6 +3,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Subject } from 'rxjs';
+import { ExerciseService } from 'src/app/service/exercise.service';
 
 @Component({
   selector: 'app-add-exercise-modal',
@@ -13,39 +14,40 @@ import { Subject } from 'rxjs';
 })
 export class AddExerciseModalComponent implements OnInit {
   @Output() selectedExercise: EventEmitter<any> = new EventEmitter<any>();
-  constructor() {}
+  constructor(private exerciseService: ExerciseService) {}
   public searchQuery = '';
   private searchQueryChanged: Subject<string> = new Subject<string>();
 
-  public exerciseOptions = [
+  public exerciseTypes = [
     {
-      type_id: 1,
+      id: 1,
       name: 'Bench Press',
       muscle_group: 'Chest',
       imageSrc: 'https://i.pravatar.cc/300?u=b',
     },
     {
-      type_id: 2,
+      id: 2,
       name: 'Deadlift',
       muscle_group: 'Back',
       imageSrc: 'https://i.pravatar.cc/300?u=a',
     },
     {
-      type_id: 3,
+      id: 3,
       name: 'Squat',
       muscle_group: 'Legs',
       imageSrc: 'https://i.pravatar.cc/300?u=d',
     },
     {
-      type_id: 4,
+      id: 4,
       name: 'Overhead Press',
       muscle_group: 'Shoulder',
       imageSrc: 'https://i.pravatar.cc/300?u=e',
     },
   ];
-  public filteredExerciseOptions = [...this.exerciseOptions];
+  public filteredExerciseOptions = [...this.exerciseTypes];
 
   ngOnInit() {
+    this.exerciseService.getExerciseTypes().subscribe()
     this.searchQueryChanged.subscribe(() => {
       this.filterExerciseOptions();
     });
@@ -58,7 +60,7 @@ export class AddExerciseModalComponent implements OnInit {
   filterExerciseOptions() {
     const query = this.searchQuery.toLowerCase();
 
-    this.filteredExerciseOptions = this.exerciseOptions.filter(
+    this.filteredExerciseOptions = this.exerciseTypes.filter(
       (exercise) =>
         exercise.name.toLowerCase().includes(query) ||
         exercise.muscle_group.toLowerCase().includes(query)
@@ -67,7 +69,7 @@ export class AddExerciseModalComponent implements OnInit {
 
   selectExercise(exercise: any) {
     this.selectedExercise.emit({
-      type_id: exercise.type_id,
+      id: exercise.id,
       name: exercise.name,
     });
   }
