@@ -18,23 +18,19 @@ export class WorkoutPage implements OnInit {
     private route: ActivatedRoute,
     private workoutService: WorkoutService,
     private userService: UserService,
-    private exerciseService: ExerciseService
+    private exerciseService: ExerciseService,
   ) {}
 
   ngOnInit(): void {
-    console.log('hit on in it');
     // this.workoutService.getWorkouts().subscribe((workouts) => {
     //   console.log('workouts', workouts);
     // });
-
     // this.userService.getUsers().subscribe((users) => {
     //   console.log('users', users);
     // });
-
     // this.exerciseService.getExercises().subscribe((exercises) => {
     //   console.log('exercises', exercises);
     // });
-
     // this.exerciseService.getExerciseTypes().subscribe((exerciseTypes) => {
     //   console.log('exerciseTypes', exerciseTypes);
     // });

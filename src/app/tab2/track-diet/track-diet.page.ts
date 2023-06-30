@@ -10,7 +10,7 @@ import { SearchModalComponent } from 'src/app/tab1/search-modal/search-modal.com
   templateUrl: './track-diet.page.html',
   styleUrls: ['./track-diet.page.scss'],
   standalone: true,
-  imports: [IonicModule, FormsModule, CommonModule, DailyCaloriesIntakeComponent, SearchModalComponent],
+  imports: [IonicModule, FormsModule, CommonModule, DailyCaloriesIntakeComponent],
 })
 export class TrackDietPage implements OnInit {
   constructor(private modalController: ModalController) {}
@@ -62,10 +62,6 @@ export class TrackDietPage implements OnInit {
 
   ngOnInit() {}
 
-  openAddFoodModal() {
-    console.log('hit add food');
-  }
-
   public getMealType(foodGroupKey: string): string {
     switch (foodGroupKey) {
       case '1':
@@ -83,17 +79,25 @@ export class TrackDietPage implements OnInit {
     return !!this.foodItems[mealTypeId] && this.foodItems[mealTypeId].length > 0;
   }
 
-  public setSelectedMealType(mealTypeId: number) {
-    console.log('hit', mealTypeId);
-  }
+  async presentModal(mealTypeId: number) {
+    console.log('mealTypeId', mealTypeId);
 
-  public selectedFoodHandler(event: any) {
-    console.log('event', event);
+    const modal = await this.modalController.create({
+      component: SearchModalComponent,
+      componentProps: {
+        options: this.foodItems,
+      },
+    });
 
-    console.log('selected food handler');
-  }
+    modal.onDidDismiss().then(data => {
+      console.log('data', data);
 
-  async openSearchModal() {
-    
+      if (data.role === 'select') {
+        // Handle the selected option here
+        console.log(data.data); // data.data contains the selected option
+      }
+    });
+
+    return await modal.present();
   }
 }

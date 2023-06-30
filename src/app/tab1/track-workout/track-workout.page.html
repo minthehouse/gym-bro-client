@@ -50,14 +50,14 @@
     </ion-list>
     <ion-button expand="block" (click)="addRow(exerciseTypeId)">Add Set</ion-button>
   </ng-container>
-  <ion-button id="open-modal" class="flex pt-3">
+  <ion-button id="open-modal" class="flex pt-3" (click)="presentModal()">
     <ion-icon slot="start" name="add"></ion-icon>
     Add Exercise
   </ion-button>
-  <app-search-modal
+  <!-- <app-search-modal
     [searchOptions]="searchOptions"
     (selectedOption)="selectedExerciseHandler($event)"
-  ></app-search-modal>
+  ></app-search-modal> -->
 
   <ion-button expand="block" (click)="finish()">Finish Workout</ion-button>
 </ion-content>

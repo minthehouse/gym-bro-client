@@ -15,12 +15,11 @@
           </ion-thumbnail>
           <ion-label class="!text-sm">{{ foodItem.name }} ({{ foodItem.kcal }}kcal)</ion-label>
         </ion-item>
-        <ion-button id="open-modal" class="flex pt-3">
+        <ion-button class="flex pt-3" (click)="presentModal(mealType)">
           <ion-icon slot="start" name="add"></ion-icon>
           Add Food
         </ion-button>
       </ion-list>
     </ion-card-content>
   </ion-card>
-  <app-search-modal (selectedOption)="selectedFoodHandler($event)"></app-search-modal>
 </ion-content>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { WorkoutService } from 'src/app/service/workout.service';
@@ -53,7 +53,7 @@ export class TrackWorkoutPage implements OnInit {
 
   // example of workoutLists below:
 
-  constructor(private workoutService: WorkoutService) {}
+  constructor(private workoutService: WorkoutService, public modalController: ModalController) {}
   exerciseTypeId: number = 1;
 
   ngOnInit() {}
@@ -93,10 +93,7 @@ export class TrackWorkoutPage implements OnInit {
   }
 
   finish() {
-    this.workoutService.finishWorkout(this.workoutLists).subscribe((res: any) => {
-      console.log('res', res);
-    });
-    console.log('this.workoutLists in finish', this.workoutLists);
+    this.workoutService.finishWorkout(this.workoutLists).subscribe((res: any) => {});
   }
 
   completeSet(index: number, listIndex: number): void {
@@ -105,5 +102,22 @@ export class TrackWorkoutPage implements OnInit {
       this.selectedIcons[listIndex] = {};
     }
     this.selectedIcons[listIndex][index.toString()] = true;
+  }
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: SearchModalComponent,
+    });
+
+    modal.onDidDismiss().then(data => {
+      console.log('data', data);
+
+      if (data.role === 'select') {
+        // Handle the selected option here
+        console.log(data.data); // data.data contains the selected option
+      }
+    });
+
+    return await modal.present();
   }
 }
