@@ -1,24 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, IonModal } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { ExerciseService } from 'src/app/service/exercise.service';
 
 @Component({
-  selector: 'app-add-exercise-modal',
-  templateUrl: './add-exercise-modal.component.html',
-  styleUrls: ['./add-exercise-modal.component.scss'],
+  selector: 'app-search-modal',
+  templateUrl: './search-modal.component.html',
+  styleUrls: ['./search-modal.component.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule],
 })
-export class AddExerciseModalComponent implements OnInit {
-  @Output() selectedExercise: EventEmitter<any> = new EventEmitter<any>();
-  constructor(private exerciseService: ExerciseService) {}
-  public searchQuery = '';
-  private searchQueryChanged: Subject<string> = new Subject<string>();
-
-  public exerciseTypes = [
+export class SearchModalComponent implements OnInit {
+  @Input() searchOptions: any = [
     {
       id: 1,
       name: 'Bench Press',
@@ -44,10 +39,17 @@ export class AddExerciseModalComponent implements OnInit {
       imageSrc: 'https://i.pravatar.cc/300?u=e',
     },
   ];
-  public filteredExerciseOptions = [...this.exerciseTypes];
+  @Output() selectedOption: EventEmitter<any> = new EventEmitter<any>();
+  constructor(private exerciseService: ExerciseService) {}
+  public searchQuery = '';
+  private searchQueryChanged: Subject<string> = new Subject<string>();
+
+  public filteredSearchOptions = [...this.searchOptions];
 
   ngOnInit() {
-    this.exerciseService.getExerciseTypes().subscribe()
+    console.log('hit modal');
+
+    // this.exerciseService.getExerciseTypes().subscribe();
     this.searchQueryChanged.subscribe(() => {
       this.filterExerciseOptions();
     });
@@ -60,17 +62,15 @@ export class AddExerciseModalComponent implements OnInit {
   filterExerciseOptions() {
     const query = this.searchQuery.toLowerCase();
 
-    this.filteredExerciseOptions = this.exerciseTypes.filter(
-      (exercise) =>
-        exercise.name.toLowerCase().includes(query) ||
-        exercise.muscle_group.toLowerCase().includes(query)
+    this.filteredSearchOptions = this.searchOptions.filter(
+      (option: any) => option.name.toLowerCase().includes(query) || option.muscle_group.toLowerCase().includes(query),
     );
   }
 
-  selectExercise(exercise: any) {
-    this.selectedExercise.emit({
-      id: exercise.id,
-      name: exercise.name,
+  select(option: any) {
+    this.selectedOption.emit({
+      id: option.id,
+      name: option.name,
     });
   }
 }

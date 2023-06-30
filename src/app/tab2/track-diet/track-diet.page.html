@@ -1,34 +1,26 @@
 <ion-content>
   <app-daily-calories-intake></app-daily-calories-intake>
 
-  <ng-container *ngFor="let foodGroup of [1, 2, 3]">
-    <ion-card *ngIf="foodItems[foodGroup] && foodItems[foodGroup].length > 0">
-      <ion-card-header>
-        <ion-card-title class="text-xl">
-          {{ foodGroup === 1 ? 'Breakfast' : foodGroup === 2 ? 'Lunch' : 'Dinner' }}
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-list>
-          <ion-item *ngFor="let foodItem of foodItems[foodGroup]">
-            <ion-thumbnail slot="start">
-              <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
-            </ion-thumbnail>
-            <ion-label class="!text-sm">{{ foodItem.name }} ({{ foodItem.kcal }}kcal)</ion-label>
-          </ion-item>
-        </ion-list>
-      </ion-card-content>
-    </ion-card>
-  </ng-container>
-
-  <ion-text *ngIf="!foodItems || (foodItems[1]?.length === 0 && foodItems[2]?.length === 0 && foodItems[3]?.length === 0)"
-    class="flex justify-center">
-    You have not yet tracked your food intake.
-  </ion-text>
-
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="openAddFoodModal()">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+  <ion-card *ngFor="let mealType of [1, 2, 3]">
+    <ion-card-header>
+      <ion-card-title class="text-xl">
+        {{ mealType === 1 ? 'Breakfast' : mealType === 2 ? 'Lunch' : 'Dinner'}}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let foodItem of foodItems[mealType]">
+          <ion-thumbnail slot="start">
+            <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+          </ion-thumbnail>
+          <ion-label class="!text-sm">{{ foodItem.name }} ({{ foodItem.kcal }}kcal)</ion-label>
+        </ion-item>
+        <ion-button id="open-modal" class="flex pt-3">
+          <ion-icon slot="start" name="add"></ion-icon>
+          Add Food
+        </ion-button>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <app-search-modal (selectedOption)="selectedFoodHandler($event)"></app-search-modal>
 </ion-content>

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { AddExerciseModalComponent } from './add-exercise-modal.component';
+import { SearchModalComponent } from './search-modal.component';
 
-describe('AddExerciseModalComponent', () => {
-  let component: AddExerciseModalComponent;
-  let fixture: ComponentFixture<AddExerciseModalComponent>;
+describe('SearchModalComponent', () => {
+  let component: SearchModalComponent;
+  let fixture: ComponentFixture<SearchModalComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddExerciseModalComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [SearchModalComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AddExerciseModalComponent);
+    fixture = TestBed.createComponent(SearchModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

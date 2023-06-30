@@ -1,23 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { DailyCaloriesIntakeComponent } from 'src/app/components/daily-calories-intake/daily-calories-intake.component';
+import { SearchModalComponent } from 'src/app/tab1/search-modal/search-modal.component';
 
 @Component({
   selector: 'app-track-diet',
   templateUrl: './track-diet.page.html',
   styleUrls: ['./track-diet.page.scss'],
   standalone: true,
-  imports: [
-    IonicModule,
-    FormsModule,
-    CommonModule,
-    DailyCaloriesIntakeComponent,
-  ],
+  imports: [IonicModule, FormsModule, CommonModule, DailyCaloriesIntakeComponent, SearchModalComponent],
 })
 export class TrackDietPage implements OnInit {
-  constructor() {}
+  constructor(private modalController: ModalController) {}
 
   public foodItems: {
     [key: number]: {
@@ -27,28 +23,28 @@ export class TrackDietPage implements OnInit {
     }[];
   } = {
     1: [
-      {
-        name: 'Chicken',
-        kcal: '240',
-        meal_type_id: 1,
-      },
-      {
-        name: 'Rice',
-        kcal: '300',
-        meal_type_id: 1,
-      },
+      // {
+      //   name: 'Chicken',
+      //   kcal: '240',
+      //   meal_type_id: 1,
+      // },
+      // {
+      //   name: 'Rice',
+      //   kcal: '300',
+      //   meal_type_id: 1,
+      // },
     ],
     2: [
-      {
-        name: 'chicken',
-        kcal: '240',
-        meal_type_id: 2,
-      },
-      {
-        name: 'Rice',
-        kcal: '300',
-        meal_type_id: 1,
-      },
+      // {
+      //   name: 'chicken',
+      //   kcal: '240',
+      //   meal_type_id: 2,
+      // },
+      // {
+      //   name: 'Rice',
+      //   kcal: '300',
+      //   meal_type_id: 1,
+      // },
     ],
     3: [
       {
@@ -81,12 +77,23 @@ export class TrackDietPage implements OnInit {
       default:
         return '';
     }
-  }  
-
+  }
 
   public hasFoodItems(mealTypeId: number): boolean {
-    return (
-      !!this.foodItems[mealTypeId] && this.foodItems[mealTypeId].length > 0
-    );
+    return !!this.foodItems[mealTypeId] && this.foodItems[mealTypeId].length > 0;
+  }
+
+  public setSelectedMealType(mealTypeId: number) {
+    console.log('hit', mealTypeId);
+  }
+
+  public selectedFoodHandler(event: any) {
+    console.log('event', event);
+
+    console.log('selected food handler');
+  }
+
+  async openSearchModal() {
+    
   }
 }

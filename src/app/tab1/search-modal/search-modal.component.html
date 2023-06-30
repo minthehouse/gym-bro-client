@@ -1,12 +1,5 @@
-<ion-button id="open-modal" expand="block">Add Exercise</ion-button>
-
 <ion-content [hidden]="true" scrollY="false" class="ion-padding">
-  <ion-modal
-    #modal
-    trigger="open-modal"
-    [initialBreakpoint]="0.25"
-    [breakpoints]="[0, 0.25, 0.5, 0.75]"
-  >
+  <ion-modal #modal trigger="open-modal" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5, 0.75]">
     <ng-template>
       <ion-content>
         <ion-searchbar
@@ -16,16 +9,13 @@
           (input)="performSearch()"
         ></ion-searchbar>
         <ion-list>
-          <ion-item
-            *ngFor="let exercise of filteredExerciseOptions"
-            (click)="selectExercise(exercise); modal.dismiss()"
-          >
+          <ion-item *ngFor="let option of filteredSearchOptions" (click)="select(option)">
             <ion-avatar slot="start">
-              <ion-img [src]="exercise.imageSrc"></ion-img>
+              <ion-img [src]="option.imageSrc"></ion-img>
             </ion-avatar>
             <ion-label>
-              <h2>{{ exercise.name }}</h2>
-              <p>{{ exercise.muscle_group }}</p>
+              <h2>{{ option.name }}</h2>
+              <p>{{ option.muscle_group }}</p>
             </ion-label>
           </ion-item>
         </ion-list>

@@ -1,20 +1,45 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { WorkoutService } from 'src/app/service/workout.service';
-import { AddExerciseModalComponent } from '../add-exercise-modal/add-exercise-modal.component';
+import { SearchModalComponent } from '../search-modal/search-modal.component';
 
 @Component({
   selector: 'app-track-workout',
   templateUrl: './track-workout.page.html',
   styleUrls: ['./track-workout.page.scss'],
   standalone: true,
-  imports: [IonicModule, FormsModule, CommonModule, AddExerciseModalComponent],
+  imports: [IonicModule, FormsModule, CommonModule, SearchModalComponent],
 })
 export class TrackWorkoutPage implements OnInit {
   selectedIcons: { [key: string]: boolean }[] = [];
-
+  searchOptions: any = [
+    {
+      id: 1,
+      name: 'Bench Press',
+      muscle_group: 'Chest',
+      imageSrc: 'https://i.pravatar.cc/300?u=b',
+    },
+    {
+      id: 2,
+      name: 'Deadlift',
+      muscle_group: 'Back',
+      imageSrc: 'https://i.pravatar.cc/300?u=a',
+    },
+    {
+      id: 3,
+      name: 'Squat',
+      muscle_group: 'Legs',
+      imageSrc: 'https://i.pravatar.cc/300?u=d',
+    },
+    {
+      id: 4,
+      name: 'Overhead Press',
+      muscle_group: 'Shoulder',
+      imageSrc: 'https://i.pravatar.cc/300?u=e',
+    },
+  ];
   public workoutLists: {
     [key: number]: {
       set: number;
@@ -50,6 +75,7 @@ export class TrackWorkoutPage implements OnInit {
       this.addExerciseTable(selectedExerciseType);
     }
   }
+
   addExerciseTable(selectedExerciseType: any) {
     this.workoutLists[selectedExerciseType.id] = [
       {
@@ -67,11 +93,9 @@ export class TrackWorkoutPage implements OnInit {
   }
 
   finish() {
-    this.workoutService
-      .finishWorkout(this.workoutLists)
-      .subscribe((res: any) => {
-        console.log('res', res);
-      });
+    this.workoutService.finishWorkout(this.workoutLists).subscribe((res: any) => {
+      console.log('res', res);
+    });
     console.log('this.workoutLists in finish', this.workoutLists);
   }
 
