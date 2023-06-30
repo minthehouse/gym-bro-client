@@ -5,14 +5,23 @@
     {
       "files": ["*.ts"],
       "parserOptions": {
-        "project": ["tsconfig.json"],
+        "project": ["tsconfig.json", "e2e/tsconfig.json"],
         "createDefaultProgram": true
       },
       "extends": [
-        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/ng-cli-compat",
+        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
+        "no-underscore-dangle": "off",
+        "@typescript-eslint/naming-convention": [
+          "allow",
+          {
+            "selector": "variable",
+            "format": ["snake_case"]
+          }
+        ],
         "@angular-eslint/component-class-suffix": [
           "error",
           {

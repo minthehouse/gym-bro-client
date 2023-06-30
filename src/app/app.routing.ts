@@ -1,14 +1,24 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Route } from '@angular/router';
 
-const routes: Routes = [
+export const routes: Route[] = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.routing').then(m => m.routes),
   },
+  {
+    path: 'landing',
+    loadChildren: () => import('./landing/landing.routing').then(m => m.routes),
+    // canActivate: [RedirectGuard],
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./auth/register/register.routing').then(m => m.routes),
+    // canActivate: [RedirectGuard],
+  },
 ];
-@NgModule({
-  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {}
+// @NgModule({
+//   imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
+//   exports: [RouterModule],
+// })
+// export class AppRoutingModule {}

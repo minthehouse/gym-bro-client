@@ -1,0 +1,130 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start" class="pl-5">
+      <ion-back-button defaultHref="/" text="" fill="clear" size="large" icon="assets/back.svg"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center oda-title-text">Create Account</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" routerLink="/">
+        <ion-icon src="assets/close.svg" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-text-center mt-5 oda-title-text">
+    <ion-label> Already Have an Account? <a class="font-bold rrt-btn-link" (click)="onSignIn()">Sign in</a> </ion-label>
+  </div>
+  <form [formGroup]="form" #ngForm="ngForm" (ngSubmit)="onRegister(ngForm)" novalidate>
+    <div class="p-6">
+      <ion-row class="mb-4">
+        <ion-col class="flex flex-col gap-1 p-0">
+          <ion-label class="input-label">First Name</ion-label>
+          <ion-input
+            data-test="first_name"
+            formControlName="first_name"
+            autocomplete="given-name"
+            class="base-input"
+            name="first_name"
+            type="text"
+            spellcheck="false"
+            autocapitalize="true"
+            (ionBlur)="onBlur('first_name')"
+            (change)="onChange('first_name', $event)"
+            required
+            legacy="true"
+          >
+          </ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row class="mb-4">
+        <ion-col class="flex flex-col gap-1 p-0">
+          <ion-label class="input-label">Last Name</ion-label>
+          <ion-input
+            data-test="last_name"
+            formControlName="last_name"
+            autocomplete="family-name"
+            class="base-input"
+            name="last_name"
+            type="text"
+            spellcheck="false"
+            autocapitalize="true"
+            (ionBlur)="onBlur('last_name')"
+            (change)="onChange('last_name', $event)"
+            required
+            legacy="true"
+          >
+          </ion-input>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="mb-4">
+        <ion-col class="flex flex-col gap-1 p-0">
+          <ion-label class="input-label">Email</ion-label>
+          <ion-input
+            data-test="email"
+            formControlName="email"
+            autocomplete="email"
+            class="base-input"
+            name="email"
+            type="email"
+            spellcheck="false"
+            autocapitalize="off"
+            required
+            appAutofillMonitor
+            legacy="true"
+          >
+          </ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row class="mb-4">
+        <ion-col class="flex flex-col gap-1 p-0">
+          <ion-label class="input-label">Password</ion-label>
+          <ion-item class="ion-no-padding show-password" lines="none">
+            <ion-input
+              data-test="password"
+              type="password"
+              name="password"
+              autocomplete="new-password"
+              formControlName="password"
+              spellcheck="false"
+              autocapitalize="off"
+              required
+              appAutofillMonitor
+              legacy="true"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row class="mb-4">
+        <ion-col class="flex flex-col gap-1 p-0">
+          <ion-label class="input-label">Confirm Password</ion-label>
+          <ion-item class="ion-no-padding show-password" lines="none">
+            <ion-input
+              data-test="confirm_password"
+              type="password"
+              name="password_confirmation"
+              autocomplete="new-password"
+              formControlName="password_confirmation"
+              spellcheck="false"
+              autocapitalize="off"
+              required
+              appAutofillMonitor
+              legacy="true"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row class="mb-4">
+        <ion-col class="p-0"> </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col class="p-0 pt-2">
+          <ion-button type="submit">Register</ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </form>
+</ion-content>

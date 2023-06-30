@@ -1,0 +1,26 @@
+.landing-header {
+  position: relative;
+
+  width: 100%;
+}
+
+.landing-header .landing-image {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  // opacity: 0;
+
+  // transition: opacity 500ms ease-in-out;
+}
+
+.landing-header .docgo {
+  background-image: url(/assets/landing.jpg);
+}

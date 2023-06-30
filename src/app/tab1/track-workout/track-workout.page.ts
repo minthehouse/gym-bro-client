@@ -10,7 +10,7 @@ import { SearchModalComponent } from '../search-modal/search-modal.component';
   templateUrl: './track-workout.page.html',
   styleUrls: ['./track-workout.page.scss'],
   standalone: true,
-  imports: [IonicModule, FormsModule, CommonModule, SearchModalComponent],
+  imports: [IonicModule, FormsModule, CommonModule],
 })
 export class TrackWorkoutPage implements OnInit {
   selectedIcons: { [key: string]: boolean }[] = [];
