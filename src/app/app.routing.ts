@@ -12,6 +12,11 @@ export const routes: Route[] = [
     // canActivate: [RedirectGuard],
   },
   {
+    path: 'login',
+    loadChildren: () => import('./auth/login/login.routing').then(m => m.routes),
+    // canActivate: [RedirectGuard],
+  },
+  {
     path: 'register',
     loadChildren: () => import('./auth/register/register.routing').then(m => m.routes),
     // canActivate: [RedirectGuard],

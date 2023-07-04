@@ -1,0 +1,87 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start" class="pl-5">
+      <ion-back-button
+        defaultHref="/"
+        text=""
+        data-test="back"
+        fill="clear"
+        size="large"
+        icon="assets/back.svg"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center oda-title-text">Sign in</ion-title>
+    <ion-buttons slot="end" data-test="close">
+      <ion-button fill="clear" routerLink="/">
+        <ion-icon src="assets/close.svg" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="form" #ngForm="ngForm" (ngSubmit)="onLogin(ngForm)" novalidate>
+    <div class="p-6" role="none">
+      <ion-row class="mb-4">
+        <ion-col class="flex flex-col gap-2">
+          <ion-label class="input-label">Email</ion-label>
+          <ion-input
+            formControlName="email"
+            class="base-input"
+            autocomplete="email"
+            name="email"
+            type="email"
+            spellcheck="false"
+            autocapitalize="off"
+            inputmode="email"
+            data-test="email"
+            (keyup.enter)="onLogin(ngForm)"
+            required
+            legacy="true"
+            appAutofillMonitor
+          >
+          </ion-input>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col class="flex flex-col gap-2">
+          <ion-label class="input-label">Password</ion-label>
+          <ion-item class="ion-no-padding show-password" lines="none">
+            <ion-input
+              type="password"
+              name="password"
+              autocomplete="current-password"
+              formControlName="password"
+              data-test="password"
+              (keyup.enter)="onLogin(ngForm)"
+              required
+              legacy="true"
+              appAutofillMonitor
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-text-right">
+          <ion-label class="font-bold rrt-btn-link" data-test="forgot password" (click)="onForgotPassword()"
+            >Forgot Password?</ion-label
+          >
+        </ion-col>
+      </ion-row>
+      <ion-row class="mt-8">
+        <ion-col>
+          <ion-button type="submit" class="w-full"> Sign in </ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </form>
+</ion-content>
+
+<ion-footer class="ion-no-border ion-text-center p-2 h-28">
+  <ion-toolbar>
+    <ion-label>
+      Don't Have an Account? <a class="font-bold rrt-btn-link" data-test="signUp" (click)="onRegister()">Sign up</a>
+    </ion-label>
+  </ion-toolbar>
+</ion-footer>
