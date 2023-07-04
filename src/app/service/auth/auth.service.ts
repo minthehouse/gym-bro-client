@@ -5,6 +5,7 @@ import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { catchError, finalize, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { SetUser } from 'state/user.actions';
 
 import { IS_AUTH_ENABLED } from './auth.interceptor';
 
@@ -20,9 +21,8 @@ export class AuthService {
     return this.http.post(`${environment.apiUrl}/auth/sign_in`, values).pipe(
       map(response => {
         if (response) {
-          const user = this._saveUser(response);
-          // this._navigate(redirect_to || user.redirect_to);
-          return user;
+          this.store.dispatch(new SetUser(response));
+          return response;
         }
       }),
     );

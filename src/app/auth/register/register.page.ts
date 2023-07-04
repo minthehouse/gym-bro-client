@@ -92,8 +92,6 @@ export class RegisterPage implements OnInit {
   }
 
   onRegister(ngf) {
-    console.log('ngf', ngf);
-
     if (ngf.form.valid) {
       this.authService.register(ngf.form.value).subscribe(
         response => console.log(response),
@@ -108,9 +106,7 @@ export class RegisterPage implements OnInit {
   }
 
   onSignIn() {
-    this.authService.login({ email: 'hlee+new123user@docgo.com', password: 'password123' }).subscribe(res => {
-      console.log('res');
-    });
+    this.authService.login({ email: 'hlee+seven@docgo.com', password: 'Welcome@1' }).subscribe();
   }
 
   // setDobToForm(dateInISOString: string): void {
