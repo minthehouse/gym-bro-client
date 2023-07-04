@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { catchError, finalize, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { SetUser } from 'state/user.actions';
-
+import { StorageService } from '../storage.service';
 import { IS_AUTH_ENABLED } from './auth.interceptor';
 
 @Injectable({
@@ -15,13 +15,19 @@ import { IS_AUTH_ENABLED } from './auth.interceptor';
 export class AuthService {
   redirectUrl: string = '';
 
-  constructor(private http: HttpClient, private router: Router, private store: Store) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private store: Store,
+    private storageService: StorageService,
+  ) {}
 
   login(values: any, redirect_to = 'tabs/workout'): Observable<any> {
     return this.http.post(`${environment.apiUrl}/auth/sign_in`, values).pipe(
       map(response => {
         if (response) {
-          this.store.dispatch(new SetUser(response));
+          this._saveUser(response);
+          this._navigate(redirect_to);
           return response;
         }
       }),
@@ -61,9 +67,9 @@ export class AuthService {
           // this.analyticsService.alias(user.id.toString());
           // this.analyticsService.trackEvent('Created Account');
           const { email, password } = body;
-          this.router.navigateByUrl('verify', {
-            state: { email, password },
-          });
+          // this.router.navigateByUrl('verify', {
+          //   state: { email, password },
+          // });
           return response;
         }),
       );
@@ -137,11 +143,15 @@ export class AuthService {
   }
 
   private _saveUser(response: any): any {
-    const user = response.body.data;
-    const token = response.headers.get('access-token');
-    const client = response.headers.get('client');
-    const expiry = response.headers.get('expiry');
-    const uid = response.headers.get('uid');
+    console.log('response in save user', response);
+
+    const user = response.user;
+    const token = response.token.token;
+    const client = response.token.client;
+    const expiry = response.token.expiry;
+    const uid = response.user.uid;
+    this.store.dispatch(new SetUser({ user, token, client, expiry, uid }));
+    this.storageService.saveSession(user, token, client, expiry, uid);
     return user;
   }
 
@@ -158,7 +168,7 @@ export class AuthService {
     // this.store.dispatch(new SetPatients(null));
     // this.store.dispatch(new SetCurrentMember(null));
     // localStorage.removeItem('@@STATE');
-    // this.storageService.deleteSession();
+    this.storageService.deleteSession();
     // this.analyticsService.reset();
     // this.chatService.resetChatSession();
   }
@@ -183,16 +193,16 @@ export class AuthService {
       );
   }
 
-  // public async isLoggedIn(): Promise<boolean> {
-  //   const user = await this.storageService.getSession();
-  //   // TODO: rename params
-  //   if (user) {
-  //     this.store.dispatch(
-  //       new SetUser({ user: user.user, token: user.token, client: user.client, expiry: user.expiry, uid: user.uid }),
-  //     );
-  //   }
-  //   return user !== null && !this.isTokenExpired(user.expiry);
-  // }
+  public async isLoggedIn(): Promise<boolean> {
+    const user = await this.storageService.getSession();
+    // TODO: rename params
+    if (user) {
+      this.store.dispatch(
+        new SetUser({ user: user.user, token: user.token, client: user.client, expiry: user.expiry, uid: user.uid }),
+      );
+    }
+    return user !== null && !this.isTokenExpired(user.expiry);
+  }
 
   public isTokenExpired(expiry: any): boolean {
     if (!expiry) {
