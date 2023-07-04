@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
+import { ExerciseService } from 'src/app/service/exercise.service';
 import { WorkoutService } from 'src/app/service/workout.service';
 import { SearchModalComponent } from '../search-modal/search-modal.component';
 
@@ -41,32 +42,36 @@ export class TrackWorkoutPage implements OnInit {
     },
   ];
   public workoutLists: {
-    [key: number]: {
-      set: number;
-      weight: string;
-      reps: string;
+    [key: string]: {
+      set_number: number;
+      weight: number;
+      rep: number;
       exercise_type_id: number;
-      exercise_name: string;
       completed?: boolean;
     }[];
   } = {};
 
   // example of workoutLists below:
 
-  constructor(private workoutService: WorkoutService, public modalController: ModalController) {}
+  constructor(
+    private workoutService: WorkoutService,
+    public modalController: ModalController,
+    private exerciseService: ExerciseService,
+  ) {}
   exerciseTypeId: number = 1;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.workoutService.getWorkouts().subscribe();
+  }
 
-  addRow(exerciseTypeId: any) {
-    const currentWorkout = this.workoutLists[exerciseTypeId];
+  addRow(exerciseName: string) {
+    const currentWorkout = this.workoutLists[exerciseName];
 
-    this.workoutLists[exerciseTypeId].push({
-      set: currentWorkout.length + 1,
-      weight: '',
-      reps: '',
-      exercise_type_id: exerciseTypeId,
-      exercise_name: currentWorkout[0].exercise_name,
+    this.workoutLists[exerciseName].push({
+      set_number: currentWorkout.length + 1,
+      weight: null,
+      rep: null,
+      exercise_type_id: this.findExerciseTypeId(exerciseName),
     });
   }
 
@@ -76,20 +81,40 @@ export class TrackWorkoutPage implements OnInit {
     }
   }
 
-  addExerciseTable(selectedExerciseType: any) {
-    this.workoutLists[selectedExerciseType.id] = [
-      {
-        set: 1,
-        weight: '',
-        reps: '',
-        exercise_type_id: selectedExerciseType.id,
-        exercise_name: selectedExerciseType.name,
-      },
-    ];
+  findExerciseTypeId(exerciseName: string): any {
+    return this.searchOptions.find(exerciseType => exerciseType.name === exerciseName).id;
   }
 
-  getObjectKeys(obj: any): number[] {
-    return Object.keys(obj).map(Number);
+  // addExerciseTable(selectedExerciseType: any) {
+  //   this.workoutLists[selectedExerciseType.id] = [
+  //     {
+  //       set_number: 1,
+  //       weight: '',
+  //       rep: '',
+  //       exercise_type_id: selectedExerciseType.id,
+  //     },
+  //   ];
+  // }
+
+  addExerciseTable(selectedExerciseType: any) {
+    const exercise = {
+      set_number: 1,
+      weight: null,
+      rep: null,
+      exercise_type_id: selectedExerciseType.id,
+    };
+
+    if (!this.workoutLists.hasOwnProperty(selectedExerciseType.name)) {
+      this.workoutLists[selectedExerciseType.name] = [];
+    }
+
+    this.workoutLists[selectedExerciseType.name].push(exercise);
+
+    console.log('getObjectKeys workoutLists', this.workoutLists);
+  }
+
+  getObjectKeys(obj: any): any[] {
+    return Object.keys(obj);
   }
 
   finish() {
@@ -115,6 +140,7 @@ export class TrackWorkoutPage implements OnInit {
       if (data.role === 'select') {
         // Handle the selected option here
         console.log(data.data); // data.data contains the selected option
+        this.addExerciseTable(data.data);
       }
     });
 

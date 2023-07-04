@@ -16,67 +16,31 @@ export class WorkoutService {
   }
 
   finishWorkout(workoutData: any): any {
+    console.log(workoutData);
+    const exercises_attributes = this.extractValuesFromHashMap(workoutData);
     const payload = {
       workout: {
         user_id: 1,
         start_at: '2023-06-22 10:00',
         end_at: '2023-06-22 11:00',
         duration_in_minutes: 60,
-        exercises_attributes: [
-          {
-            set_number: 1,
-            rep: 15,
-            weight: 180,
-            exercise_type_id: 1,
-          },
-          {
-            set_number: 2,
-            rep: 12,
-            weight: 180,
-            exercise_type_id: 1,
-          },
-          {
-            set_number: 3,
-            rep: 5,
-            weight: 180,
-            exercise_type_id: 1,
-          },
-          {
-            set_number: 1,
-            rep: 8,
-            weight: 180,
-            exercise_type_id: 2,
-          },
-          {
-            set_number: 2,
-            rep: 8,
-            weight: 180,
-            exercise_type_id: 2,
-          },
-          {
-            set_number: 3,
-            rep: 8,
-            weight: 180,
-            exercise_type_id: 2,
-          },
-        ],
+        exercises_attributes,
       },
     };
 
     return this.http.post(`${this.apiUrl}/workout`, payload);
+  }
 
-    // return this.getCSRFToken().pipe(
-    //   switchMap((csrfToken: any) => {
-    //     // Include CSRF token in the request headers
-    //     const headers = new HttpHeaders({
-    //       'Content-Type': 'application/json',
-    //       'X-CSRF-Token': csrfToken.token, // Replace 'token' with the actual property name that holds the CSRF token
-    //     });
+  extractValuesFromHashMap(hashMap: { [key: string]: any }): any[] {
+    const values: any[] = [];
 
-    //     // Send the request with the CSRF token in the headers
-    //     return this.http.post(`${this.apiUrl}/workout`, payload, { headers });
-    //   })
-    // );
+    for (const key in hashMap) {
+      if (Object.prototype.hasOwnProperty.call(hashMap, key)) {
+        values.push(...hashMap[key]);
+      }
+    }
+
+    return values;
   }
 
   // Other methods...
