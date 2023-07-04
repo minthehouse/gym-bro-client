@@ -9,6 +9,7 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 import { UserState } from 'state/user.state';
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 if (environment.production) {
   enableProdMode();
@@ -19,7 +20,7 @@ bootstrapApplication(AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     importProvidersFrom(
       IonicModule.forRoot({ swipeBackEnabled: false }),
-      // IonicStorageModule.forRoot(),
+      IonicStorageModule.forRoot(),
       HttpClientModule,
       NgxsModule.forRoot([UserState]),
       NgxsStoragePluginModule.forRoot(),
