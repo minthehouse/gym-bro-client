@@ -132,6 +132,10 @@ export class TrackWorkoutPage implements OnInit {
   async presentModal() {
     const modal = await this.modalController.create({
       component: SearchModalComponent,
+      componentProps: {
+        searchOptions: this.searchOptions,
+        title: 'Select Exercise',
+      },
     });
 
     modal.onDidDismiss().then(data => {

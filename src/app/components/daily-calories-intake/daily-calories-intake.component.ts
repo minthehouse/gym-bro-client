@@ -16,6 +16,11 @@ export class DailyCaloriesIntakeComponent implements OnInit {
   public goalCalories = 2000;
   public foodTakenCalories = 500;
   public remainingCalories = 1500;
-
+  public currentSegment = 'Calories';
   ngOnInit() {}
+
+  segmentChanged(ev: any) {
+    console.log('Segment changed', ev);
+    this.currentSegment = ev.detail.value;
+  }
 }

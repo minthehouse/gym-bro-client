@@ -1,10 +1,46 @@
-<ion-card>
+<ion-segment (ionChange)="segmentChanged($event)" value="Calories">
+  <ion-segment-button value="Calories">
+    <ion-label>Calories</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="Nutritions">
+    <ion-label>Nutritions</ion-label>
+  </ion-segment-button>
+</ion-segment>
+
+<ion-card *ngIf="currentSegment === 'Calories'">
   <ion-card-content class="flex justify-center">
     <div class="calorie-equation">
       <div class="equation-row">
         <div class="equation-cell">
           <span class="equation-value">{{ goalCalories }}</span>
-          <span class="equation-label">Goal Calories</span>
+          <span class="equation-label">Calories Goal</span>
+        </div>
+        <div class="equation-cell">
+          <span class="equation-symbol">-</span>
+        </div>
+        <div class="equation-cell">
+          <span class="equation-value">{{ foodTakenCalories }}</span>
+          <span class="equation-label">Food</span>
+        </div>
+        <div class="equation-cell">
+          <span class="equation-symbol">=</span>
+        </div>
+        <div class="equation-cell">
+          <span class="equation-value">{{ remainingCalories }}</span>
+          <span class="equation-label">Remaining Calories</span>
+        </div>
+      </div>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+<ion-card *ngIf="currentSegment === 'Nutritions'">
+  <ion-card-content class="flex justify-center">
+    <div class="calorie-equation">
+      <div class="equation-row">
+        <div class="equation-cell">
+          <span class="equation-value">{{ goalCalories }}</span>
+          <span class="equation-label">Protein Goal</span>
         </div>
         <div class="equation-cell">
           <span class="equation-symbol">-</span>

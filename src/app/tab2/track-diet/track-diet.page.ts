@@ -14,7 +14,44 @@ import { SearchModalComponent } from 'src/app/tab1/search-modal/search-modal.com
 })
 export class TrackDietPage implements OnInit {
   constructor(private modalController: ModalController) {}
-
+  searchOptions: any = [
+    {
+      id: 1,
+      name: 'Chicken Breast',
+      kcal: 200,
+      protein: 30,
+      carb: 20,
+      fat: 20,
+      imageSrc: 'https://i.pravatar.cc/300?u=b',
+    },
+    {
+      id: 2,
+      name: 'Chicken Thigh',
+      kcal: 200,
+      protein: 30,
+      carb: 20,
+      fat: 20,
+      imageSrc: 'https://i.pravatar.cc/300?u=a',
+    },
+    {
+      id: 3,
+      name: 'Beef Short Rib',
+      kcal: 300,
+      protein: 30,
+      carb: 20,
+      fat: 20,
+      imageSrc: 'https://i.pravatar.cc/300?u=d',
+    },
+    {
+      id: 4,
+      name: 'Beef Brisket',
+      kcal: 300,
+      protein: 30,
+      carb: 20,
+      fat: 20,
+      imageSrc: 'https://i.pravatar.cc/300?u=e',
+    },
+  ];
   public foodItems: {
     [key: number]: {
       name: string;
@@ -85,7 +122,8 @@ export class TrackDietPage implements OnInit {
     const modal = await this.modalController.create({
       component: SearchModalComponent,
       componentProps: {
-        options: this.foodItems,
+        searchOptions: this.searchOptions,
+        title: 'Select Food',
       },
     });
 

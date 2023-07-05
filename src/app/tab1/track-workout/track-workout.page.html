@@ -26,7 +26,7 @@
       </ion-row>
 
       <!-- Table rows -->
-      <ion-row *ngFor="let workout of workoutLists[exerciseName]" class="ion-text-center">
+      <ion-row *ngFor="let workout of workoutLists[exerciseName]" class="ion-text-center mb-2">
         <ion-col size="4">
           <ion-input class="rounded-lg bg-slate-200" [value]="workout.set_number" readonly></ion-input>
         </ion-col>

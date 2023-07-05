@@ -144,13 +144,13 @@ export class AuthService {
 
   private _saveUser(response: any): any {
     console.log('response in save user', response);
+    this.store.dispatch(new SetUser(response));
 
     const user = response.user;
     const token = response.token.token;
     const client = response.token.client;
     const expiry = response.token.expiry;
     const uid = response.user.uid;
-    this.store.dispatch(new SetUser({ user, token, client, expiry, uid }));
     this.storageService.saveSession(user, token, client, expiry, uid);
     return user;
   }

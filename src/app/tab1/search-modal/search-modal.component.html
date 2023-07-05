@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Select Exercise</ion-title>
+    <ion-title> {{ title }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="close()" [strong]="true">Close</ion-button>
     </ion-buttons>
@@ -15,7 +15,8 @@
       </ion-avatar>
       <ion-label>
         <h2>{{ option.name }}</h2>
-        <p>{{ option.muscle_group }}</p>
+        <p *ngIf="title.includes('Exercise')">{{ option.muscle_group }}</p>
+        <p *ngIf="title.includes('Food')">{{ option.kcal }} kcal</p>
       </ion-label>
     </ion-item>
   </ion-list>

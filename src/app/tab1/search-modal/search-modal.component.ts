@@ -13,51 +13,31 @@ import { ExerciseService } from 'src/app/service/exercise.service';
   imports: [IonicModule, CommonModule, FormsModule],
 })
 export class SearchModalComponent implements OnInit {
-  @Input() searchOptions: any = [
-    {
-      id: 1,
-      name: 'Bench Press',
-      muscle_group: 'Chest',
-      imageSrc: 'https://i.pravatar.cc/300?u=b',
-    },
-    {
-      id: 2,
-      name: 'Deadlift',
-      muscle_group: 'Back',
-      imageSrc: 'https://i.pravatar.cc/300?u=a',
-    },
-    {
-      id: 3,
-      name: 'Squat',
-      muscle_group: 'Legs',
-      imageSrc: 'https://i.pravatar.cc/300?u=d',
-    },
-    {
-      id: 4,
-      name: 'Overhead Press',
-      muscle_group: 'Shoulder',
-      imageSrc: 'https://i.pravatar.cc/300?u=e',
-    },
-  ];
+  @Input() searchOptions: any;
+  @Input() title: string;
   constructor(private exerciseService: ExerciseService, private modalCtrl: ModalController) {}
   public searchQuery = '';
   private searchQueryChanged: Subject<string> = new Subject<string>();
   public name: string = '';
 
-  public filteredSearchOptions = [...this.searchOptions];
+  public filteredSearchOptions: any[];
 
   ngOnInit() {
+    this.filteredSearchOptions = [...this.searchOptions];
     // this.exerciseService.getExerciseTypes().subscribe();
     this.searchQueryChanged.subscribe(() => {
-      this.filterExerciseOptions();
+      this.filterOptions();
     });
+
+    console.log('hit modal');
+    console.log('hit searchOptions', this.searchOptions);
   }
 
   performSearch() {
     this.searchQueryChanged.next(this.searchQuery);
   }
 
-  filterExerciseOptions() {
+  filterOptions() {
     const query = this.searchQuery.toLowerCase();
     this.filteredSearchOptions = this.searchOptions.filter(
       (option: any) => option.name.toLowerCase().includes(query) || option.muscle_group.toLowerCase().includes(query),
