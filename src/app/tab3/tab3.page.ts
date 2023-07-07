@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
+import { AuthService } from '../service/auth/auth.service';
 
 @Component({
   selector: 'app-tab3',
@@ -9,5 +10,9 @@ import { IonicModule } from '@ionic/angular';
   imports: [IonicModule],
 })
 export class Tab3Page {
-  constructor() {}
+  constructor(private authService: AuthService) {}
+
+  logout() {
+    this.authService.logoutAndNavigate().subscribe(response => console.log(response));
+  }
 }
