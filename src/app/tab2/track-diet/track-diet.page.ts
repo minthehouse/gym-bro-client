@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { DailyCaloriesIntakeComponent } from 'src/app/components/daily-calories-intake/daily-calories-intake.component';
+import { DietService } from 'src/app/service/diet.service';
 import { SearchModalComponent } from 'src/app/tab1/search-modal/search-modal.component';
 
 @Component({
@@ -13,7 +14,7 @@ import { SearchModalComponent } from 'src/app/tab1/search-modal/search-modal.com
   imports: [IonicModule, FormsModule, CommonModule, DailyCaloriesIntakeComponent],
 })
 export class TrackDietPage implements OnInit {
-  constructor(private modalController: ModalController) {}
+  constructor(private modalController: ModalController, private dietService: DietService) {}
   searchOptions: any = [
     {
       id: 1,
@@ -52,47 +53,34 @@ export class TrackDietPage implements OnInit {
       imageSrc: 'https://i.pravatar.cc/300?u=e',
     },
   ];
-  public foodItems: {
+  public foodList: {
     [key: number]: {
       name: string;
       kcal: string;
       meal_type_id: number;
+      protein;
+      carb;
+      fat;
     }[];
   } = {
-    1: [
-      // {
-      //   name: 'Chicken',
-      //   kcal: '240',
-      //   meal_type_id: 1,
-      // },
-      // {
-      //   name: 'Rice',
-      //   kcal: '300',
-      //   meal_type_id: 1,
-      // },
-    ],
-    2: [
-      // {
-      //   name: 'chicken',
-      //   kcal: '240',
-      //   meal_type_id: 2,
-      // },
-      // {
-      //   name: 'Rice',
-      //   kcal: '300',
-      //   meal_type_id: 1,
-      // },
-    ],
+    1: [],
+    2: [],
     3: [
       {
         name: 'chicken',
         kcal: '240',
         meal_type_id: 3,
+        protein: 30,
+        carb: 20,
+        fat: 20,
       },
       {
         name: 'Rice',
         kcal: '300',
         meal_type_id: 1,
+        protein: 30,
+        carb: 20,
+        fat: 20,
       },
     ],
   };
@@ -113,12 +101,10 @@ export class TrackDietPage implements OnInit {
   }
 
   public hasFoodItems(mealTypeId: number): boolean {
-    return !!this.foodItems[mealTypeId] && this.foodItems[mealTypeId].length > 0;
+    return !!this.foodList[mealTypeId] && this.foodList[mealTypeId].length > 0;
   }
 
   async presentModal(mealTypeId: number) {
-    console.log('mealTypeId', mealTypeId);
-
     const modal = await this.modalController.create({
       component: SearchModalComponent,
       componentProps: {
@@ -128,14 +114,27 @@ export class TrackDietPage implements OnInit {
     });
 
     modal.onDidDismiss().then(data => {
-      console.log('data', data);
-
       if (data.role === 'select') {
-        // Handle the selected option here
         console.log(data.data); // data.data contains the selected option
+        this.addFoodTable(mealTypeId, data.data);
       }
     });
 
     return await modal.present();
+  }
+
+  addFoodTable(mealTypeId, selectedFood: any) {
+    if (!this.foodList.hasOwnProperty(mealTypeId)) {
+      this.foodList[mealTypeId] = [];
+    }
+
+    this.foodList = {
+      ...this.foodList,
+      [mealTypeId]: [...this.foodList[mealTypeId], selectedFood],
+    };
+
+    const payload = { mealTypeId: selectedFood };
+
+    this.dietService.addFoodToUserDiet(payload);
   }
 }

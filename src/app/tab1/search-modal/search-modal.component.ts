@@ -45,13 +45,7 @@ export class SearchModalComponent implements OnInit {
   }
 
   select(option: any) {
-    this.modalCtrl.dismiss(
-      {
-        id: option.id,
-        name: option.name,
-      },
-      'select',
-    );
+    this.modalCtrl.dismiss(option, 'select');
   }
 
   close() {

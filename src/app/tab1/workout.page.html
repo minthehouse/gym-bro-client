@@ -12,8 +12,17 @@
       <ion-card-subtitle>Quick Start</ion-card-subtitle>
       <ion-card-title>Start Your Workout</ion-card-title>
     </ion-card-header>
-    <ion-card-content>
-      Click to start tracking your workout and see your progress.
-    </ion-card-content>
+    <ion-card-content> Click to start tracking your workout. </ion-card-content>
+  </ion-card>
+
+  <ion-card id="workout-card" class="home-content" (click)="sendEvent('history')">
+    <div class="flex justify-center">
+      <img style="height: 200px" src="assets/gym.png" />
+    </div>
+    <ion-card-header>
+      <ion-card-subtitle>Workout History</ion-card-subtitle>
+      <ion-card-title>See Your Progress</ion-card-title>
+    </ion-card-header>
+    <ion-card-content> Click to see your progress on this journey. </ion-card-content>
   </ion-card>
 </ion-content>
