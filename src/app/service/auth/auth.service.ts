@@ -51,8 +51,6 @@ export class AuthService {
   }
 
   register(body: any): Observable<any> {
-    const { config } = this.store.snapshot();
-    const facility = config.mobile_health.facility;
     return this.http
       .post(`${environment.apiUrl}/auth`, body, {
         observe: 'response',
@@ -146,13 +144,8 @@ export class AuthService {
     console.log('response in save user', response);
     this.store.dispatch(new SetUser(response));
 
-    const user = response.user;
-    const token = response.token.token;
-    const client = response.token.client;
-    const expiry = response.token.expiry;
-    const uid = response.user.uid;
-    this.storageService.saveSession(user, token, client, expiry, uid);
-    return user;
+    this.storageService.saveSession(response.user, response.token);
+    return response.user;
   }
 
   private _navigate(url: any): void {
@@ -160,17 +153,9 @@ export class AuthService {
   }
 
   private _reset(): void {
-    // this.store.dispatch(new SetUser(null));
-    // this.store.dispatch(new ResetPatientsState());
-    // this.store.dispatch(new SetCurrentConsult(null));
-    // this.store.dispatch(new ResetVisits());
-    // this.store.dispatch(new SetCurrentVisit(null));
-    // this.store.dispatch(new SetPatients(null));
-    // this.store.dispatch(new SetCurrentMember(null));
-    // localStorage.removeItem('@@STATE');
+    this.store.dispatch(new SetUser(null));
+    localStorage.removeItem('@@STATE');
     this.storageService.deleteSession();
-    // this.analyticsService.reset();
-    // this.chatService.resetChatSession();
   }
 
   logoutAndNavigate(): Observable<any> {
@@ -178,30 +163,34 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http
-      .delete(`${environment.apiUrl}/auth/sign_out`, {
-        observe: 'response',
-      })
-      .pipe(
-        map(response => {
-          this._reset();
-          return response;
-        }),
-        finalize(() => {
-          this._reset();
-        }),
-      );
+    const { user } = this.store.snapshot();
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('access-token', user.userToken.token)
+      .set('client', user.userToken.client)
+      .set('uid', user.uid);
+
+    return this.http.delete(`${environment.apiUrl}/auth/sign_out`, { headers, observe: 'response' }).pipe(
+      map(response => {
+        this._reset();
+        return response;
+      }),
+      finalize(() => {
+        this._reset();
+      }),
+    );
   }
 
   public async isLoggedIn(): Promise<boolean> {
     const user = await this.storageService.getSession();
     // TODO: rename params
     if (user) {
-      this.store.dispatch(
-        new SetUser({ user: user.user, token: user.token, client: user.client, expiry: user.expiry, uid: user.uid }),
-      );
+      console.log('user in isLoggedin', user);
+
+      this.store.dispatch(new SetUser({ user: user.user, token: user.token }));
     }
-    return user !== null && !this.isTokenExpired(user.expiry);
+    return user !== null && !this.isTokenExpired(user.token.expiry);
   }
 
   public isTokenExpired(expiry: any): boolean {
@@ -213,11 +202,12 @@ export class AuthService {
 
   public get options(): any {
     const { user } = this.store.snapshot();
+
     return {
       headers: new HttpHeaders({
-        'access-token': user.token,
-        client: user.client,
-        expiry: user.expiry,
+        'access-token': user.userToken.token,
+        client: user.userToken.client,
+        expiry: user.userToken.expiry,
         uid: user.uid,
       }),
     };

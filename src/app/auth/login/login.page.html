@@ -10,7 +10,7 @@
         icon="assets/back.svg"
       ></ion-back-button>
     </ion-buttons>
-    <ion-title class="ion-text-center oda-title-text">Sign in</ion-title>
+    <ion-title class="ion-text-center">Sign in</ion-title>
     <ion-buttons slot="end" data-test="close">
       <ion-button fill="clear" routerLink="/">
         <ion-icon src="assets/close.svg" size="large"></ion-icon>
@@ -24,10 +24,10 @@
     <div class="p-6" role="none">
       <ion-row class="mb-4">
         <ion-col class="flex flex-col gap-2">
-          <ion-label class="input-label">Email</ion-label>
+          <ion-label>Email</ion-label>
           <ion-input
+            class="rounded-lg bg-slate-200"
             formControlName="email"
-            class="base-input"
             autocomplete="email"
             name="email"
             type="email"
@@ -37,7 +37,6 @@
             data-test="email"
             (keyup.enter)="onLogin(ngForm)"
             required
-            legacy="true"
             appAutofillMonitor
           >
           </ion-input>
@@ -46,25 +45,24 @@
 
       <ion-row>
         <ion-col class="flex flex-col gap-2">
-          <ion-label class="input-label">Password</ion-label>
-          <ion-item class="ion-no-padding show-password" lines="none">
-            <ion-input
-              type="password"
-              name="password"
-              autocomplete="current-password"
-              formControlName="password"
-              data-test="password"
-              (keyup.enter)="onLogin(ngForm)"
-              required
-              legacy="true"
-              appAutofillMonitor
-            ></ion-input>
-          </ion-item>
+          <ion-label>Password</ion-label>
+          <ion-input
+            lines="none"
+            class="rounded-lg bg-slate-200"
+            type="password"
+            name="password"
+            autocomplete="current-password"
+            formControlName="password"
+            data-test="password"
+            (keyup.enter)="onLogin(ngForm)"
+            required
+            appAutofillMonitor
+          ></ion-input>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col class="ion-text-right">
-          <ion-label class="font-bold rrt-btn-link" data-test="forgot password" (click)="onForgotPassword()"
+          <ion-label class="font-bold" data-test="forgot password" (click)="onForgotPassword()"
             >Forgot Password?</ion-label
           >
         </ion-col>
@@ -81,7 +79,7 @@
 <ion-footer class="ion-no-border ion-text-center p-2 h-28">
   <ion-toolbar>
     <ion-label>
-      Don't Have an Account? <a class="font-bold rrt-btn-link" data-test="signUp" (click)="onRegister()">Sign up</a>
+      Don't Have an Account? <a class="font-bold" data-test="signUp" (click)="onRegister()">Sign up</a>
     </ion-label>
   </ion-toolbar>
 </ion-footer>

@@ -31,8 +31,8 @@ export class StorageService {
     return data ? JSON.parse(data) : null;
   }
 
-  public saveSession(user, token, client, expiry, uid): void {
-    this.set(STORAGE_NAME, JSON.stringify({ user, token, client, expiry, uid }));
+  public saveSession(user, token): void {
+    this.set(STORAGE_NAME, JSON.stringify({ user, token }));
   }
 
   public deleteSession(): void {

@@ -106,7 +106,8 @@ export class RegisterPage implements OnInit {
   }
 
   onSignIn() {
-    this.authService.login({ email: 'hlee+seven@docgo.com', password: 'Welcome@1' }).subscribe();
+    this.router.navigateByUrl('/login');
+    // this.authService.login({ email: 'hlee+seven@docgo.com', password: 'Welcome@1' }).subscribe();
   }
 
   // setDobToForm(dateInISOString: string): void {
