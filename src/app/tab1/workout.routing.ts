@@ -8,7 +8,10 @@ export const routes: Routes = [
   },
   {
     path: 'track',
-    loadChildren: () =>
-      import('./track-workout/track-workout.routing').then((m) => m.routes),
+    loadChildren: () => import('./track-workout/track-workout.routing').then(m => m.routes),
+  },
+  {
+    path: 'history',
+    loadChildren: () => import('./history-workout/history-workout.routing').then(m => m.routes),
   },
 ];

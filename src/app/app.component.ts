@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatNativeDateModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { Subscription } from 'rxjs';
@@ -12,7 +13,7 @@ import { StorageService } from './service/storage.service';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, RouterModule, HttpClientModule],
+  imports: [CommonModule, IonicModule, RouterModule, HttpClientModule, MatNativeDateModule],
 })
 export class AppComponent implements OnInit, OnDestroy {
   private stateSubscription: Subscription;

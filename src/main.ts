@@ -10,6 +10,7 @@ import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 import { UserState } from 'state/user.state';
 import { IonicStorageModule } from '@ionic/storage-angular';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 if (environment.production) {
   enableProdMode();
@@ -26,5 +27,6 @@ bootstrapApplication(AppComponent, {
       NgxsStoragePluginModule.forRoot(),
     ),
     provideRouter(routes),
+    provideAnimations(),
   ],
 });

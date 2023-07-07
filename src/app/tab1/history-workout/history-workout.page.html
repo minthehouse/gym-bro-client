@@ -1,0 +1,16 @@
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>history-track hey</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<!-- <ion-content class="ion-padding"> </ion-content> -->
+
+<div class="col-lg-6">
+  <mat-form-field floatLabel="always">
+    <mat-label>Select Date to see Workout Details</mat-label>
+    <input matInput [matDatepicker]="latestVisbilityDatePicker" />
+    <mat-datepicker-toggle matSuffix [for]="latestVisbilityDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #latestVisbilityDatePicker></mat-datepicker>
+  </mat-form-field>
+</div>
