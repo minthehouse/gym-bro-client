@@ -21,20 +21,7 @@ export class WorkoutPage implements OnInit {
     private exerciseService: ExerciseService,
   ) {}
 
-  ngOnInit(): void {
-    // this.workoutService.getWorkouts().subscribe((workouts) => {
-    //   console.log('workouts', workouts);
-    // });
-    // this.userService.getUsers().subscribe((users) => {
-    //   console.log('users', users);
-    // });
-    // this.exerciseService.getExercises().subscribe((exercises) => {
-    //   console.log('exercises', exercises);
-    // });
-    // this.exerciseService.getExerciseTypes().subscribe((exerciseTypes) => {
-    //   console.log('exerciseTypes', exerciseTypes);
-    // });
-  }
+  ngOnInit(): void {}
 
   sendEvent(url: string) {
     this.router.navigate([url], { relativeTo: this.route });

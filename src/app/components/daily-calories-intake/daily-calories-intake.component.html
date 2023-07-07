@@ -7,54 +7,28 @@
   </ion-segment-button>
 </ion-segment>
 
-<ion-card *ngIf="currentSegment === 'Calories'">
+<ion-card>
   <ion-card-content class="flex justify-center">
     <div class="calorie-equation">
       <div class="equation-row">
         <div class="equation-cell">
-          <span class="equation-value">{{ goalCalories }}</span>
+          <span class="equation-value">{{ goal }}</span>
           <span class="equation-label">Calories Goal</span>
         </div>
         <div class="equation-cell">
           <span class="equation-symbol">-</span>
         </div>
         <div class="equation-cell">
-          <span class="equation-value">{{ foodTakenCalories }}</span>
-          <span class="equation-label">Food</span>
+          <span class="equation-value">{{ taken }}</span>
+          <span class="equation-label">Taken</span>
         </div>
         <div class="equation-cell">
           <span class="equation-symbol">=</span>
         </div>
         <div class="equation-cell">
-          <span class="equation-value">{{ remainingCalories }}</span>
-          <span class="equation-label">Remaining Calories</span>
-        </div>
-      </div>
-    </div>
-  </ion-card-content>
-</ion-card>
-
-<ion-card *ngIf="currentSegment === 'Nutritions'">
-  <ion-card-content class="flex justify-center">
-    <div class="calorie-equation">
-      <div class="equation-row">
-        <div class="equation-cell">
-          <span class="equation-value">{{ goalCalories }}</span>
-          <span class="equation-label">Protein Goal</span>
-        </div>
-        <div class="equation-cell">
-          <span class="equation-symbol">-</span>
-        </div>
-        <div class="equation-cell">
-          <span class="equation-value">{{ foodTakenCalories }}</span>
-          <span class="equation-label">Food</span>
-        </div>
-        <div class="equation-cell">
-          <span class="equation-symbol">=</span>
-        </div>
-        <div class="equation-cell">
-          <span class="equation-value">{{ remainingCalories }}</span>
-          <span class="equation-label">Remaining Calories</span>
+          <span class="equation-value">{{ remaining }}</span>
+          <span *ngIf="currentSegment === 'Calories'" class="equation-label">Remaining Calories</span>
+          <span *ngIf="currentSegment === 'Nutritions'" class="equation-label">Remaining Proteins</span>
         </div>
       </div>
     </div>

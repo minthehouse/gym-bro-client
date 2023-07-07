@@ -13,13 +13,13 @@ export class WorkoutService {
   constructor(private http: HttpClient, private store: Store) {}
 
   getWorkouts(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/workouts`);
+    const { user } = this.store.snapshot();
+
+    return this.http.get<any>(`${this.apiUrl}/users/${user.id}/workouts`);
   }
 
   finishWorkout(workoutData: any): any {
-    console.log(workoutData);
     const { user } = this.store.snapshot();
-    console.log('user state in finish', user);
 
     const exercises_attributes = this.extractValuesFromHashMap(workoutData);
     const payload = {
