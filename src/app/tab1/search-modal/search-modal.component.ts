@@ -40,14 +40,8 @@ export class SearchModalComponent implements OnInit {
 
   performSearch() {
     this.dietService.search(this.searchQuery).subscribe(response => {
-      this.filteredSearchOptions = response.foods.map(food => ({
-        name: food.description,
-        kcal: food.foodNutrients.find(nutrient => nutrient.nutrientName === 'Energy')?.value ?? 0,
-        protein: food.foodNutrients.find(nutrient => nutrient.nutrientName === 'Protein')?.value ?? 0,
-        fat: food.foodNutrients.find(nutrient => nutrient.nutrientName === 'Total lipid (fat)')?.value ?? 0,
-        carbohydrate:
-          food.foodNutrients.find(nutrient => nutrient.nutrientName === 'Carbohydrate, by difference')?.value ?? 0,
-      }));
+      console.log('res', response);
+      this.filteredSearchOptions = response;
     });
     // this.dietService.search(this.searchQuery).subscribe(response => {
     //   // Process the response and update the `filteredSearchOptions` accordingly

@@ -42,12 +42,7 @@ export class DietService {
     return this.http.get<any>(`${this.apiUrl}/csrf-token`);
   }
 
-  search(searchParam) {
-    const params = new HttpParams()
-      .set('query', searchParam)
-      .set('api_key', environment.foodApiKey)
-      .set('dataType', 'Survey (FNDDS)') // Replace with your actual API key
-      .set('pageSize', 10);
-    return this.http.get<any>(`https://api.nal.usda.gov/fdc/v1/foods/search`, { params });
+  search(search_param: string) {
+    return this.http.get<any>(`${this.apiUrl}/foods/search`, { params: { search_param } });
   }
 }

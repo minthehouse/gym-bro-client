@@ -6,7 +6,7 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content scrollY="false" class="ion-padding">
+<ion-content scrollY="true" class="ion-padding">
   <ion-searchbar placeholder="Search" [(ngModel)]="searchQuery" (input)="performSearch()"></ion-searchbar>
   <ion-list>
     <ion-item *ngFor="let option of filteredSearchOptions" (click)="select(option)">

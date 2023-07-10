@@ -11,6 +11,7 @@ import { environment } from './environments/environment';
 import { UserState } from 'state/user.state';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { WorkoutState } from 'state/workout.state';
 
 if (environment.production) {
   enableProdMode();
@@ -23,7 +24,7 @@ bootstrapApplication(AppComponent, {
       IonicModule.forRoot({ swipeBackEnabled: false }),
       IonicStorageModule.forRoot(),
       HttpClientModule,
-      NgxsModule.forRoot([UserState]),
+      NgxsModule.forRoot([UserState, WorkoutState]),
       NgxsStoragePluginModule.forRoot(),
     ),
     provideRouter(routes),
