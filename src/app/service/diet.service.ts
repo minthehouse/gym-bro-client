@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
@@ -7,40 +7,24 @@ import { Store } from '@ngxs/store';
 @Injectable({
   providedIn: 'root',
 })
-export class WorkoutService {
+export class DietService {
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient, private store: Store) {}
 
   getWorkouts(): Observable<any> {
-    const { user } = this.store.snapshot();
-
-    return this.http.get<any>(`${this.apiUrl}/users/${user.id}/workouts`);
+    return this.http.get<any>(`${this.apiUrl}/workouts`);
   }
 
-  finishWorkout(workoutData: any): any {
+  addFoodToUserDiet(foodData: any): any {
     const { user } = this.store.snapshot();
-    const { workout } = this.store.snapshot();
+    console.log('user', user);
+    console.log('foodData', foodData);
 
-    const start_at = workout.workoutStartTime;
-    const end_at = new Date();
-
-    const exercises_attributes = this.extractValuesFromHashMap(workoutData);
-    const payload = {
-      workout: {
-        user_id: user.id,
-        start_at: workout.workoutStartTime,
-        end_at: new Date(),
-        exercises_attributes,
-      },
-    };
-
-    return this.http.post(`${this.apiUrl}/workout`, payload);
+    return this.http.post(`${this.apiUrl}/diet`, foodData);
   }
 
   extractValuesFromHashMap(hashMap: { [key: string]: any }): any[] {
-    console.log('hashMap', hashMap);
-
     const values: any[] = [];
 
     for (const key in hashMap) {
@@ -56,5 +40,14 @@ export class WorkoutService {
 
   getCSRFToken() {
     return this.http.get<any>(`${this.apiUrl}/csrf-token`);
+  }
+
+  search(searchParam) {
+    const params = new HttpParams()
+      .set('query', searchParam)
+      .set('api_key', environment.foodApiKey)
+      .set('dataType', 'Survey (FNDDS)') // Replace with your actual API key
+      .set('pageSize', 10);
+    return this.http.get<any>(`https://api.nal.usda.gov/fdc/v1/foods/search`, { params });
   }
 }

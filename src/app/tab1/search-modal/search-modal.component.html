@@ -10,13 +10,16 @@
   <ion-searchbar placeholder="Search" [(ngModel)]="searchQuery" (input)="performSearch()"></ion-searchbar>
   <ion-list>
     <ion-item *ngFor="let option of filteredSearchOptions" (click)="select(option)">
-      <ion-avatar slot="start">
+      <!-- <ion-avatar slot="start">
         <ion-img [src]="option.imageSrc"></ion-img>
-      </ion-avatar>
+      </ion-avatar> -->
       <ion-label>
         <h2>{{ option.name }}</h2>
         <p *ngIf="title.includes('Exercise')">{{ option.muscle_group }}</p>
-        <p *ngIf="title.includes('Food')">{{ option.kcal }} kcal</p>
+        <p *ngIf="title.includes('Food')">calories: {{ option.kcal }} kcal</p>
+        <p *ngIf="title.includes('Food')">protein: {{ option.protein }} g</p>
+        <p *ngIf="title.includes('Food')">fat: {{ option.fat }} g</p>
+        <p *ngIf="title.includes('Food')">carb: {{ option.carbohydrate }} g</p>
       </ion-label>
     </ion-item>
   </ion-list>
