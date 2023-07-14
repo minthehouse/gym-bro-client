@@ -1,16 +1,50 @@
-<!-- <ion-header [translucent]="true">
+<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>history-track hey</ion-title>
   </ion-toolbar>
-</ion-header> -->
+</ion-header>
 
-<!-- <ion-content class="ion-padding"> </ion-content> -->
+<ion-content class="ion-padding">
+  <div class="col-lg-6">
+    <mat-form-field floatLabel="always">
+      <mat-label>Select Date to see Workout Details</mat-label>
+      <input
+        matInput
+        [matDatepicker]="latestVisbilityDatePicker"
+        [formControl]="selectedDateControl"
+        (dateChange)="onDateChange($event)"
+        [matDatepickerFilter]="dateFilter"
+      />
+      <mat-datepicker-toggle matSuffix [for]="latestVisbilityDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #latestVisbilityDatePicker></mat-datepicker>
+    </mat-form-field>
+  </div>
 
-<div class="col-lg-6">
-  <mat-form-field floatLabel="always">
-    <mat-label>Select Date to see Workout Details</mat-label>
-    <input matInput [matDatepicker]="latestVisbilityDatePicker" />
-    <mat-datepicker-toggle matSuffix [for]="latestVisbilityDatePicker"></mat-datepicker-toggle>
-    <mat-datepicker #latestVisbilityDatePicker></mat-datepicker>
-  </mat-form-field>
-</div>
+  <ion-list class="flex flex-col" *ngIf="selectedWorkout">
+    <ion-row class="ion-text-center">
+      <ion-col size="3">
+        <ion-label>Exercise Name</ion-label>
+      </ion-col>
+      <ion-col size="3">
+        <ion-label>Weight</ion-label>
+      </ion-col>
+      <ion-col size="3">
+        <ion-label>Rep</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ng-container *ngFor="let exercise of selectedWorkout.exercises">
+      <ion-row class="ion-text-center mb-2">
+        <ion-col size="3">
+          <ion-label>{{ exercise.exercise_type_name }}</ion-label>
+        </ion-col>
+        <ion-col size="3">
+          <ion-label>{{ exercise.weight }}</ion-label>
+        </ion-col>
+        <ion-col size="3">
+          <ion-label>{{ exercise.rep }}</ion-label>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </ion-list>
+</ion-content>
