@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, ModalController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { IonicModule, ModalController, ToastController } from '@ionic/angular';
 import { DailyCaloriesIntakeComponent } from 'src/app/components/daily-calories-intake/daily-calories-intake.component';
 import { DietService } from 'src/app/service/diet.service';
 import { SearchModalComponent } from 'src/app/tab1/search-modal/search-modal.component';
@@ -14,45 +15,15 @@ import { SearchModalComponent } from 'src/app/tab1/search-modal/search-modal.com
   imports: [IonicModule, FormsModule, CommonModule, DailyCaloriesIntakeComponent],
 })
 export class TrackDietPage implements OnInit {
-  constructor(private modalController: ModalController, private dietService: DietService) {}
-  searchOptions: any = [
-    {
-      id: 1,
-      name: 'Chicken Breast',
-      kcal: 200,
-      protein: 30,
-      carb: 20,
-      fat: 20,
-      imageSrc: 'https://i.pravatar.cc/300?u=b',
-    },
-    {
-      id: 2,
-      name: 'Chicken Thigh',
-      kcal: 200,
-      protein: 30,
-      carb: 20,
-      fat: 20,
-      imageSrc: 'https://i.pravatar.cc/300?u=a',
-    },
-    {
-      id: 3,
-      name: 'Beef Short Rib',
-      kcal: 300,
-      protein: 30,
-      carb: 20,
-      fat: 20,
-      imageSrc: 'https://i.pravatar.cc/300?u=d',
-    },
-    {
-      id: 4,
-      name: 'Beef Brisket',
-      kcal: 300,
-      protein: 30,
-      carb: 20,
-      fat: 20,
-      imageSrc: 'https://i.pravatar.cc/300?u=e',
-    },
-  ];
+  constructor(
+    private router: Router,
+    private modalController: ModalController,
+    private dietService: DietService,
+    private toastController: ToastController,
+  ) {}
+  searchOptions: any = [];
+  isToastOpen = false;
+
   public foodList: {
     [key: number]: {
       name: string;
@@ -65,24 +36,7 @@ export class TrackDietPage implements OnInit {
   } = {
     1: [],
     2: [],
-    3: [
-      {
-        name: 'chicken',
-        kcal: '240',
-        meal_type_id: 3,
-        protein: 30,
-        carb: 20,
-        fat: 20,
-      },
-      {
-        name: 'Rice',
-        kcal: '300',
-        meal_type_id: 1,
-        protein: 30,
-        carb: 20,
-        fat: 20,
-      },
-    ],
+    3: [],
   };
 
   ngOnInit() {}
@@ -108,7 +62,7 @@ export class TrackDietPage implements OnInit {
     const modal = await this.modalController.create({
       component: SearchModalComponent,
       componentProps: {
-        searchOptions: this.searchOptions,
+        service: this.dietService,
         title: 'Select Food',
       },
     });
@@ -132,9 +86,23 @@ export class TrackDietPage implements OnInit {
       ...this.foodList,
       [mealTypeId]: [...this.foodList[mealTypeId], selectedFood],
     };
+  }
 
-    const payload = { mealTypeId: selectedFood };
+  save() {
+    this.dietService.save(this.foodList).subscribe(response => {
+      if (response) {
+        this.router.navigate(['/tabs/diet/success']);
+      }
+    });
+  }
 
-    this.dietService.addFoodToUserDiet(payload);
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Your diet for the day is successfully saved!',
+      duration: 3000,
+      position: 'bottom',
+    });
+
+    await toast.present();
   }
 }

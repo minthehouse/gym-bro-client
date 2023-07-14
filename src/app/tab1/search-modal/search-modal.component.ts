@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, IonModal, ModalController } from '@ionic/angular';
-import { Subject } from 'rxjs';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { DietService } from 'src/app/service/diet.service';
-import { ExerciseService } from 'src/app/service/exercise.service';
+import { WorkoutService } from 'src/app/service/workout.service';
 
 @Component({
   selector: 'app-search-modal',
@@ -14,48 +13,22 @@ import { ExerciseService } from 'src/app/service/exercise.service';
   imports: [IonicModule, CommonModule, FormsModule],
 })
 export class SearchModalComponent implements OnInit {
-  @Input() searchOptions: any;
+  @Input() service: WorkoutService | DietService;
   @Input() title: string;
-  constructor(private dietService: DietService, private modalCtrl: ModalController) {}
+  constructor(private modalCtrl: ModalController) {}
   public searchQuery = '';
-  private searchQueryChanged: Subject<string> = new Subject<string>();
   public name: string = '';
 
   public filteredSearchOptions: any[];
 
-  ngOnInit() {
-    this.filteredSearchOptions = [...this.searchOptions];
-    // this.exerciseService.getExerciseTypes().subscribe();
-    this.searchQueryChanged.subscribe(() => {
-      this.filterOptions();
-    });
-
-    console.log('hit modal');
-    console.log('hit searchOptions', this.searchOptions);
-  }
-
-  // performSearch() {
-  //   this.searchQueryChanged.next(this.searchQuery);
-  // }
+  ngOnInit() {}
 
   performSearch() {
-    this.dietService.search(this.searchQuery).subscribe(response => {
-      console.log('res', response);
-      this.filteredSearchOptions = response;
-    });
-    // this.dietService.search(this.searchQuery).subscribe(response => {
-    //   // Process the response and update the `filteredSearchOptions` accordingly
-    //   // For example, if the response contains an array of options, you can assign it like this:
-    //   console.log('response', response);
-    //   this.filteredSearchOptions = response.foods;
-    // });
-  }
-
-  filterOptions() {
-    const query = this.searchQuery.toLowerCase();
-    this.filteredSearchOptions = this.searchOptions.filter(
-      (option: any) => option.name.toLowerCase().includes(query) || option.muscle_group.toLowerCase().includes(query),
-    );
+    if (this.service) {
+      this.service.search(this.searchQuery).subscribe(response => {
+        this.filteredSearchOptions = response;
+      });
+    }
   }
 
   select(option: any) {

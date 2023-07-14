@@ -116,7 +116,7 @@ export class TrackWorkoutPage implements OnInit {
     const modal = await this.modalController.create({
       component: SearchModalComponent,
       componentProps: {
-        searchOptions: this.searchOptions,
+        service: this.workoutService,
         title: 'Select Exercise',
       },
     });

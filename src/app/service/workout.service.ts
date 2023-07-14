@@ -57,4 +57,8 @@ export class WorkoutService {
   getCSRFToken() {
     return this.http.get<any>(`${this.apiUrl}/csrf-token`);
   }
+
+  search(search_param: string) {
+    return this.http.get<any>(`${this.apiUrl}/foods/search`, { params: { search_param } });
+  }
 }
