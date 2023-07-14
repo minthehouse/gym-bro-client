@@ -8,7 +8,10 @@ export const routes: Routes = [
   },
   {
     path: 'track',
-    loadChildren: () =>
-      import('./track-diet/track-diet.routing').then((m) => m.routes),
+    loadChildren: () => import('./track-diet/track-diet.routing').then(m => m.routes),
+  },
+  {
+    path: 'success',
+    loadChildren: () => import('../components/success/success.routing').then(m => m.routes),
   },
 ];
