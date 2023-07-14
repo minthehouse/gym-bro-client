@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000',
+  foodApiKey: 'Nd2iIo2zd6b7Bnzuw1eJ9RUdmLBQHurHTc58tKme',
 };
 
 /*
