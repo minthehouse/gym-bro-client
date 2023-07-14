@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { ExerciseService } from '../service/exercise.service';
-import { UserService } from '../service/user.service';
-import { WorkoutService } from '../service/workout.service';
 
 @Component({
   selector: 'app-workout',
@@ -13,13 +10,7 @@ import { WorkoutService } from '../service/workout.service';
   imports: [IonicModule],
 })
 export class WorkoutPage implements OnInit {
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private workoutService: WorkoutService,
-    private userService: UserService,
-    private exerciseService: ExerciseService,
-  ) {}
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {}
 

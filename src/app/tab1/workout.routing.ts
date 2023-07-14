@@ -14,4 +14,8 @@ export const routes: Routes = [
     path: 'history',
     loadChildren: () => import('./history-workout/history-workout.routing').then(m => m.routes),
   },
+  {
+    path: 'success',
+    loadChildren: () => import('../components/success/success.routing').then(m => m.routes),
+  },
 ];
