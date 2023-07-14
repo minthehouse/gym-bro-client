@@ -22,9 +22,6 @@ export class WorkoutService {
     const { user } = this.store.snapshot();
     const { workout } = this.store.snapshot();
 
-    const start_at = workout.workoutStartTime;
-    const end_at = new Date();
-
     const exercises_attributes = this.extractValuesFromHashMap(workoutData);
     const payload = {
       workout: {
@@ -39,8 +36,6 @@ export class WorkoutService {
   }
 
   extractValuesFromHashMap(hashMap: { [key: string]: any }): any[] {
-    console.log('hashMap', hashMap);
-
     const values: any[] = [];
 
     for (const key in hashMap) {
@@ -52,13 +47,7 @@ export class WorkoutService {
     return values;
   }
 
-  // Other methods...
-
-  getCSRFToken() {
-    return this.http.get<any>(`${this.apiUrl}/csrf-token`);
-  }
-
   search(search_param: string) {
-    return this.http.get<any>(`${this.apiUrl}/foods/search`, { params: { search_param } });
+    return this.http.get<any>(`${this.apiUrl}/workouts/search`, { params: { search_param } });
   }
 }
