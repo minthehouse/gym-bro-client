@@ -55,7 +55,10 @@ export class HistoryWorkoutPage implements OnInit {
       .pipe(
         filter(workouts => workouts),
         tap(workouts => {
+          console.log('workouts', workouts);
+
           this.selectedWorkout = workouts[workouts.length - 1];
+          this.selectedDateControl.setValue(this.selectedWorkout.start_at);
           this.workoutLists = workouts;
           this.setAvailableDates(workouts);
         }),
@@ -87,4 +90,35 @@ export class HistoryWorkoutPage implements OnInit {
       console.log('No workout found for the selected date');
     }
   }
+  navigateToPreviousWorkout() {
+    console.log('selected workout', this.selectedWorkout);
+  }
+
+  navigateToNextWorkout() {}
+
+  // navigateToPreviousWorkout(): void {
+  //   console.log('hit');
+
+  //   const currentIndex = this.availableDates.findIndex(date => this.isSameDate(date, this.selectedDate));
+
+  //   const previousWorkout = this.workoutLists[currentIndex - 1];
+
+  //   if (previousWorkout) {
+  //     this.selectedWorkout = previousWorkout;
+  //     // this.selectedDate = new Date(previousWorkout.start_at);
+  //     this.selectedDateControl.setValue(previousWorkout.end_at);
+  //   }
+  // }
+
+  // navigateToNextWorkout(): void {
+  //   const currentIndex = this.availableDates.findIndex(date => this.isSameDate(date, this.selectedDate));
+
+  //   const nextWorkout = this.workoutLists[currentIndex + 1];
+
+  //   if (nextWorkout) {
+  //     this.selectedWorkout = nextWorkout;
+  //     // this.selectedDate = new Date(nextWorkout.start_at);
+  //     this.selectedDateControl.setValue(nextWorkout.end_at);
+  //   }
+  // }
 }
