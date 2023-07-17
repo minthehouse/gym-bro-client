@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IonDatetime, IonicModule } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { WorkoutService } from 'src/app/service/workout.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -24,7 +24,6 @@ import { filter, tap } from 'rxjs/operators';
   ],
 })
 export class HistoryWorkoutPage implements OnInit {
-  @ViewChild(IonDatetime)
   dateToSearchFor = new FormControl(new Date());
   events: string[] = [];
 
@@ -56,7 +55,7 @@ export class HistoryWorkoutPage implements OnInit {
       .pipe(
         filter(workouts => workouts),
         tap(workouts => {
-          this.selectedWorkout = workouts[workouts.length - 2];
+          this.selectedWorkout = workouts[workouts.length - 1];
           this.workoutLists = workouts;
           this.setAvailableDates(workouts);
         }),

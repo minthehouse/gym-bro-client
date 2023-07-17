@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
+import { tap } from 'rxjs/operators';
+import { SetCurrentWorkout, SetWorkoutStartTime } from 'state/workout.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -32,7 +34,12 @@ export class WorkoutService {
       },
     };
 
-    return this.http.post(`${this.apiUrl}/workout`, payload);
+    return this.http.post(`${this.apiUrl}/workout`, payload).pipe(
+      tap(() => {
+        this.store.dispatch(new SetCurrentWorkout(null));
+        this.store.dispatch(new SetWorkoutStartTime(null));
+      }),
+    );
   }
 
   extractValuesFromHashMap(hashMap: { [key: string]: any }): any[] {
@@ -48,6 +55,6 @@ export class WorkoutService {
   }
 
   search(search_param: string) {
-    return this.http.get<any>(`${this.apiUrl}/workouts/search`, { params: { search_param } });
+    return this.http.get<any>(`${this.apiUrl}/exercise_types/search`, { params: { search_param: search_param } });
   }
 }

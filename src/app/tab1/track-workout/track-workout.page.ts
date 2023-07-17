@@ -60,6 +60,7 @@ export class TrackWorkoutPage implements OnInit {
     if (currentWorkout) {
       this.workoutLists = currentWorkout;
     }
+    this.store.dispatch(new SetWorkoutStartTime(new Date()));
   }
 
   addSet(exerciseName: string) {
@@ -79,6 +80,11 @@ export class TrackWorkoutPage implements OnInit {
   }
 
   addExerciseTable(selectedExerciseType: any) {
+    const { workout } = this.store.snapshot();
+    if (!workout.workoutStartTime) {
+      this.store.dispatch(new SetWorkoutStartTime(new Date()));
+    }
+
     if (this.workoutLists.hasOwnProperty(selectedExerciseType.name)) {
       return;
     }
@@ -93,12 +99,6 @@ export class TrackWorkoutPage implements OnInit {
     this.workoutLists[selectedExerciseType.name] = [exercise];
 
     this.store.dispatch(new SetCurrentWorkout(this.workoutLists));
-
-    // Uncomment the code below if you need to set workout start time
-    // const workout = this.store.selectSnapshot(state => state.workout);
-    // if (!workout.startWorkout) {
-    //   this.store.dispatch(new SetWorkoutStartTime(new Date()));
-    // }
   }
 
   getObjectKeys(obj: any): any[] {
@@ -106,10 +106,7 @@ export class TrackWorkoutPage implements OnInit {
   }
 
   finish() {
-    this.workoutService.finishWorkout(this.workoutLists).subscribe((res: any) => {
-      this.store.dispatch(new SetCurrentWorkout(null));
-      this.store.dispatch(new SetWorkoutStartTime(null));
-    });
+    this.workoutService.finishWorkout(this.workoutLists).subscribe();
   }
 
   async presentModal() {
