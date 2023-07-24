@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { SetCurrentWorkout, SetWorkoutStartTime } from 'state/workout.actions';
+import { buildAuthHeaders } from '../utils/auth-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -56,5 +57,17 @@ export class WorkoutService {
 
   search(search_param: string) {
     return this.http.get<any>(`${this.apiUrl}/exercise_types/search`, { params: { search_param: search_param } });
+  }
+
+  getPreviousWorkout(currentWorkoutId) {
+    console.log('local', JSON.parse(localStorage.getItem('@@STATE')).userToken);
+
+    const { user } = this.store.snapshot();
+    const headers = new HttpHeaders(buildAuthHeaders());
+    console.log('headers', headers);
+
+    return this.http.get<any>(`${this.apiUrl}/users/${user.id}/workouts/${currentWorkoutId}/previous_workout`, {
+      headers,
+    });
   }
 }

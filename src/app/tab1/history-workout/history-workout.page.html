@@ -5,10 +5,10 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <ion-icon name="arrow-back" class="arrow-icon" (click)="navigateToPreviousWorkout()"></ion-icon>
   <mat-form-field floatLabel="always">
     <mat-label>Select Date to see Workout Details</mat-label>
     <div class="date-picker-wrapper">
-      <ion-icon name="arrow-back" class="arrow-icon" (click)="navigateToPreviousWorkout()"></ion-icon>
       <input
         matInput
         [matDatepicker]="latestVisbilityDatePicker"
@@ -16,11 +16,11 @@
         (dateChange)="onDateChange($event)"
         [matDatepickerFilter]="dateFilter"
       />
-      <ion-icon name="arrow-forward" class="arrow-icon" (click)="navigateToNextWorkout()"></ion-icon>
     </div>
     <mat-datepicker-toggle matSuffix [for]="latestVisbilityDatePicker"></mat-datepicker-toggle>
     <mat-datepicker #latestVisbilityDatePicker></mat-datepicker>
   </mat-form-field>
+  <ion-icon name="arrow-forward" class="arrow-icon" (click)="navigateToNextWorkout()"></ion-icon>
 
   <ion-list class="flex flex-col" *ngIf="selectedWorkout">
     <ion-row class="ion-text-center">

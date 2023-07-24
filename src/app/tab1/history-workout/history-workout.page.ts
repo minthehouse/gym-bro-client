@@ -91,7 +91,10 @@ export class HistoryWorkoutPage implements OnInit {
     }
   }
   navigateToPreviousWorkout() {
-    console.log('selected workout', this.selectedWorkout);
+    this.workoutService
+      .getPreviousWorkout(this.selectedWorkout.id)
+      .pipe(tap(previousWorkout => (this.selectedWorkout = previousWorkout)))
+      .subscribe();
   }
 
   navigateToNextWorkout() {}
