@@ -7,6 +7,14 @@
   </ion-toolbar>
 </ion-header>
 <ion-content scrollY="true" class="ion-padding">
+  <ion-item *ngIf="title.includes('Food')">
+    <ion-select (ionChange)="onMealTypeChange($event)" label="Meal Type" label-placement="fixed" placeholder="Select one">
+      <ion-select-option value="1">Breakfast</ion-select-option>
+      <ion-select-option value="2">Lunch</ion-select-option>
+      <ion-select-option value="3">Dinner</ion-select-option>
+      <ion-select-option value="4">Snack</ion-select-option>
+    </ion-select>
+  </ion-item>
   <ion-searchbar placeholder="Search" [(ngModel)]="searchQuery" (input)="performSearch()"></ion-searchbar>
   <ion-list>
     <ion-item *ngFor="let option of filteredSearchOptions" (click)="select(option)">

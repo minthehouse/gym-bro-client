@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonicModule, ModalController, ToastController } from '@ionic/angular';
 import { DailyCaloriesIntakeComponent } from 'src/app/components/daily-calories-intake/daily-calories-intake.component';
+import { ESearchModalTitle } from 'src/app/enums/search-modal-title.enum';
 import { DietService } from 'src/app/service/diet.service';
 import { SearchModalComponent } from 'src/app/tab1/search-modal/search-modal.component';
 
@@ -58,26 +59,27 @@ export class TrackDietPage implements OnInit {
     return !!this.foodList[mealTypeId] && this.foodList[mealTypeId].length > 0;
   }
 
-  async presentModal(mealTypeId: number) {
+  async presentSearchModal(){
     const modal = await this.modalController.create({
       component: SearchModalComponent,
       componentProps: {
         service: this.dietService,
-        title: 'Select Food',
+        title: ESearchModalTitle.FOOD,
       },
     });
 
     modal.onDidDismiss().then(data => {
       if (data.role === 'select') {
         console.log(data.data); // data.data contains the selected option
-        this.addFoodTable(mealTypeId, data.data);
+        this.addFoodTable(data.data);
       }
     });
 
     return await modal.present();
   }
 
-  addFoodTable(mealTypeId, selectedFood: any) {
+  addFoodTable(selectedFood: any) {
+    const mealTypeId = selectedFood.meal_type_id;
     if (!this.foodList.hasOwnProperty(mealTypeId)) {
       this.foodList[mealTypeId] = [];
     }

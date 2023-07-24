@@ -6,26 +6,32 @@
 <ion-content>
   <!-- <app-daily-calories-intake [foodItems]="foodList"></app-daily-calories-intake> -->
 
-  <ion-card *ngFor="let mealType of [1, 2, 3]">
+  <ion-card *ngFor="let mealTypeId of [1, 2, 3]">
     <ion-card-header>
       <ion-card-title class="text-xl">
-        {{ mealType === 1 ? 'Breakfast' : mealType === 2 ? 'Lunch' : 'Dinner'}}
+        {{ mealTypeId === 1 ? 'Breakfast' : mealTypeId === 2 ? 'Lunch' : 'Dinner'}}
       </ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <ion-item *ngFor="let foodItem of foodList[mealType]">
+        <ion-item *ngFor="let foodItem of foodList[mealTypeId]">
           <!-- <ion-thumbnail slot="start">
             <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
           </ion-thumbnail> -->
-          <ion-label class="!text-sm">{{ foodItem.name }} ({{ foodItem.kcal }}kcal)</ion-label>
+          <ion-label class="!text-sm">{{ foodItem.name }}</ion-label>
+          <div class="grid">
+            <ion-text class="!text-sm">Calories: {{ foodItem.kcal }}kcal</ion-text>
+            <ion-text class="!text-sm">Protein: {{foodItem.protein}}g</ion-text>
+            <ion-text class="!text-sm">Carb: {{foodItem.carb}}g</ion-text>
+            <ion-text class="!text-sm">Fat: {{foodItem.fat}}g</ion-text>
+          </div>
         </ion-item>
-        <ion-button class="flex pt-3" (click)="presentModal(mealType)">
-          <ion-icon slot="start" name="add"></ion-icon>
-          Add Food
-        </ion-button>
       </ion-list>
     </ion-card-content>
   </ion-card>
+  <ion-button class="flex pt-3" (click)="presentSearchModal()">
+    <ion-icon slot="start" name="add"></ion-icon>
+    Add Food
+  </ion-button>
   <ion-button (click)="save()">Save Diet</ion-button>
 </ion-content>

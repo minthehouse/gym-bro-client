@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
+import { ESearchModalTitle } from 'src/app/enums/search-modal-title.enum';
 import { DietService } from 'src/app/service/diet.service';
 import { WorkoutService } from 'src/app/service/workout.service';
 
@@ -20,6 +21,7 @@ export class SearchModalComponent implements OnInit {
   public name: string = '';
 
   public filteredSearchOptions: any[];
+  public selectedMealTypeId: number
 
   ngOnInit() {}
 
@@ -32,6 +34,11 @@ export class SearchModalComponent implements OnInit {
   }
 
   select(option: any) {
+    if(this.title === ESearchModalTitle.FOOD){
+      // In future, I need to somehow make this.selectedMealTypeId required. 
+      // if not, it will throw an error
+      option.meal_type_id = this.selectedMealTypeId
+    }
     this.modalCtrl.dismiss(option, 'select');
   }
 
@@ -39,7 +46,12 @@ export class SearchModalComponent implements OnInit {
     return this.modalCtrl.dismiss(null, 'cancel');
   }
 
-  confirm() {
-    return this.modalCtrl.dismiss(this.name, 'confirm');
+
+
+  onMealTypeChange(event: any) {
+    const selectedValue = event.detail.value;
+    console.log('Selected value:', selectedValue);
+    this.selectedMealTypeId = selectedValue;
+    // You can perform any other actions based on the selected value here
   }
 }
