@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { SetUser } from 'state/user.actions';
 import { StorageService } from '../storage.service';
 import { IS_AUTH_ENABLED } from './auth.interceptor';
+import { buildAuthHeaders } from '../../utils/auth-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -163,17 +164,10 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    const { user } = this.store.snapshot();
+    const headers = new HttpHeaders(buildAuthHeaders());
 
-    const headers = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('access-token', user.userToken.token)
-      .set('client', user.userToken.client)
-      .set('uid', user.uid);
-
-    return this.http.delete(`${environment.apiUrl}/auth/sign_out`, { headers, observe: 'response' }).pipe(
+    return this.http.delete(`${environment.apiUrl}/auth/sign_out`, { headers}).pipe(
       map(response => {
-        this._reset();
         return response;
       }),
       finalize(() => {
