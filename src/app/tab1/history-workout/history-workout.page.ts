@@ -55,10 +55,8 @@ export class HistoryWorkoutPage implements OnInit {
       .pipe(
         filter(workouts => workouts),
         tap(workouts => {
-          console.log('workouts', workouts);
-
           this.selectedWorkout = workouts[workouts.length - 1];
-          this.selectedDateControl.setValue(this.selectedWorkout.start_at);
+          this.selectedDateControl.setValue(this.selectedWorkout.end_at);
           this.workoutLists = workouts;
           this.setAvailableDates(workouts);
         }),
@@ -68,13 +66,11 @@ export class HistoryWorkoutPage implements OnInit {
 
   setAvailableDates(workouts) {
     workouts.map(workout => {
-      this.availableDates.push(new Date(workout.start_at));
+      this.availableDates.push(new Date(workout.end_at));
     });
   }
 
   onDateChange(event: any): void {
-    console.log('event in handler', event);
-
     const selectedDate = event.value; // Retrieve the selected date value
 
     // Find the workout with the same date as the selected date
@@ -93,7 +89,10 @@ export class HistoryWorkoutPage implements OnInit {
   navigateToPreviousWorkout() {
     this.workoutService
       .getPreviousWorkout(this.selectedWorkout.id)
-      .pipe(tap(previousWorkout => (this.selectedWorkout = previousWorkout)))
+      .pipe(tap(previousWorkout => {
+        this.selectedWorkout = previousWorkout
+        this.selectedDateControl.setValue(previousWorkout.end_at);
+      }))
       .subscribe();
   }
 
