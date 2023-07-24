@@ -24,18 +24,13 @@ import { filter, tap } from 'rxjs/operators';
   ],
 })
 export class HistoryWorkoutPage implements OnInit {
-  dateToSearchFor = new FormControl(new Date());
-  events: string[] = [];
-
   constructor(private workoutService: WorkoutService) {}
-  selectedDate: Date = new Date(); // Set the initial selected date to today's date or any default date
-  workoutLists: any = [this.selectedDate];
+  workoutLists: any = [];
   selectedDateControl: FormControl = new FormControl();
-
   availableDates: Date[] = [];
   selectedWorkout: any;
-  // Filter function for the Datepicker
 
+  // Filter function for the Datepicker
   dateFilter = (date: Date): boolean => {
     // Check if the date is included in the allowed dates array
     return this.availableDates.some(allowedDate => this.isSameDate(date, allowedDate));
@@ -96,31 +91,14 @@ export class HistoryWorkoutPage implements OnInit {
       .subscribe();
   }
 
-  navigateToNextWorkout() {}
+  navigateToNextWorkout() {
+    this.workoutService
+    .getNextWorkout(this.selectedWorkout.id)
+    .pipe(tap(previousWorkout => {
+      this.selectedWorkout = previousWorkout
+      this.selectedDateControl.setValue(previousWorkout.end_at);
+    }))
+    .subscribe();
+  }
 
-  // navigateToPreviousWorkout(): void {
-  //   console.log('hit');
-
-  //   const currentIndex = this.availableDates.findIndex(date => this.isSameDate(date, this.selectedDate));
-
-  //   const previousWorkout = this.workoutLists[currentIndex - 1];
-
-  //   if (previousWorkout) {
-  //     this.selectedWorkout = previousWorkout;
-  //     // this.selectedDate = new Date(previousWorkout.start_at);
-  //     this.selectedDateControl.setValue(previousWorkout.end_at);
-  //   }
-  // }
-
-  // navigateToNextWorkout(): void {
-  //   const currentIndex = this.availableDates.findIndex(date => this.isSameDate(date, this.selectedDate));
-
-  //   const nextWorkout = this.workoutLists[currentIndex + 1];
-
-  //   if (nextWorkout) {
-  //     this.selectedWorkout = nextWorkout;
-  //     // this.selectedDate = new Date(nextWorkout.start_at);
-  //     this.selectedDateControl.setValue(nextWorkout.end_at);
-  //   }
-  // }
 }

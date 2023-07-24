@@ -60,13 +60,19 @@ export class WorkoutService {
   }
 
   getPreviousWorkout(currentWorkoutId) {
-    console.log('local', JSON.parse(localStorage.getItem('@@STATE')).userToken);
-
     const { user } = this.store.snapshot();
     const headers = new HttpHeaders(buildAuthHeaders());
-    console.log('headers', headers);
 
     return this.http.get<any>(`${this.apiUrl}/users/${user.id}/workouts/${currentWorkoutId}/previous_workout`, {
+      headers,
+    });
+  }
+
+  getNextWorkout(currentWorkoutId){
+    const { user } = this.store.snapshot();
+    const headers = new HttpHeaders(buildAuthHeaders());
+
+    return this.http.get<any>(`${this.apiUrl}/users/${user.id}/workouts/${currentWorkoutId}/next_workout`, {
       headers,
     });
   }
