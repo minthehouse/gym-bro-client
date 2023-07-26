@@ -28,16 +28,17 @@ export class TrackDietPage implements OnInit {
   public foodList: {
     [key: number]: {
       name: string;
-      kcal: string;
+      calories: string;
       meal_type_id: number;
       protein;
-      carb;
+      carbohydrates;
       fat;
     }[];
   } = {
     1: [],
     2: [],
     3: [],
+    4: [],
   };
 
   ngOnInit() {}
@@ -50,6 +51,8 @@ export class TrackDietPage implements OnInit {
         return 'Lunch';
       case '3':
         return 'Dinner';
+      case '4':
+        return 'Snack';
       default:
         return '';
     }

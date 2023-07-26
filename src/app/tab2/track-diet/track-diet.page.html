@@ -6,10 +6,10 @@
 <ion-content>
   <!-- <app-daily-calories-intake [foodItems]="foodList"></app-daily-calories-intake> -->
 
-  <ion-card *ngFor="let mealTypeId of [1, 2, 3]">
+  <ion-card *ngFor="let mealTypeId of [1, 2, 3, 4]">
     <ion-card-header>
       <ion-card-title class="text-xl">
-        {{ mealTypeId === 1 ? 'Breakfast' : mealTypeId === 2 ? 'Lunch' : 'Dinner'}}
+        {{ mealTypeId === 1 ? 'Breakfast' : mealTypeId === 2 ? 'Lunch' : mealTypeId === 3 ? 'Dinner' : 'Snack'}}
       </ion-card-title>
     </ion-card-header>
     <ion-card-content>
@@ -20,9 +20,9 @@
           </ion-thumbnail> -->
           <ion-label class="!text-sm">{{ foodItem.name }}</ion-label>
           <div class="grid">
-            <ion-text class="!text-sm">Calories: {{ foodItem.kcal }}kcal</ion-text>
+            <ion-text class="!text-sm">Calories: {{ foodItem.calories }}kcal</ion-text>
             <ion-text class="!text-sm">Protein: {{foodItem.protein}}g</ion-text>
-            <ion-text class="!text-sm">Carb: {{foodItem.carb}}g</ion-text>
+            <ion-text class="!text-sm">Carb: {{foodItem.carbohydrates}}g</ion-text>
             <ion-text class="!text-sm">Fat: {{foodItem.fat}}g</ion-text>
           </div>
         </ion-item>
