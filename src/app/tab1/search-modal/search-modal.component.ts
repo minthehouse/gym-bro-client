@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, ModalController } from '@ionic/angular';
+import { IonicModule, ModalController, ToastController } from '@ionic/angular';
 import { ESearchModalTitle } from 'src/app/enums/search-modal-title.enum';
 import { DietService } from 'src/app/service/diet.service';
 import { WorkoutService } from 'src/app/service/workout.service';
@@ -16,12 +16,12 @@ import { WorkoutService } from 'src/app/service/workout.service';
 export class SearchModalComponent implements OnInit {
   @Input() service: WorkoutService | DietService;
   @Input() title: string;
-  constructor(private modalCtrl: ModalController) {}
+  constructor(private modalCtrl: ModalController, private toastController: ToastController) {}
   public searchQuery = '';
   public name: string = '';
 
   public filteredSearchOptions: any[];
-  public selectedMealTypeId: number
+  public selectedMealTypeId: number;
 
   ngOnInit() {}
 
@@ -34,10 +34,12 @@ export class SearchModalComponent implements OnInit {
   }
 
   select(option: any) {
-    if(this.title === ESearchModalTitle.FOOD){
-      // In future, I need to somehow make this.selectedMealTypeId required. 
-      // if not, it will throw an error
-      option.meal_type_id = this.selectedMealTypeId
+    if (this.title === ESearchModalTitle.FOOD) {
+      if (this.selectedMealTypeId) {
+        option.meal_type_id = this.selectedMealTypeId;
+      } else {
+        return this.presentToast();
+      }
     }
     this.modalCtrl.dismiss(option, 'select');
   }
@@ -46,12 +48,20 @@ export class SearchModalComponent implements OnInit {
     return this.modalCtrl.dismiss(null, 'cancel');
   }
 
-
-
   onMealTypeChange(event: any) {
     const selectedValue = event.detail.value;
     console.log('Selected value:', selectedValue);
     this.selectedMealTypeId = selectedValue;
-    // You can perform any other actions based on the selected value here
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Meal Type must be selected in order to select food!',
+      duration: 3000,
+      position: 'bottom',
+      color: 'danger',
+    });
+
+    await toast.present();
   }
 }

@@ -6,6 +6,8 @@ import { Store } from '@ngxs/store';
 import { WorkoutService } from 'src/app/service/workout.service';
 import { SetCurrentWorkout, SetWorkoutStartTime } from 'state/workout.actions';
 import { SearchModalComponent } from '../search-modal/search-modal.component';
+import { ESearchModalTitle } from 'src/app/enums/search-modal-title.enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-track-workout',
@@ -52,7 +54,12 @@ export class TrackWorkoutPage implements OnInit {
     }[];
   } = {};
 
-  constructor(private workoutService: WorkoutService, public modalController: ModalController, private store: Store) {}
+  constructor(
+    private workoutService: WorkoutService,
+    public modalController: ModalController,
+    private store: Store,
+    private router: Router,
+  ) {}
   exerciseTypeId: number = 1;
 
   ngOnInit() {
@@ -106,7 +113,11 @@ export class TrackWorkoutPage implements OnInit {
   }
 
   finish() {
-    this.workoutService.finishWorkout(this.workoutLists).subscribe();
+    this.workoutService.finishWorkout(this.workoutLists).subscribe(response => {
+      if (response) {
+        this.router.navigate(['/tabs/workout/success']);
+      }
+    });
   }
 
   async presentModal() {
@@ -114,7 +125,7 @@ export class TrackWorkoutPage implements OnInit {
       component: SearchModalComponent,
       componentProps: {
         service: this.workoutService,
-        title: 'Select Exercise',
+        title: ESearchModalTitle.WORKOUT,
       },
     });
 

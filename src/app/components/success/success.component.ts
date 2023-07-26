@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { DailyCaloriesIntakeComponent } from 'src/app/components/daily-calories-intake/daily-calories-intake.component';
 
@@ -13,9 +14,11 @@ import { DailyCaloriesIntakeComponent } from 'src/app/components/daily-calories-
 })
 export class SuccessComponent implements OnInit {
   @Input() achievement: any;
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit() {}
 
-  close() {}
+  close() {
+    this.router.navigate(['tabs', 'workout']);
+  }
 }

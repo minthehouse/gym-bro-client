@@ -59,7 +59,7 @@ export class TrackDietPage implements OnInit {
     return !!this.foodList[mealTypeId] && this.foodList[mealTypeId].length > 0;
   }
 
-  async presentSearchModal(){
+  async presentSearchModal() {
     const modal = await this.modalController.create({
       component: SearchModalComponent,
       componentProps: {
