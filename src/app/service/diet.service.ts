@@ -20,6 +20,11 @@ export class DietService {
     return this.http.post(`${environment.apiUrl}/diet`, payload);
   }
 
+  getDiets() {
+    const { user } = this.store.snapshot();
+    return this.http.get<any>(`${this.apiUrl}/users/${user.id}/diets`);
+  }
+
   private buildPayload(foodData: { [key: number]: any[] }): any {
     const { user } = this.store.snapshot();
 

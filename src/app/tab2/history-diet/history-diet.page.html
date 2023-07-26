@@ -1,0 +1,52 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>history-track hey</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-icon name="arrow-back" class="arrow-icon" (click)="navigateToPreviousWorkout()"></ion-icon>
+  <mat-form-field floatLabel="always">
+    <mat-label>Select Date to see Diet Details</mat-label>
+    <div class="date-picker-wrapper">
+      <input
+        matInput
+        [matDatepicker]="latestVisbilityDatePicker"
+        [formControl]="selectedDateControl"
+        (dateChange)="onDateChange($event)"
+        [matDatepickerFilter]="dateFilter"
+      />
+    </div>
+    <mat-datepicker-toggle matSuffix [for]="latestVisbilityDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #latestVisbilityDatePicker></mat-datepicker>
+  </mat-form-field>
+  <ion-icon name="arrow-forward" class="arrow-icon" (click)="navigateToNextWorkout()"></ion-icon>
+
+  <ion-list class="flex flex-col" *ngIf="selectedDiet">
+    <ion-row class="ion-text-center">
+      <ion-col size="3">
+        <ion-label>Meal Type Name</ion-label>
+      </ion-col>
+      <ion-col size="3">
+        <ion-label>Food</ion-label>
+      </ion-col>
+      <ion-col size="3">
+        <ion-label>Calories</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ng-container *ngFor="let food of selectedDiet.foods">
+      <ion-row class="ion-text-center mb-2">
+        <ion-col size="3">
+          <ion-label>{{ food.meal_type_name }}</ion-label>
+        </ion-col>
+        <ion-col size="3">
+          <ion-label>{{ food.name }}</ion-label>
+        </ion-col>
+        <ion-col size="3">
+          <ion-label>{{ food.calories }}</ion-label>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </ion-list>
+</ion-content>
