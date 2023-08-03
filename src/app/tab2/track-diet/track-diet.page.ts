@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { IonicModule, ModalController, ToastController } from '@ionic/angular';
 import { DailyCaloriesIntakeComponent } from 'src/app/components/daily-calories-intake/daily-calories-intake.component';
 import { ESearchModalTitle } from 'src/app/enums/search-modal-title.enum';
@@ -13,22 +15,29 @@ import { SearchModalComponent } from 'src/app/tab1/search-modal/search-modal.com
   templateUrl: './track-diet.page.html',
   styleUrls: ['./track-diet.page.scss'],
   standalone: true,
-  imports: [IonicModule, FormsModule, CommonModule, DailyCaloriesIntakeComponent],
+  imports: [
+    IonicModule,
+    FormsModule,
+    CommonModule,
+    DailyCaloriesIntakeComponent,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+  ],
 })
 export class TrackDietPage implements OnInit {
   constructor(
-    private router: Router,
     private modalController: ModalController,
     private dietService: DietService,
     private toastController: ToastController,
   ) {}
-  searchOptions: any = [];
-  isToastOpen = false;
-
+  // selectedDateControl: FormControl = new FormControl();
+  private existingDietId: number;
   public foodList: {
     [key: number]: {
       name: string;
-      calories: string;
+      calories: string | null;
       meal_type_id: number;
       protein;
       carbohydrates;
@@ -41,7 +50,27 @@ export class TrackDietPage implements OnInit {
     4: [],
   };
 
-  ngOnInit() {}
+  ngOnInit() {
+    const today = new Date().toISOString();
+
+    this.dietService.getDietByDate(today).subscribe((diet: any) => {
+      if (diet) {
+        this.foodList = {
+          1: [],
+          2: [],
+          3: [],
+          4: [],
+        };
+        this.existingDietId = diet.id;
+        diet.foods.forEach(food => {
+          this.foodList[food.meal_type_id].push(food);
+        });
+        console.log('foodList at the end', this.foodList);
+      } else {
+        this.existingDietId = null;
+      }
+    });
+  }
 
   public getMealType(foodGroupKey: string): string {
     switch (foodGroupKey) {
@@ -56,10 +85,6 @@ export class TrackDietPage implements OnInit {
       default:
         return '';
     }
-  }
-
-  public hasFoodItems(mealTypeId: number): boolean {
-    return !!this.foodList[mealTypeId] && this.foodList[mealTypeId].length > 0;
   }
 
   async presentSearchModal() {
@@ -91,19 +116,26 @@ export class TrackDietPage implements OnInit {
       ...this.foodList,
       [mealTypeId]: [...this.foodList[mealTypeId], selectedFood],
     };
+
+    this.save(this.foodList);
   }
 
-  save() {
-    this.dietService.save(this.foodList).subscribe(response => {
+  save(foodData) {
+    const saveObservable = this.existingDietId
+      ? this.dietService.update(foodData, this.existingDietId)
+      : this.dietService.save(foodData);
+
+    saveObservable.subscribe((response: any) => {
       if (response) {
-        this.router.navigate(['/tabs/diet/success']);
+        this.presentToast();
+        this.existingDietId = response.id;
       }
     });
   }
 
   async presentToast() {
     const toast = await this.toastController.create({
-      message: 'Your diet for the day is successfully saved!',
+      message: 'Your food log is successfully added!',
       duration: 3000,
       position: 'bottom',
     });
