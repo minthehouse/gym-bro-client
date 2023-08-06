@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule, ModalController, ToastController } from '@ionic/angular';
 import { ESearchModalTitle } from 'src/app/enums/search-modal-title.enum';
 import { DietService } from 'src/app/service/diet.service';
@@ -11,7 +11,7 @@ import { WorkoutService } from 'src/app/service/workout.service';
   templateUrl: './search-modal.component.html',
   styleUrls: ['./search-modal.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule],
 })
 export class SearchModalComponent implements OnInit {
   @Input() service: WorkoutService | DietService;
@@ -22,11 +22,12 @@ export class SearchModalComponent implements OnInit {
 
   public filteredSearchOptions: any[];
   public selectedMealTypeId: number;
+  public servingSizeValue: number = 100;
 
   ngOnInit() {}
 
   performSearch() {
-    if (this.service) {
+    if (this.service && this.searchQuery) {
       this.service.search(this.searchQuery).subscribe(response => {
         this.filteredSearchOptions = response;
       });
@@ -37,11 +38,23 @@ export class SearchModalComponent implements OnInit {
     if (this.title === ESearchModalTitle.FOOD) {
       if (this.selectedMealTypeId) {
         option.meal_type_id = this.selectedMealTypeId;
-      } else {
+      }
+      if (this.servingSizeValue) {
+        option.serving_weight = this.servingSizeValue;
+        this.calculateNutritionWithServingSize(option);
+      }
+      if (!this.selectedMealTypeId) {
         return this.presentToast();
       }
     }
     this.modalCtrl.dismiss(option, 'select');
+  }
+
+  calculateNutritionWithServingSize(selectedFood) {
+    selectedFood.protein = (selectedFood.protein * this.servingSizeValue) / 100;
+    selectedFood.carbohydrates = (selectedFood.carbohydrates * this.servingSizeValue) / 100;
+    selectedFood.fat = (selectedFood.fat * this.servingSizeValue) / 100;
+    selectedFood.calories = (selectedFood.calories * this.servingSizeValue) / 100;
   }
 
   close() {

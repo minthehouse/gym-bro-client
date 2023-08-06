@@ -42,6 +42,7 @@ export class TrackDietPage implements OnInit {
       protein;
       carbohydrates;
       fat;
+      serving_weight: any;
     }[];
   } = {
     1: [],

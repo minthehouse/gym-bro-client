@@ -20,7 +20,13 @@
       <ion-select-option value="4">Snack</ion-select-option>
     </ion-select>
   </ion-item>
-  <ion-searchbar placeholder="Search" [(ngModel)]="searchQuery" (input)="performSearch()"></ion-searchbar>
+  <ion-item *ngIf="title.includes('Food')">
+    <ion-label>Serving Size (g)</ion-label>
+    <ion-input [(ngModel)]="servingSizeValue" type="number" placeholder="100"></ion-input>
+  </ion-item>
+  <ion-searchbar class="flex flex-row-reverse" placeholder="Search" [(ngModel)]="searchQuery">
+    <ion-button (click)="performSearch()">Search</ion-button>
+  </ion-searchbar>
   <ion-list>
     <ion-item *ngFor="let option of filteredSearchOptions" (click)="select(option)">
       <!-- <ion-avatar slot="start">
@@ -29,10 +35,16 @@
       <ion-label>
         <h2>{{ option.name }}</h2>
         <p *ngIf="title.includes('Exercise')">{{ option.muscle_group }}</p>
-        <p *ngIf="title.includes('Food')">calories: {{ option.kcal }} kcal</p>
-        <p *ngIf="title.includes('Food')">protein: {{ option.protein }} g</p>
-        <p *ngIf="title.includes('Food')">fat: {{ option.fat }} g</p>
-        <p *ngIf="title.includes('Food')">carb: {{ option.carbohydrate }} g</p>
+        <p *ngIf="title.includes('Food')">
+          calories: {{ option.calories * (servingSizeValue / 100) | number : '1.0-0' }} kcal
+        </p>
+        <p *ngIf="title.includes('Food')">
+          protein: {{ option.protein * (servingSizeValue / 100) | number : '1.0-0' }} g
+        </p>
+        <p *ngIf="title.includes('Food')">fat: {{ option.fat * (servingSizeValue / 100) | number : '1.0-0' }} g</p>
+        <p *ngIf="title.includes('Food')">
+          carb: {{ option.carbohydrates * (servingSizeValue / 100) | number : '1.0-0' }} g
+        </p>
       </ion-label>
     </ion-item>
   </ion-list>
