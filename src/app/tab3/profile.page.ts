@@ -3,13 +3,13 @@ import { IonicModule } from '@ionic/angular';
 import { AuthService } from '../service/auth/auth.service';
 
 @Component({
-  selector: 'app-tab3',
-  templateUrl: 'tab3.page.html',
-  styleUrls: ['tab3.page.scss'],
+  selector: 'app-profile',
+  templateUrl: 'profile.page.html',
+  styleUrls: ['profile.page.scss'],
   standalone: true,
   imports: [IonicModule],
 })
-export class Tab3Page {
+export class ProfilePage {
   constructor(private authService: AuthService) {}
 
   logout() {

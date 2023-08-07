@@ -9,18 +9,15 @@ export const routes: Routes = [
     children: [
       {
         path: 'workout',
-        loadChildren: () =>
-          import('../tab1/workout.routing').then((m) => m.routes),
+        loadChildren: () => import('../tab1/workout.routing').then(m => m.routes),
       },
       {
         path: 'diet',
-        loadChildren: () =>
-          import('../tab2/diet.routing').then((m) => m.routes),
+        loadChildren: () => import('../tab2/diet.routing').then(m => m.routes),
       },
       {
-        path: 'tab3',
-        loadChildren: () =>
-          import('../tab3/tab3.routing').then((m) => m.routes),
+        path: 'profile',
+        loadChildren: () => import('../tab3/profile.routing').then(m => m.routes),
       },
       {
         path: '',
