@@ -1,0 +1,90 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title class="ion-text-center">Let's set goals!</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content scrollY="false">
+  <form [formGroup]="form" #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)" class="p-4" novalidate>
+    <ion-row class="mb-4">
+      <ion-col class="flex flex-col gap-2">
+        <ion-label class="font-medium">What is your goal to workout?</ion-label>
+        <ion-list>
+          <ion-item>
+            <ion-select formControlName="goal" aria-label="Fruit" interface="popover" placeholder="Select One">
+              <ion-select-option value="1">To maintain</ion-select-option>
+              <ion-select-option value="2">To lose Weight</ion-select-option>
+              <ion-select-option value="3">To bulk</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="flex flex-col gap-2">
+        <ion-label class="font-medium">What is your gender?</ion-label>
+        <ion-list>
+          <ion-item>
+            <ion-select formControlName="gender" aria-label="Fruit" interface="popover" placeholder="Select fruit">
+              <ion-select-option value="1">Male</ion-select-option>
+              <ion-select-option value="2">Female</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="flex flex-col gap-2">
+        <ion-label class="font-medium">What is your age?</ion-label>
+        <ion-input lines="none" class="rounded-lg bg-slate-200" name="age" formControlName="age"></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="flex flex-col gap-2">
+        <ion-label class="font-medium">What is your height?</ion-label>
+        <ion-item>
+          <ion-range
+            min="4"
+            max="7"
+            step="1"
+            snaps="true"
+            pin="true"
+            [(ngModel)]="selectedFeet"
+            [ngModelOptions]="{ standalone: true }"
+            (ngModelChange)="onSelectedFeetChange($event)"
+          >
+            <ion-label slot="start">4 feet</ion-label>
+            <ion-label slot="end">7 feet</ion-label>
+          </ion-range>
+        </ion-item>
+
+        <ion-item>
+          <ion-range
+            min="0"
+            max="11"
+            step="1"
+            snaps="true"
+            pin="true"
+            [(ngModel)]="selectedInches"
+            [ngModelOptions]="{ standalone: true }"
+            (ngModelChange)="onSelectedInchesChange($event)"
+          >
+            <ion-label slot="start">0 inches</ion-label>
+            <ion-label slot="end">11 inches</ion-label>
+          </ion-range>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="flex flex-col gap-2">
+        <ion-label class="font-medium">What is your body weight?</ion-label>
+        <ion-input class="rounded-lg bg-slate-200" formControlName="weight"></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row class="mt-8">
+      <ion-col>
+        <ion-button type="submit" class="w-full"> Submit </ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

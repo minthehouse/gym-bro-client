@@ -23,4 +23,9 @@ export const routes: Route[] = [
     loadChildren: () => import('./auth/register/register.routing').then(m => m.routes),
     canActivate: [RedirectGuard],
   },
+  {
+    path: 'goal',
+    loadChildren: () => import('./auth/goal/goal.routing').then(m => m.routes),
+    canActivate: [RedirectGuard],
+  },
 ];
