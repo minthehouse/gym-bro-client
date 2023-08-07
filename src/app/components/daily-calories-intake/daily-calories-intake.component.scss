@@ -1,8 +1,6 @@
 .equation-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
 .equation-cell {
@@ -20,7 +18,7 @@
 }
 
 .equation-label {
-  font-size: 9px;
+  font-size: 12px;
   margin-top: 3px;
 }
 

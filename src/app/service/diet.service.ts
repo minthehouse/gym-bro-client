@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Store } from '@ngxs/store';
+import { buildAuthHeaders } from '../utils/auth-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,45 @@ export class DietService {
   constructor(private http: HttpClient, private store: Store) {}
 
   search(search_param: string) {
-    return this.http.get<any>(`${this.apiUrl}/foods/search`, { params: { search_param } });
+    return this.http.get<any>(`${this.apiUrl}/foods/search`, { params: { search_param, serving_weight: '200' } });
+  }
+
+  // search(searchParam) {
+  //   const params = new HttpParams()
+  //     .set('query', searchParam)
+  //     .set('api_key', environment.foodApiKey)
+  //     .set('dataType', 'Survey (FNDDS)') // Replace with your actual API key
+  //     .set('pageSize', 10);
+  //   return this.http.get<any>(`https://api.nal.usda.gov/fdc/v1/foods/search`, { params });
+  // }
+
+  searchByDate(date: string) {
+    return this.http.get<any>(`${this.apiUrl}/diets/search`, { params: { date } });
+  }
+
+  getTheLatestDiet() {
+    const { user } = this.store.snapshot();
+
+    const headers = new HttpHeaders(buildAuthHeaders());
+
+    return this.http.get<any>(`${this.apiUrl}/users/${user.id}/diets/find_the_latest_diet`, {
+      headers,
+    });
+  }
+
+  getDietByDate(date: string) {
+    const { user } = this.store.snapshot();
+
+    const headers = new HttpHeaders(buildAuthHeaders());
+
+    return this.http.get<any>(`${this.apiUrl}/users/${user.id}/diets/find_by_date`, {
+      params: { date: date },
+    });
+  }
+
+  update(foodData, dietId) {
+    const payload = this.buildPayload(foodData);
+    return this.http.put(`${environment.apiUrl}/diets/${dietId}`, payload);
   }
 
   save(foodData) {

@@ -13,8 +13,17 @@
       <ion-card-subtitle>Quick Start</ion-card-subtitle>
       <ion-card-title>Track Your Diet</ion-card-title>
     </ion-card-header>
-    <ion-card-content>
-      Click to start tracking your calories intake and see your progress.
-    </ion-card-content>
+    <ion-card-content> Click to start tracking your calories intake and see your progress. </ion-card-content>
+  </ion-card>
+
+  <ion-card id="workout-card" class="home-content" (click)="sendEvent('history')">
+    <div class="flex justify-center">
+      <img style="height: 200px" src="assets/food.png" />
+    </div>
+    <ion-card-header>
+      <ion-card-subtitle>Diet History</ion-card-subtitle>
+      <ion-card-title>See Your Diet details</ion-card-title>
+    </ion-card-header>
+    <ion-card-content> Click to see your diet history with details. </ion-card-content>
   </ion-card>
 </ion-content>
