@@ -1,6 +1,6 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title class="ion-text-center">Let's set goals!</ion-title>
+    <ion-title class="ion-text-center">Let's {{ isEditMode ? 'Update' : 'Set' }} Goals!</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -73,7 +73,7 @@
     </ion-row>
     <ion-row class="mt-8">
       <ion-col>
-        <ion-button type="submit" class="w-full"> Submit </ion-button>
+        <ion-button type="submit" class="w-full"> {{ isEditMode ? 'Update' : 'Submit' }} </ion-button>
       </ion-col>
     </ion-row>
   </form>

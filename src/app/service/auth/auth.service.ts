@@ -49,7 +49,7 @@ export class AuthService {
           this.store.dispatch(new SetUser(user));
           const { email, password } = body;
           this.router.navigateByUrl('goal', {
-            state: { email, password },
+            state: { cred: { email, password } },
           });
           return response;
         }),

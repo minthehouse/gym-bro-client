@@ -4,12 +4,16 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-button (click)="logout()">Logout</ion-button>
+<ion-content color="light">
+  <ion-list [inset]="true">
+    <ion-item>
+      <div (click)="navigateTo('update-profile')">Update Profile & Goal</div>
+    </ion-item>
+    <ion-item>
+      <div>About Us</div>
+    </ion-item>
+    <ion-item>
+      <div (click)="logout()">Logout</div>
+    </ion-item>
+  </ion-list>
 </ion-content>
