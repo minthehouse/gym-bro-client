@@ -35,22 +35,6 @@ export class AuthService {
     );
   }
 
-  completeProfile(values: any, credValues: any): Observable<any> {
-    const { email, password } = credValues;
-    const payload = { user_details: values, email, password };
-
-    return this.http
-      .post(`${environment.apiUrl}/auth/sign_in`, payload, {
-        observe: 'response',
-        context: new HttpContext().set(IS_AUTH_ENABLED, false),
-      })
-      .pipe(
-        map(response => {
-          return response;
-        }),
-      );
-  }
-
   register(body: any): Observable<any> {
     return this.http
       .post(`${environment.apiUrl}/auth`, body, {
@@ -61,21 +45,18 @@ export class AuthService {
         map((response: any) => {
           console.log('response', response);
 
-          const user = response.body.data;
-          // this.store.dispatch(new SetUser({ id: user.id, mobile_phone: user.mobile_phone }));
-          // this.analyticsService.alias(user.id.toString());
-          // this.analyticsService.trackEvent('Created Account');
+          const user = response.data;
+          this.store.dispatch(new SetUser(user));
           const { email, password } = body;
-          // this.router.navigateByUrl('verify', {
-          //   state: { email, password },
-          // });
+          this.router.navigateByUrl('goal', {
+            state: { email, password },
+          });
           return response;
         }),
       );
   }
 
   forgotPassword(body: any): Observable<any> {
-    // this.analyticsService.trackEvent('Forgot Password');
     return this.http.post(
       `${environment.apiUrl}/auth/password`,
       { ...body, redirect_url: '/reset-password' },
@@ -166,7 +147,7 @@ export class AuthService {
   logout(): Observable<any> {
     const headers = new HttpHeaders(buildAuthHeaders());
 
-    return this.http.delete(`${environment.apiUrl}/auth/sign_out`, { headers}).pipe(
+    return this.http.delete(`${environment.apiUrl}/auth/sign_out`, { headers }).pipe(
       map(response => {
         return response;
       }),

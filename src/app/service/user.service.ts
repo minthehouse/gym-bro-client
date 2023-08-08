@@ -15,5 +15,7 @@ export class UserService {
     return this.http.get<any>(`${this.apiUrl}/users`);
   }
 
-  // Other methods...
+  update(id: number, userInfo: any) {
+    return this.http.put<any>(`${this.apiUrl}/users/${id}`, userInfo);
+  }
 }

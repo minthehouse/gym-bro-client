@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content scrollY="false">
-  <form [formGroup]="form" #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)" class="p-4" novalidate>
+  <form [formGroup]="form" #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)" class="p-4 h-full" novalidate>
     <ion-row class="mb-4">
       <ion-col class="flex flex-col gap-2">
         <ion-label class="font-medium">What is your goal to workout?</ion-label>
@@ -43,16 +43,7 @@
       <ion-col class="flex flex-col gap-2">
         <ion-label class="font-medium">What is your height?</ion-label>
         <ion-item>
-          <ion-range
-            min="4"
-            max="7"
-            step="1"
-            snaps="true"
-            pin="true"
-            [(ngModel)]="selectedFeet"
-            [ngModelOptions]="{ standalone: true }"
-            (ngModelChange)="onSelectedFeetChange($event)"
-          >
+          <ion-range min="4" max="7" step="1" snaps="true" pin="true" formControlName="height_in_feet">
             <ion-label slot="start">4 feet</ion-label>
             <ion-label slot="end">7 feet</ion-label>
           </ion-range>
@@ -60,14 +51,13 @@
 
         <ion-item>
           <ion-range
-            min="0"
-            max="11"
-            step="1"
-            snaps="true"
-            pin="true"
-            [(ngModel)]="selectedInches"
-            [ngModelOptions]="{ standalone: true }"
-            (ngModelChange)="onSelectedInchesChange($event)"
+            class="h-full"
+            [min]="0"
+            [max]="11"
+            [step]="1"
+            [snaps]="true"
+            [pin]="true"
+            formControlName="height_in_inches"
           >
             <ion-label slot="start">0 inches</ion-label>
             <ion-label slot="end">11 inches</ion-label>
@@ -77,7 +67,7 @@
     </ion-row>
     <ion-row>
       <ion-col class="flex flex-col gap-2">
-        <ion-label class="font-medium">What is your body weight?</ion-label>
+        <ion-label class="font-medium">What is your body weight in lbs?</ion-label>
         <ion-input class="rounded-lg bg-slate-200" formControlName="weight"></ion-input>
       </ion-col>
     </ion-row>
