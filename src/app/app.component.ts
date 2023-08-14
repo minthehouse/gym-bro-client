@@ -26,7 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit() {
     await this.storageService.init();
   }
 

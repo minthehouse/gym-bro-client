@@ -34,18 +34,16 @@ export class DailyCaloriesIntakeComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.drawChart();
-    console.log('foodItems', this.foodItems);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.foodItems.currentValue) {
+    if (changes?.foodItems?.currentValue) {
       console.log('what is in chages', changes.foodItems.currentValue);
       const data = changes.foodItems.currentValue;
       this.foodItems = data;
       this.intakeForm.controls.calories.setValue(
         data.reduce((totalCalories, item) => totalCalories + parseFloat(item.calories), 0),
       );
-      this.setRemainingCalories();
 
       this.intakeForm.get('nutritions').setValue({
         protein: data.reduce((totalCalories, item) => totalCalories + parseFloat(item.protein), 0),
@@ -53,7 +51,8 @@ export class DailyCaloriesIntakeComponent implements OnInit, OnChanges {
         fat: data.reduce((totalCalories, item) => totalCalories + parseFloat(item.fat), 0),
       });
 
-      console.log('what is in chages', this.intakeForm.value);
+      this.setRemainingCalories();
+      this.drawChart(this.intakeForm.value.nutritions);
     }
   }
 
@@ -66,35 +65,19 @@ export class DailyCaloriesIntakeComponent implements OnInit, OnChanges {
     this.remaining = this.goal - this.intakeForm.controls.calories.value;
   }
 
-  public calculateTotalValue(property: string): number {
-    let totalValue = 0;
-
-    for (const mealTypeId in this.foodItems) {
-      const items = this.foodItems[mealTypeId];
-
-      for (const item of items) {
-        const value = parseInt(item[property], 10);
-        if (!isNaN(value)) {
-          totalValue += value;
-        }
-      }
-    }
-
-    return totalValue;
-  }
-
-  drawChart() {
+  drawChart(intakeAmount?) {
+    console.log('intakeAmount', intakeAmount);
     const data = [
-      { nutrient: 'Protein', goal: 100, intake: 80 },
-      { nutrient: 'Fat', goal: 70, intake: 60 },
-      { nutrient: 'Carb', goal: 150, intake: 140 },
+      { nutrient: 'Protein', goal: 100, intake: intakeAmount.protein },
+      { nutrient: 'Fat', goal: 70, intake: intakeAmount.fat },
+      { nutrient: 'Carb', goal: 150, intake: intakeAmount.carbohydrates },
       // Add more data for other nutrients as needed
     ];
 
     // Define chart dimensions and margins
-    const margin = { top: 30, right: 10, bottom: 50, left: 40 };
+    const margin = { top: 40, right: 40, bottom: 40, left: 40 };
     const width = window.innerWidth - margin.left - margin.right;
-    const height = 300 - margin.top - margin.bottom;
+    const height = 400 - margin.top - margin.bottom;
 
     // Create SVG element
     const svg = d3
@@ -159,9 +142,10 @@ export class DailyCaloriesIntakeComponent implements OnInit, OnChanges {
       .append('text')
       .attr('text-anchor', 'end')
       .attr('x', 0)
-      .attr('y', -margin.left + 20)
+      .attr('y', -margin.left + 10)
       .attr('transform', 'rotate(-90)')
-      .text('Amount');
+      .text('Amount(g)')
+      .attr('font-size', 11);
 
     // Make the chart responsive to window size changes
     window.addEventListener('resize', () => {
@@ -172,6 +156,7 @@ export class DailyCaloriesIntakeComponent implements OnInit, OnChanges {
       svg.select('.x-axis').call(d3.axisBottom(xScale));
     });
   }
+
   public getMealType(foodGroupKey: string): string {
     switch (foodGroupKey) {
       case '1':
