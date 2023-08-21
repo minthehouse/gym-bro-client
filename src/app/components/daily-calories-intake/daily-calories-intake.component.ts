@@ -4,13 +4,14 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { IonicModule } from '@ionic/angular';
 import * as d3 from 'd3';
+import { MealCardComponent } from '../meal-card/meal-card.component';
 
 @Component({
   selector: 'app-daily-calories-intake',
   templateUrl: './daily-calories-intake.component.html',
   styleUrls: ['./daily-calories-intake.component.scss'],
   standalone: true,
-  imports: [IonicModule, FormsModule, CommonModule, ReactiveFormsModule, MatFormFieldModule],
+  imports: [IonicModule, FormsModule, CommonModule, ReactiveFormsModule, MatFormFieldModule, MealCardComponent],
 })
 export class DailyCaloriesIntakeComponent implements OnInit, OnChanges {
   @Input() foodItems: any;
@@ -20,6 +21,22 @@ export class DailyCaloriesIntakeComponent implements OnInit, OnChanges {
   public remaining: number;
   public currentSegment = 'Nutritions';
   public intakeForm: FormGroup;
+  public foodList: {
+    [key: number]: {
+      name: string;
+      calories: string | null;
+      meal_type_id: number;
+      protein;
+      carbohydrates;
+      fat;
+      serving_weight: any;
+    }[];
+  } = {
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+  };
 
   constructor() {
     this.intakeForm = new FormGroup({
@@ -32,15 +49,14 @@ export class DailyCaloriesIntakeComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnInit() {
-    this.drawChart();
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.foodItems?.currentValue) {
       console.log('what is in chages', changes.foodItems.currentValue);
       const data = changes.foodItems.currentValue;
       this.foodItems = data;
+      this.setFoodList(data);
       this.intakeForm.controls.calories.setValue(
         data.reduce((totalCalories, item) => totalCalories + parseFloat(item.calories), 0),
       );
@@ -61,6 +77,30 @@ export class DailyCaloriesIntakeComponent implements OnInit, OnChanges {
     this.currentSegment = ev.detail.value;
   }
 
+  setFoodList(foodItems) {
+    this.foodList = foodItems.reduce((result, foodItem) => {
+      const { meal_type_id } = foodItem;
+
+      // Create an empty array if the key doesn't exist in the result
+      if (!result[meal_type_id]) {
+        result[meal_type_id] = [];
+      }
+
+      // Push the food item into the corresponding array
+      result[meal_type_id].push({
+        name: foodItem.name,
+        calories: foodItem.calories,
+        meal_type_id: foodItem.meal_type_id,
+        protein: foodItem.protein,
+        carbohydrates: foodItem.carbohydrates,
+        fat: foodItem.fat,
+        serving_weight: foodItem.serving_weight,
+      });
+
+      return result;
+    }, {});
+  }
+
   setRemainingCalories() {
     this.remaining = this.goal - this.intakeForm.controls.calories.value;
   }
@@ -68,7 +108,7 @@ export class DailyCaloriesIntakeComponent implements OnInit, OnChanges {
   drawChart(intakeAmount?) {
     console.log('intakeAmount', intakeAmount);
     const data = [
-      { nutrient: 'Protein', goal: 100, intake: intakeAmount.protein },
+      { nutrient: 'Protein', goal: 200, intake: intakeAmount.protein },
       { nutrient: 'Fat', goal: 70, intake: intakeAmount.fat },
       { nutrient: 'Carb', goal: 150, intake: intakeAmount.carbohydrates },
       // Add more data for other nutrients as needed

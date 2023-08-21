@@ -5,7 +5,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { IonicModule, ModalController, ToastController } from '@ionic/angular';
-import { DailyCaloriesIntakeComponent } from 'src/app/components/daily-calories-intake/daily-calories-intake.component';
+import { MealCardComponent } from 'src/app/components/meal-card/meal-card.component';
 import { ESearchModalTitle } from 'src/app/enums/search-modal-title.enum';
 import { DietService } from 'src/app/service/diet.service';
 import { SearchModalComponent } from 'src/app/tab1/search-modal/search-modal.component';
@@ -19,11 +19,11 @@ import { SearchModalComponent } from 'src/app/tab1/search-modal/search-modal.com
     IonicModule,
     FormsModule,
     CommonModule,
-    DailyCaloriesIntakeComponent,
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    MealCardComponent,
   ],
 })
 export class TrackDietPage implements OnInit {
@@ -56,36 +56,16 @@ export class TrackDietPage implements OnInit {
 
     this.dietService.getDietByDate(today).subscribe((diet: any) => {
       if (diet) {
-        this.foodList = {
-          1: [],
-          2: [],
-          3: [],
-          4: [],
-        };
         this.existingDietId = diet.id;
         diet.foods.forEach(food => {
           this.foodList[food.meal_type_id].push(food);
         });
-        console.log('foodList at the end', this.foodList);
+
+        console.log('food list from top', this.foodList);
       } else {
         this.existingDietId = null;
       }
     });
-  }
-
-  public getMealType(foodGroupKey: string): string {
-    switch (foodGroupKey) {
-      case '1':
-        return 'Breakfast';
-      case '2':
-        return 'Lunch';
-      case '3':
-        return 'Dinner';
-      case '4':
-        return 'Snack';
-      default:
-        return '';
-    }
   }
 
   async presentSearchModal() {

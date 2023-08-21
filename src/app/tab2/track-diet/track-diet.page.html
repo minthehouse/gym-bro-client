@@ -4,55 +4,10 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <!-- <ion-icon name="arrow-back" class="arrow-icon" (click)="navigateToPrevious()"></ion-icon>
-  <mat-form-field floatLabel="always">
-    <mat-label>Select Date to see Diet Details</mat-label>
-    <div class="date-picker-wrapper">
-      <input
-        matInput
-        [matDatepicker]="latestVisbilityDatePicker"
-        [formControl]="selectedDateControl"
-        (dateChange)="onDateChange($event)"
-      />
-    </div>
-    <mat-datepicker-toggle matSuffix [for]="latestVisbilityDatePicker"></mat-datepicker-toggle>
-    <mat-datepicker #latestVisbilityDatePicker></mat-datepicker>
-  </mat-form-field>
-  <ion-icon name="arrow-forward" class="arrow-icon" (click)="navigateToNext()"></ion-icon> -->
-  <!-- <app-daily-calories-intake [foodItems]="foodList"></app-daily-calories-intake> -->
+  <app-meal-card [foodList]="foodList"></app-meal-card>
 
-  <ion-card *ngFor="let mealTypeId of [1, 2, 3, 4]">
-    <ion-card-header class="p-2 px-4">
-      <ion-card-title class="text-xl">
-        {{ mealTypeId === 1 ? 'Breakfast' : mealTypeId === 2 ? 'Lunch' : mealTypeId === 3 ? 'Dinner' : 'Snack'}}
-      </ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list>
-        <ion-item class="mb-2" *ngFor="let foodItem of foodList[mealTypeId]">
-          <!-- <ion-thumbnail slot="start">
-            <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
-          </ion-thumbnail> -->
-          <div class="flex flex-col items-start">
-            <div class="flex items-center gap-2.5">
-              <ion-label class="!text-sm font-semibold">{{ foodItem?.name }} </ion-label>
-              <span class="!text-[12px] !mb-0">{{foodItem?.serving_weight}} g</span>
-            </div>
-
-            <div>
-              <ion-text class="!text-[10px]">Calories: {{ foodItem?.calories | number : '1.0-0' }}kcal, </ion-text>
-              <ion-text class="!text-[10px]">Protein: {{foodItem?.protein | number : '1.0-0'}}g, </ion-text>
-              <ion-text class="!text-[10px]">Carb: {{foodItem?.carbohydrates | number : '1.0-0'}}g, </ion-text>
-              <ion-text class="!text-[10px]">Fat: {{foodItem?.fat | number : '1.0-0'}}g</ion-text>
-            </div>
-          </div>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
   <ion-button class="flex pt-3" (click)="presentSearchModal()">
     <ion-icon slot="start" name="add"></ion-icon>
     Add Food
   </ion-button>
-  <!-- <ion-button (click)="save()">Save Diet</ion-button> -->
 </ion-content>

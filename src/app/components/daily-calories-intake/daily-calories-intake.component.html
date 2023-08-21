@@ -39,3 +39,7 @@
   </ion-card>
 </div>
 <div id="chart-container" [hidden]="currentSegment !== 'Nutritions'"></div>
+
+<div *ngIf="currentSegment !== 'Nutritions'">
+  <app-meal-card [foodList]="foodList"></app-meal-card>
+</div>

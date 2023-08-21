@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DietService } from 'src/app/service/diet.service';
 import { DailyCaloriesIntakeComponent } from 'src/app/components/daily-calories-intake/daily-calories-intake.component';
+import { MealCardComponent } from 'src/app/components/meal-card/meal-card.component';
 
 @Component({
   selector: 'app-history-diet',
@@ -22,6 +23,7 @@ import { DailyCaloriesIntakeComponent } from 'src/app/components/daily-calories-
     MatInputModule,
     ReactiveFormsModule,
     DailyCaloriesIntakeComponent,
+    MealCardComponent,
   ],
 })
 export class HistoryDietPage implements OnInit {
@@ -29,6 +31,22 @@ export class HistoryDietPage implements OnInit {
   selectedDateControl: FormControl = new FormControl();
   availableDates: Date[] = [];
   selectedDiet: any;
+  public foodList: {
+    [key: number]: {
+      name: string;
+      calories: string | null;
+      meal_type_id: number;
+      protein;
+      carbohydrates;
+      fat;
+      serving_weight: any;
+    }[];
+  } = {
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+  };
 
   dateFilter = (date: Date): boolean => {
     return this.availableDates.some(allowedDate => this.isSameDate(date, allowedDate));
@@ -48,6 +66,7 @@ export class HistoryDietPage implements OnInit {
       const latestDiet = diets[diets.length - 1];
       this.selectedDiet = latestDiet;
       this.selectedDateControl.setValue(latestDiet.created_at);
+      this.setFoodList(latestDiet.foods);
     });
   }
 
@@ -55,6 +74,30 @@ export class HistoryDietPage implements OnInit {
     diets.map(diet => {
       this.availableDates.push(new Date(diet.created_at));
     });
+  }
+
+  setFoodList(foodItems) {
+    this.foodList = foodItems.reduce((result, foodItem) => {
+      const { meal_type_id } = foodItem;
+
+      // Create an empty array if the key doesn't exist in the result
+      if (!result[meal_type_id]) {
+        result[meal_type_id] = [];
+      }
+
+      // Push the food item into the corresponding array
+      result[meal_type_id].push({
+        name: foodItem.name,
+        calories: foodItem.calories,
+        meal_type_id: foodItem.meal_type_id,
+        protein: foodItem.protein,
+        carbohydrates: foodItem.carbohydrates,
+        fat: foodItem.fat,
+        serving_weight: foodItem.serving_weight,
+      });
+
+      return result;
+    }, {});
   }
 
   onDateChange(event: any): void {

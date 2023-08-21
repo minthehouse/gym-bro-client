@@ -9,6 +9,7 @@ import { SetUser } from 'state/user.actions';
 import { StorageService } from '../storage.service';
 import { IS_AUTH_ENABLED } from './auth.interceptor';
 import { buildAuthHeaders } from '../../utils/auth-utils';
+import { SetCurrentWorkout, SetWorkoutStartTime } from 'state/workout.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -43,9 +44,8 @@ export class AuthService {
       })
       .pipe(
         map((response: any) => {
-          console.log('response', response);
-
-          const user = response.data;
+          console.log('response in regi', response);
+          const user = response?.body?.data;
           this.store.dispatch(new SetUser(user));
           const { email, password } = body;
           this.router.navigateByUrl('goal', {
@@ -136,6 +136,8 @@ export class AuthService {
 
   private _reset(): void {
     this.store.dispatch(new SetUser(null));
+    this.store.dispatch(new SetCurrentWorkout(null));
+    this.store.dispatch(new SetWorkoutStartTime(null));
     localStorage.removeItem('@@STATE');
     this.storageService.deleteSession();
   }
@@ -165,7 +167,7 @@ export class AuthService {
 
       this.store.dispatch(new SetUser({ user: user.user, token: user.token }));
     }
-    return user !== null && !this.isTokenExpired(user.token.expiry);
+    return user !== null && !this.isTokenExpired(user?.token?.expiry);
   }
 
   public isTokenExpired(expiry: any): boolean {
