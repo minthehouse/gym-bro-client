@@ -1,15 +1,16 @@
 function buildAuthHeaders() {
-  const authData = JSON.parse(localStorage.getItem('@@STATE')).user;
+  const token = JSON.parse(localStorage.getItem('@@STATE')).token;
+  const user = JSON.parse(localStorage.getItem('@@STATE')).user;
 
-  console.log('authData', authData);
+  console.log('authData', token);
 
-  if (authData && authData.userToken.token && authData.userToken.client && authData.uid) {
+  if (user && token && token.client && user.uid) {
     console.log('hit');
 
     return {
-      'access-token': authData.userToken.token,
-      client: authData.userToken.client,
-      uid: authData.uid,
+      'access-token': token.token,
+      client: token.client,
+      uid: user.uid,
     };
   }
 

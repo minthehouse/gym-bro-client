@@ -8,10 +8,11 @@ import { routes } from './app/app.routing';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
-import { UserState } from 'state/user.state';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { WorkoutState } from 'state/workout.state';
+import { UserState } from 'state/user.state';
+import { TokenState } from 'state/token.state';
 
 if (environment.production) {
   enableProdMode();
@@ -24,7 +25,7 @@ bootstrapApplication(AppComponent, {
       IonicModule.forRoot({ swipeBackEnabled: false }),
       IonicStorageModule.forRoot(),
       HttpClientModule,
-      NgxsModule.forRoot([UserState, WorkoutState]),
+      NgxsModule.forRoot([UserState, TokenState, WorkoutState]),
       NgxsStoragePluginModule.forRoot(),
     ),
     provideRouter(routes),

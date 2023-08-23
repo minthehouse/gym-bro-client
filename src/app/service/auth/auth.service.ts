@@ -10,6 +10,7 @@ import { StorageService } from '../storage.service';
 import { IS_AUTH_ENABLED } from './auth.interceptor';
 import { buildAuthHeaders } from '../../utils/auth-utils';
 import { SetCurrentWorkout, SetWorkoutStartTime } from 'state/workout.actions';
+import { SetToken } from 'state/token.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -103,30 +104,11 @@ export class AuthService {
       );
   }
 
-  unlock(unlock_token: any): Observable<any> {
-    return this.http
-      .get(`${environment.apiUrl}/auth/unlock`, {
-        params: { unlock_token },
-        context: new HttpContext().set(IS_AUTH_ENABLED, false),
-      })
-      .pipe(
-        map(response => {
-          // this.store.dispatch(new SetUserLockStatus(false));
-          return response;
-        }),
-        catchError(err => {
-          console.log(err);
-          // this.dialogService.setError(err);
-          return err;
-        }),
-      );
-  }
-
   private _saveUser(response: any): any {
-    console.log('response in save user', response);
-    this.store.dispatch(new SetUser(response));
+    this.store.dispatch(new SetUser(response.user));
+    this.store.dispatch(new SetToken(response.token));
 
-    this.storageService.saveSession(response.user, response.token);
+    this.storageService.saveSession(response.token);
     return response.user;
   }
 
@@ -160,14 +142,12 @@ export class AuthService {
   }
 
   public async isLoggedIn(): Promise<boolean> {
-    const user = await this.storageService.getSession();
+    const session = await this.storageService.getSession();
     // TODO: rename params
-    if (user) {
-      console.log('user in isLoggedin', user);
-
-      this.store.dispatch(new SetUser({ user: user.user, token: user.token }));
+    if (session) {
+      this.store.dispatch(new SetToken(session.token));
     }
-    return user !== null && !this.isTokenExpired(user?.token?.expiry);
+    return session !== null && !this.isTokenExpired(session?.token?.expiry);
   }
 
   public isTokenExpired(expiry: any): boolean {

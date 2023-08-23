@@ -31,16 +31,11 @@ export class StorageService {
     return data ? JSON.parse(data) : null;
   }
 
-  public saveSession(user, token): void {
-    this.set(STORAGE_NAME, JSON.stringify({ user, token }));
+  public saveSession(token): void {
+    this.set(STORAGE_NAME, JSON.stringify({ token }));
   }
 
   public deleteSession(): void {
     this._storage.remove(STORAGE_NAME);
-  }
-
-  public async getUser(): Promise<any> {
-    const data = await this.get(STORAGE_NAME);
-    return data ? JSON.parse(data).user : null;
   }
 }

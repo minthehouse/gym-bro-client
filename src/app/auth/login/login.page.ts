@@ -66,20 +66,6 @@ export class LoginPage implements OnInit {
     }
   }
 
-  // checkErrorMessageWrapper(err): void {
-  //   this.message = parseError(err);
-  //   this.messageType = 'error';
-  //   this.confirmEmail = err?.error?.errors[0].includes('confirmation email') ? true : false;
-
-  //   if (err?.error?.errors[0].includes('locked')) {
-  //     this.store.dispatch(new SetUserLockStatus(true));
-  //   }
-
-  //   if (err.error?.context?.redirect_to) {
-  //     this.redirectTo(err);
-  //   }
-  // }
-
   onForgotPassword() {
     this.router.navigateByUrl('/forgot-password');
   }
@@ -87,11 +73,6 @@ export class LoginPage implements OnInit {
   onRegister() {
     this.router.navigateByUrl('/register');
   }
-
-  // navigateToResendConfirmation(): void {
-  //   this.router.navigateByUrl('/resend-confirmation');
-  //   this.message = '';
-  // }
 
   private confirm(confirmation_token: string): void {
     this.authService.confirm(confirmation_token).subscribe(() => {
@@ -114,23 +95,5 @@ export class LoginPage implements OnInit {
       ],
     });
     await alert.present();
-  }
-
-  private redirectTo(error): void {
-    const context = error.error.context;
-    // this.store.dispatch(new SetUser({ id: context.user_id, mobile_phone: context.mobile_phone }));
-
-    switch (context.redirect_to) {
-      case 'complete_profile':
-        this.router.navigateByUrl(`/complete-profile`, {
-          state: { email: this.form.controls.email.value, password: this.form.controls.password.value },
-        });
-        break;
-      case 'verify':
-        this.router.navigateByUrl(`/verify`, {
-          state: { email: this.form.controls.email.value, password: this.form.controls.password.value },
-        });
-        break;
-    }
   }
 }
