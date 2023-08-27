@@ -27,14 +27,11 @@ export class WorkoutService {
 
   finishWorkout(workoutData: any): any {
     const { user } = this.store.snapshot();
-    const { workout } = this.store.snapshot();
 
     const exercises_attributes = this.extractValuesFromHashMap(workoutData);
     const payload = {
       workout: {
         user_id: user.id,
-        start_at: workout.workoutStartTime,
-        end_at: new Date(),
         exercises_attributes,
       },
     };

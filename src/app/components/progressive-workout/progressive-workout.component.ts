@@ -7,6 +7,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-progressive-workout',
@@ -22,6 +23,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatInputModule,
     ReactiveFormsModule,
     MatNativeDateModule,
+    MatButtonModule,
   ],
 })
 export class ProgresssiveWorkoutComponent implements OnInit {
@@ -47,5 +49,9 @@ export class ProgresssiveWorkoutComponent implements OnInit {
       start: startDate,
       end: endDate,
     });
+  }
+
+  changeRange() {
+    console.log('hit apply');
   }
 }
