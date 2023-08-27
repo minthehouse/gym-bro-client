@@ -6,7 +6,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DietService } from 'src/app/service/diet.service';
-import { DailyCaloriesIntakeComponent } from 'src/app/components/daily-calories-intake/daily-calories-intake.component';
+import { DailyDietDetails } from 'src/app/components/daily-diet-details/daily-diet-details.component';
 import { MealCardComponent } from 'src/app/components/meal-card/meal-card.component';
 
 @Component({
@@ -22,7 +22,7 @@ import { MealCardComponent } from 'src/app/components/meal-card/meal-card.compon
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    DailyCaloriesIntakeComponent,
+    DailyDietDetails,
     MealCardComponent,
   ],
 })

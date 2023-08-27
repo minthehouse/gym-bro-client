@@ -10,7 +10,7 @@
 <div *ngIf="currentSegment === 'Nutritions'">
   <ion-card>
     <ion-card-header class="p-2 px-4">
-      <ion-card-title class="text-lg flex justify-center"> Calories </ion-card-title>
+      <ion-card-title class="text-lg flex justify-center"> Calories Intake</ion-card-title>
     </ion-card-header>
     <ion-card-content class="flex justify-center">
       <div class="calorie-equation" [formGroup]="intakeForm">
@@ -38,7 +38,7 @@
     </ion-card-content>
   </ion-card>
 </div>
-<div id="chart-container" [hidden]="currentSegment !== 'Nutritions'"></div>
+<div class="pt-4" [hidden]="currentSegment !== 'Nutritions'" id="chart-container"></div>
 
 <div *ngIf="currentSegment !== 'Nutritions'">
   <app-meal-card [foodList]="foodList"></app-meal-card>

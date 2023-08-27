@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { DailyCaloriesIntakeComponent } from './daily-calories-intake.component';
+import { DailyDietDetails } from './daily-diet-details.component';
 
-describe('DailyCaloriesIntakeComponent', () => {
-  let component: DailyCaloriesIntakeComponent;
-  let fixture: ComponentFixture<DailyCaloriesIntakeComponent>;
+describe('DailyDietDetails', () => {
+  let component: DailyDietDetails;
+  let fixture: ComponentFixture<DailyDietDetails>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [DailyCaloriesIntakeComponent],
+      declarations: [DailyDietDetails],
       imports: [IonicModule.forRoot()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DailyCaloriesIntakeComponent);
+    fixture = TestBed.createComponent(DailyDietDetails);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
