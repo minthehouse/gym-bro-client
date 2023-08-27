@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
+import { WorkoutService } from '../service/workout.service';
 
 @Component({
   selector: 'app-workout',
@@ -10,9 +11,11 @@ import { IonicModule } from '@ionic/angular';
   imports: [IonicModule],
 })
 export class WorkoutPage implements OnInit {
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(private router: Router, private route: ActivatedRoute, private workoutService: WorkoutService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.workoutService.getWorkouts().subscribe();
+  }
 
   sendEvent(url: string) {
     this.router.navigate([url], { relativeTo: this.route });

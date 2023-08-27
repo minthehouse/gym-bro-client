@@ -1,28 +1,27 @@
 import { Injectable } from '@angular/core';
 import { State, Action, StateContext } from '@ngxs/store';
-import { SetCurrentWorkout, SetWorkoutStartTime } from './workout.actions';
+import { SetCurrentWorkout, SetWorkouts } from './workout.actions';
 
 export class WorkoutStateModel {
-  public workoutStartTime: any;
   public current: any;
+  public list: any;
 }
 
 @State<WorkoutStateModel>({
-  name: 'workout',
+  name: 'workouts',
   defaults: {
-    workoutStartTime: null,
     current: null,
+    list: null,
   },
 })
 @Injectable()
 export class WorkoutState {
+  @Action(SetWorkouts)
+  setWorkouts({ setState }: StateContext<WorkoutStateModel>, { payload }: SetWorkouts) {
+    setState((state: WorkoutStateModel) => ({ ...state, list: payload }));
+  }
   @Action(SetCurrentWorkout)
   setCurrentWorkout({ setState }: StateContext<WorkoutStateModel>, { payload }: SetCurrentWorkout) {
     setState((state: WorkoutStateModel) => ({ ...state, current: payload }));
-  }
-
-  @Action(SetWorkoutStartTime)
-  setWorkoutStartTime({ setState }: StateContext<WorkoutStateModel>, { payload }: SetWorkoutStartTime) {
-    setState((state: WorkoutStateModel) => ({ ...state, workoutStartTime: payload }));
   }
 }

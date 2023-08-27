@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
 import { WorkoutService } from 'src/app/service/workout.service';
-import { SetCurrentWorkout, SetWorkoutStartTime } from 'state/workout.actions';
+import { SetCurrentWorkout } from 'state/workout.actions';
 import { SearchModalComponent } from '../search-modal/search-modal.component';
 import { ESearchModalTitle } from 'src/app/enums/search-modal-title.enum';
 import { Router } from '@angular/router';
@@ -67,7 +67,6 @@ export class TrackWorkoutPage implements OnInit {
     if (currentWorkout) {
       this.workoutLists = currentWorkout;
     }
-    this.store.dispatch(new SetWorkoutStartTime(new Date()));
   }
 
   addSet(exerciseName: string) {
@@ -87,11 +86,6 @@ export class TrackWorkoutPage implements OnInit {
   }
 
   addExerciseTable(selectedExerciseType: any) {
-    const { workout } = this.store.snapshot();
-    if (!workout.workoutStartTime) {
-      this.store.dispatch(new SetWorkoutStartTime(new Date()));
-    }
-
     if (this.workoutLists.hasOwnProperty(selectedExerciseType.name)) {
       return;
     }

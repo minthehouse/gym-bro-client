@@ -3,9 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { tap } from 'rxjs/operators';
-import { SetCurrentWorkout, SetWorkoutStartTime } from 'state/workout.actions';
+import { map } from 'rxjs/operators';
 import { buildAuthHeaders } from '../utils/auth-utils';
+import { SetWorkouts } from 'state/workout.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,11 @@ export class WorkoutService {
   getWorkouts(): Observable<any> {
     const { user } = this.store.snapshot();
 
-    return this.http.get<any>(`${this.apiUrl}/users/${user.id}/workouts`);
+    return this.http.get<any>(`${this.apiUrl}/users/${user.id}/workouts`).pipe(
+      map(workouts => {
+        this.store.dispatch(new SetWorkouts(workouts));
+      }),
+    );
   }
 
   finishWorkout(workoutData: any): any {
@@ -35,12 +39,7 @@ export class WorkoutService {
       },
     };
 
-    return this.http.post(`${this.apiUrl}/workout`, payload).pipe(
-      tap(() => {
-        this.store.dispatch(new SetCurrentWorkout(null));
-        this.store.dispatch(new SetWorkoutStartTime(null));
-      }),
-    );
+    return this.http.post(`${this.apiUrl}/workout`, payload).pipe();
   }
 
   extractValuesFromHashMap(hashMap: { [key: string]: any }): any[] {
@@ -68,7 +67,7 @@ export class WorkoutService {
     });
   }
 
-  getNextWorkout(currentWorkoutId){
+  getNextWorkout(currentWorkoutId) {
     const { user } = this.store.snapshot();
     const headers = new HttpHeaders(buildAuthHeaders());
 

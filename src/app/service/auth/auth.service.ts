@@ -9,8 +9,8 @@ import { SetUser } from 'state/user.actions';
 import { StorageService } from '../storage.service';
 import { IS_AUTH_ENABLED } from './auth.interceptor';
 import { buildAuthHeaders } from '../../utils/auth-utils';
-import { SetCurrentWorkout, SetWorkoutStartTime } from 'state/workout.actions';
 import { SetToken } from 'state/token.actions';
+import { SetWorkouts } from 'state/workout.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -118,8 +118,8 @@ export class AuthService {
 
   private _reset(): void {
     this.store.dispatch(new SetUser(null));
-    this.store.dispatch(new SetCurrentWorkout(null));
-    this.store.dispatch(new SetWorkoutStartTime(null));
+    this.store.dispatch(new SetWorkouts(null));
+
     localStorage.removeItem('@@STATE');
     this.storageService.deleteSession();
   }
