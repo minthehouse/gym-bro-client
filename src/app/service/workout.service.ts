@@ -27,7 +27,6 @@ export class WorkoutService {
 
   finishWorkout(workoutData: any): any {
     const { user } = this.store.snapshot();
-
     const exercises_attributes = this.extractValuesFromHashMap(workoutData);
     const payload = {
       workout: {
@@ -39,16 +38,9 @@ export class WorkoutService {
     return this.http.post(`${this.apiUrl}/workout`, payload).pipe();
   }
 
-  extractValuesFromHashMap(hashMap: { [key: string]: any }): any[] {
-    const values: any[] = [];
-
-    for (const key in hashMap) {
-      if (Object.prototype.hasOwnProperty.call(hashMap, key)) {
-        values.push(...hashMap[key]);
-      }
-    }
-
-    return values;
+  private extractValuesFromHashMap(originalData): any[] {
+    const transformedData = ([] as any[]).concat(...Object.values(originalData));
+    return transformedData;
   }
 
   search(search_param: string) {

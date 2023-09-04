@@ -1,117 +1,123 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormArray, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { WorkoutService } from 'src/app/service/workout.service';
 import { SetCurrentWorkout } from 'state/workout.actions';
 import { SearchModalComponent } from '../search-modal/search-modal.component';
 import { ESearchModalTitle } from 'src/app/enums/search-modal-title.enum';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-track-workout',
   templateUrl: './track-workout.page.html',
   styleUrls: ['./track-workout.page.scss'],
   standalone: true,
-  imports: [IonicModule, FormsModule, CommonModule],
+  imports: [IonicModule, FormsModule, CommonModule, ReactiveFormsModule],
 })
 export class TrackWorkoutPage implements OnInit {
-  selectedIcons: { [key: string]: boolean }[] = [];
-  searchOptions: any = [
-    {
-      id: 1,
-      name: 'Bench Press',
-      muscle_group: 'Chest',
-      imageSrc: 'https://i.pravatar.cc/300?u=b',
-    },
-    {
-      id: 2,
-      name: 'Deadlift',
-      muscle_group: 'Back',
-      imageSrc: 'https://i.pravatar.cc/300?u=a',
-    },
-    {
-      id: 3,
-      name: 'Squat',
-      muscle_group: 'Legs',
-      imageSrc: 'https://i.pravatar.cc/300?u=d',
-    },
-    {
-      id: 4,
-      name: 'Overhead Press',
-      muscle_group: 'Shoulder',
-      imageSrc: 'https://i.pravatar.cc/300?u=e',
-    },
-  ];
-  public workoutLists: {
-    [exerciseName: string]: {
-      set_number: number;
-      weight: number;
-      rep: number;
-      exercise_type_id: number;
-      completed?: boolean;
-    }[];
-  } = {};
+  @Select(state => state.workouts.current) currentWorkout$: Observable<any>;
+  workoutForm: FormGroup;
 
   constructor(
     private workoutService: WorkoutService,
     public modalController: ModalController,
     private store: Store,
     private router: Router,
-  ) {}
-  exerciseTypeId: number = 1;
+    private fb: FormBuilder, // Add this line
+  ) {
+    this.workoutForm = this.fb.group({});
+  }
+
+  getSets(exerciseName: string): FormArray {
+    const exerciseControl = this.workoutForm.get(exerciseName);
+    return exerciseControl instanceof FormArray ? exerciseControl : new FormArray([]);
+  }
 
   ngOnInit() {
-    const currentWorkout = this.store.snapshot().workout?.current;
-    if (currentWorkout) {
-      this.workoutLists = currentWorkout;
-    }
+    this.currentWorkout$.subscribe(currentWorkout => {
+      if (currentWorkout) {
+        for (const exerciseName in currentWorkout) {
+          const sets = currentWorkout[exerciseName];
+          const formArray = this.createFormArrayFromSets(sets);
+
+          if (this.workoutForm.get(exerciseName)) {
+            this.updateExistingExerciseControl(exerciseName, formArray);
+          } else {
+            this.addNewExerciseControl(exerciseName, formArray);
+          }
+        }
+      }
+    });
+  }
+
+  createFormArrayFromSets(sets: any[]): FormArray {
+    return this.fb.array(sets.map(set => this.fb.group(set)));
+  }
+
+  updateExistingExerciseControl(exerciseName: string, formArray: FormArray): void {
+    const exerciseControl = this.workoutForm.get(exerciseName) as FormArray;
+    exerciseControl.clear();
+    formArray.controls.forEach(control => exerciseControl.push(control));
+  }
+
+  addNewExerciseControl(exerciseName: string, formArray: FormArray): void {
+    this.workoutForm.addControl(exerciseName, formArray);
   }
 
   addSet(exerciseName: string) {
-    const exerciseList = this.workoutLists[exerciseName];
-    console.log('exerciseList', exerciseList);
+    const exerciseControl = this.workoutForm.get(exerciseName) as FormArray;
 
-    const newSet = {
-      set_number: exerciseList.length + 1,
-      weight: null,
-      rep: null,
-      exercise_type_id: exerciseList[0].exercise_type_id,
-    };
+    if (exerciseControl) {
+      const newSetFormGroup = this.fb.group({
+        set_number: exerciseControl.length + 1, // Automatically increment set number
+        weight: null,
+        rep: null,
+        exercise_type_id: exerciseControl.value[0].exercise_type_id,
+      });
 
-    exerciseList.push(newSet);
+      exerciseControl.push(newSetFormGroup);
 
-    this.store.dispatch(new SetCurrentWorkout(this.workoutLists));
+      this.store.dispatch(new SetCurrentWorkout(this.workoutForm.value));
+    }
   }
 
   addExerciseTable(selectedExerciseType: any) {
-    if (this.workoutLists.hasOwnProperty(selectedExerciseType.name)) {
+    if (this.workoutForm?.get(selectedExerciseType.name)) {
       return;
     }
 
-    const exercise = {
-      set_number: 1,
-      weight: null,
-      rep: null,
-      exercise_type_id: selectedExerciseType.id,
-    };
+    console.log('selectedExerciseType', selectedExerciseType);
 
-    this.workoutLists[selectedExerciseType.name] = [exercise];
+    const newSetFormArray = this.fb.array([
+      this.fb.group({
+        set_number: 1,
+        weight: null,
+        rep: null,
+        exercise_type_id: selectedExerciseType.id,
+      }),
+    ]);
 
-    this.store.dispatch(new SetCurrentWorkout(this.workoutLists));
+    this.workoutForm?.addControl(selectedExerciseType.name, newSetFormArray);
+    this.store.dispatch(new SetCurrentWorkout(this.workoutForm.value));
   }
 
   getObjectKeys(obj: any): any[] {
     return Object.keys(obj);
   }
 
-  finish() {
-    this.workoutService.finishWorkout(this.workoutLists).subscribe(response => {
-      if (response) {
-        this.router.navigate(['/tabs/workout/success']);
-      }
-    });
+  finish(ngForm) {
+    if (ngForm.valid) {
+      console.log('ngForm.value', ngForm.value);
+      this.workoutService.finishWorkout(ngForm.value).subscribe(response => {
+        if (response) {
+          this.router.navigate(['/tabs/workout/success']);
+        }
+      });
+    }
   }
 
   async presentModal() {
@@ -130,5 +136,28 @@ export class TrackWorkoutPage implements OnInit {
     });
 
     return await modal.present();
+  }
+
+  getNestedControl(exerciseName: string, index: number, controlName: string): FormControl | null {
+    const exerciseGroup = this.workoutForm.get(exerciseName) as FormArray;
+    const setFormGroup = exerciseGroup.at(index) as FormGroup;
+    return setFormGroup ? (setFormGroup.get(controlName) as FormControl) : null;
+  }
+
+  removeSet(exerciseName: string, index: number) {
+    const exerciseControl = this.workoutForm.get(exerciseName) as FormArray;
+
+    if (exerciseControl && exerciseControl.length > index) {
+      exerciseControl.removeAt(index);
+      this.renumberSetNumbers(exerciseControl);
+      this.store.dispatch(new SetCurrentWorkout(this.workoutForm.value));
+    }
+  }
+
+  renumberSetNumbers(exerciseControl: FormArray) {
+    for (let i = 0; i < exerciseControl.length; i++) {
+      const setFormGroup = exerciseControl.at(i) as FormGroup;
+      setFormGroup.get('set_number')?.setValue(i + 1);
+    }
   }
 }

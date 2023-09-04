@@ -5,44 +5,62 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <!-- Render all workout lists -->
-  <ng-container *ngFor="let exerciseName of getObjectKeys(workoutLists)">
-    <ion-list class="flex flex-col">
-      <!-- Table header -->
-      <ion-text class="ion-text-center"> {{ exerciseName.toString() }} </ion-text>
-      <ion-row class="ion-text-center">
-        <ion-col size="4">
-          <ion-label>Set</ion-label>
-        </ion-col>
-        <ion-col size="4">
-          <ion-label>Weight</ion-label>
-        </ion-col>
-        <ion-col size="4">
-          <ion-label>Reps</ion-label>
-        </ion-col>
-        <ion-col size="4">
-          <ion-label></ion-label>
-        </ion-col>
-      </ion-row>
+  <form [formGroup]="workoutForm" #ngForm="ngForm" (ngSubmit)="finish(ngForm)" novalidate>
+    <!-- Render all workout lists -->
+    <ng-container *ngFor="let exerciseName of workoutForm.controls | keyvalue">
+      <ion-list class="flex flex-col">
+        <!-- Table header -->
+        <ion-text class="ion-text-center"> {{ exerciseName.key }} </ion-text>
+        <ion-row class="ion-text-center">
+          <ion-col size="2">
+            <ion-label>Set</ion-label>
+          </ion-col>
+          <ion-col size="4">
+            <ion-label>Weight</ion-label>
+          </ion-col>
+          <ion-col size="4">
+            <ion-label>Reps</ion-label>
+          </ion-col>
+          <ion-col size="2">
+            <ion-label></ion-label>
+          </ion-col>
+        </ion-row>
 
-      <!-- Table rows -->
-      <ion-row *ngFor="let workout of workoutLists[exerciseName]" class="ion-text-center mb-2">
-        <ion-col size="4">
-          <ion-input class="rounded-lg bg-slate-200" [value]="workout.set_number" readonly></ion-input>
-        </ion-col>
-        <ion-col size="4">
-          <ion-input class="rounded-lg bg-slate-200" [(ngModel)]="workout.weight" autofocus></ion-input>
-        </ion-col>
-        <ion-col size="4">
-          <ion-input class="rounded-lg bg-slate-200" [(ngModel)]="workout.rep"></ion-input>
-        </ion-col>
-      </ion-row>
-    </ion-list>
-    <ion-button expand="block" (click)="addSet(exerciseName)">Add Set</ion-button>
-  </ng-container>
-  <ion-button id="open-modal" class="flex pt-3" (click)="presentModal()">
-    <ion-icon slot="start" name="add"></ion-icon>
-    Add Exercise
-  </ion-button>
-  <ion-button expand="block" (click)="finish()">Finish Workout</ion-button>
+        <!-- Table rows -->
+        <ion-row *ngFor="let set of getSets(exerciseName.key).controls; let i = index">
+          <ion-col size="2">
+            <ion-input
+              class="rounded-lg bg-slate-200"
+              [formControl]="getNestedControl(exerciseName.key, i, 'set_number')"
+              readonly
+            ></ion-input>
+          </ion-col>
+          <ion-col size="4">
+            <ion-input
+              class="rounded-lg bg-slate-200"
+              [formControl]="getNestedControl(exerciseName.key, i, 'weight')"
+              autofocus
+            ></ion-input>
+          </ion-col>
+          <ion-col size="4">
+            <ion-input
+              class="rounded-lg bg-slate-200"
+              [formControl]="getNestedControl(exerciseName.key, i, 'rep')"
+            ></ion-input>
+          </ion-col>
+          <ion-col size="2">
+            <ion-button color="danger" aria-label="Favorite" (click)="removeSet(exerciseName.key, i)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+      <ion-button expand="block" (click)="addSet(exerciseName.key)">Add Set</ion-button>
+    </ng-container>
+    <ion-button id="open-modal" class="flex pt-3" (click)="presentModal()">
+      <ion-icon slot="start" name="add"></ion-icon>
+      Add Exercise
+    </ion-button>
+    <ion-button expand="block" type="submit">Finish Workout</ion-button>
+  </form>
 </ion-content>
