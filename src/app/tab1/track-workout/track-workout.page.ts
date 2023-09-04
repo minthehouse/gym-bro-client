@@ -73,7 +73,7 @@ export class TrackWorkoutPage implements OnInit {
 
     if (exerciseControl) {
       const newSetFormGroup = this.fb.group({
-        set_number: exerciseControl.length + 1, // Automatically increment set number
+        set_number: exerciseControl.length + 1,
         weight: null,
         rep: null,
         exercise_type_id: exerciseControl.value[0].exercise_type_id,
@@ -89,8 +89,6 @@ export class TrackWorkoutPage implements OnInit {
     if (this.workoutForm?.get(selectedExerciseType.name)) {
       return;
     }
-
-    console.log('selectedExerciseType', selectedExerciseType);
 
     const newSetFormArray = this.fb.array([
       this.fb.group({
@@ -110,8 +108,7 @@ export class TrackWorkoutPage implements OnInit {
   }
 
   finish(ngForm) {
-    if (ngForm.valid) {
-      console.log('ngForm.value', ngForm.value);
+    if (ngForm.form.valid) {
       this.workoutService.finishWorkout(ngForm.value).subscribe(response => {
         if (response) {
           this.router.navigate(['/tabs/workout/success']);
