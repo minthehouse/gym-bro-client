@@ -65,7 +65,7 @@ export class DailyWorkoutComponent implements OnInit {
   private initializeWorkoutData(workouts: any[]) {
     if (workouts && workouts.length > 0) {
       this.selectedWorkout = workouts[workouts.length - 1];
-      this.selectedDateControl.setValue(this.selectedWorkout.end_at);
+      this.selectedDateControl.setValue(this.selectedWorkout.created_at);
       this.entireWorkouts = workouts;
       this.setAvailableDates(workouts);
     }
@@ -73,7 +73,7 @@ export class DailyWorkoutComponent implements OnInit {
 
   private setAvailableDates(workouts) {
     workouts.map(workout => {
-      this.availableDates.push(new Date(workout.end_at));
+      this.availableDates.push(new Date(workout.created_at));
     });
   }
 }
