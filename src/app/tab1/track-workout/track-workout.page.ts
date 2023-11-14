@@ -10,13 +10,14 @@ import { ESearchModalTitle } from 'src/app/enums/search-modal-title.enum';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { BackBtnComponent } from 'src/app/components/back-button/back-button.component';
 
 @Component({
   selector: 'app-track-workout',
   templateUrl: './track-workout.page.html',
   styleUrls: ['./track-workout.page.scss'],
   standalone: true,
-  imports: [IonicModule, FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [IonicModule, FormsModule, CommonModule, ReactiveFormsModule, BackBtnComponent],
 })
 export class TrackWorkoutPage implements OnInit {
   @Select(state => state.workouts.current) currentWorkout$: Observable<any>;

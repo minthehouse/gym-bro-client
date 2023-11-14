@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { DietService } from 'src/app/service/diet.service';
 import { DailyDietDetails } from 'src/app/components/daily-diet-details/daily-diet-details.component';
 import { MealCardComponent } from 'src/app/components/meal-card/meal-card.component';
+import { BackBtnComponent } from 'src/app/components/back-button/back-button.component';
 
 @Component({
   selector: 'app-history-diet',
@@ -24,6 +25,7 @@ import { MealCardComponent } from 'src/app/components/meal-card/meal-card.compon
     ReactiveFormsModule,
     DailyDietDetails,
     MealCardComponent,
+    BackBtnComponent,
   ],
 })
 export class HistoryDietPage implements OnInit {

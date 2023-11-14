@@ -5,6 +5,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { IonicModule, ModalController, ToastController } from '@ionic/angular';
+import { BackBtnComponent } from 'src/app/components/back-button/back-button.component';
 import { MealCardComponent } from 'src/app/components/meal-card/meal-card.component';
 import { ESearchModalTitle } from 'src/app/enums/search-modal-title.enum';
 import { DietService } from 'src/app/service/diet.service';
@@ -24,6 +25,7 @@ import { SearchModalComponent } from 'src/app/tab1/search-modal/search-modal.com
     MatInputModule,
     ReactiveFormsModule,
     MealCardComponent,
+    BackBtnComponent,
   ],
 })
 export class TrackDietPage implements OnInit {

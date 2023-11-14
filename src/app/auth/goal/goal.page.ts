@@ -7,12 +7,13 @@ import { IonicModule, ToastController } from '@ionic/angular';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { UserService } from 'src/app/service/user.service';
 import { Select, Store } from '@ngxs/store';
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
+import { BackBtnComponent } from 'src/app/components/back-button/back-button.component';
 
 @Component({
   selector: 'app-goal',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, IonicModule, RouterModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, IonicModule, RouterModule, BackBtnComponent],
   templateUrl: './goal.page.html',
   styleUrls: ['./goal.page.scss'],
 })
