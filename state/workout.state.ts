@@ -22,6 +22,23 @@ export class WorkoutState {
   }
   @Action(SetCurrentWorkout)
   setCurrentWorkout({ setState }: StateContext<WorkoutStateModel>, { payload }: SetCurrentWorkout) {
+    // const filteredWorkout = removeEmptyArrays(payload);
+    // console.log('filteredWorkout', filteredWorkout);
     setState((state: WorkoutStateModel) => ({ ...state, current: payload }));
   }
 }
+
+const removeEmptyArrays = workout => {
+  // Get the keys of the workout object
+  const keys = Object.keys(workout);
+
+  // Filter out keys with empty arrays
+  const nonEmptyWorkout = keys
+    .filter(key => workout[key].length > 0)
+    .reduce((obj, key) => {
+      obj[key] = workout[key];
+      return obj;
+    }, {});
+
+  return nonEmptyWorkout;
+};
