@@ -10,9 +10,13 @@
     </div>
     <ion-card-header>
       <ion-card-subtitle>Quick Start</ion-card-subtitle>
-      <ion-card-title>Start Your Workout</ion-card-title>
+      <ion-card-title *ngIf="currentWorkout$ | async as currentWorkout">
+        {{ currentWorkout ? 'Edit' : 'Start' }} Your Workout
+      </ion-card-title>
     </ion-card-header>
-    <ion-card-content> Click to start tracking your workout. </ion-card-content>
+    <ion-card-content *ngIf="currentWorkout$ | async as currentWorkout">
+      Click to {{ currentWorkout ? 'edit' : 'start' }} tracking your workout.
+    </ion-card-content>
   </ion-card>
 
   <ion-card id="workout-card" class="home-content" (click)="sendEvent('history')">
