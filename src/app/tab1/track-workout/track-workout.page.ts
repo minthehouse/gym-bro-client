@@ -145,11 +145,16 @@ export class TrackWorkoutPage implements OnInit {
   removeSet(exerciseName: string, index: number) {
     const exerciseControl = this.workoutForm.get(exerciseName) as FormArray;
 
+    if (exerciseControl.value.length === 1) {
+      this.removeExerciseFromForm(exerciseName);
+    }
+
     if (exerciseControl && exerciseControl.length > index) {
       exerciseControl.removeAt(index);
       this.renumberSetNumbers(exerciseControl);
-      this.store.dispatch(new SetCurrentWorkout(this.workoutForm.value));
     }
+
+    this.store.dispatch(new SetCurrentWorkout(this.workoutForm.value));
   }
 
   renumberSetNumbers(exerciseControl: FormArray) {
@@ -157,5 +162,10 @@ export class TrackWorkoutPage implements OnInit {
       const setFormGroup = exerciseControl.at(i) as FormGroup;
       setFormGroup.get('set_number')?.setValue(i + 1);
     }
+  }
+
+  private removeExerciseFromForm(exerciseName: string) {
+    this.workoutForm.removeControl(exerciseName);
+    console.log('workoutForm hi hi', this.workoutForm);
   }
 }
