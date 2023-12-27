@@ -37,26 +37,65 @@ Welcome to the repository for GymBro! This client application is designed to hel
 ### 5. Visualizing Progress with D3.js
 - **D3.js:** A powerful JavaScript library for creating interactive and dynamic data visualizations in the browser.
 
-Certainly! Here's the updated "Getting Started" section with the correct repository URL:
-
 ## Getting Started
 
-To get started with the GymBro, follow these steps:
+To get started with GymBro app, follow these steps:
 
-1. Clone the repository:
+### 1. Client Application (Frontend)
+
+1. Clone the client repository:
    ```bash
    git clone https://github.com/minthehouse/gym-bro-client.git
    ```
 
-2. Install dependencies:
+2. Navigate to the client directory:
    ```bash
    cd gym-bro-client
+   ```
+
+3. Install client dependencies:
+   ```bash
    npm install
    ```
 
-3. Run the app:
+4. Run the client app:
    ```bash
    ng serve
    ```
 
    Open your browser and navigate to `http://localhost:4200` to view the app.
+
+### 2. Server Application (Backend)
+
+1. Clone the server repository:
+   ```bash
+   git clone https://github.com/minthehouse/gym-bro-node-api.git
+   ```
+
+2. Navigate to the server directory:
+   ```bash
+   cd gym-bro-node-api
+   ```
+
+3. Install server dependencies:
+   ```bash
+   npm install
+   ```
+
+4. Configure the server settings:
+   - Open the configuration file (e.g., `config.json`) and set the required parameters such as database connection details.
+
+5. Run the server app:
+   ```bash
+   npm start
+   ```
+
+   Ensure the server is running on the specified port (e.g., `http://localhost:3000`).
+
+### 3. Connect Frontend and Backend
+
+Make sure the client application is configured to communicate with the server. Check the API endpoint configurations in the client app to match the server's address.
+
+Now, both the client and server applications are up and running, providing a seamless fitness tracking experience.
+
+Feel free to replace the placeholder URLs and instructions with the correct details for your actual repositories and setup.
