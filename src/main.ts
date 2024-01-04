@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { enableProdMode, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter } from '@angular/router';
@@ -13,6 +13,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { WorkoutState } from 'state/workout.state';
 import { UserState } from 'state/user.state';
 import { TokenState } from 'state/token.state';
+import { AuthInterceptor } from './app/service/auth/auth.interceptor';
 
 if (environment.production) {
   enableProdMode();
@@ -20,6 +21,11 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     importProvidersFrom(
       IonicModule.forRoot({ swipeBackEnabled: false }),

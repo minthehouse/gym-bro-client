@@ -2,7 +2,7 @@ import { HttpClient, HttpContext, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, finalize, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { SetUser } from 'state/user.actions';
@@ -125,8 +125,10 @@ export class AuthService {
     this.storageService.deleteSession();
   }
 
-  logoutAndNavigate(): Observable<any> {
-    return this.logout().pipe(map(() => this._navigate('/landing')));
+  logoutAndNavigate(): Observable<any | void> {
+    return environment.serverType === ServerType.EXPRESS
+      ? of(this._reset()).pipe(map(() => this._navigate('/landing')))
+      : this.logout().pipe(map(() => this._navigate('/landing')));
   }
 
   logout(): Observable<any> {
@@ -146,7 +148,7 @@ export class AuthService {
     const session = await this.storageService.getSession();
     // TODO: rename params
     if (session) {
-      this.store.dispatch(new SetToken(session.token));
+      this.store.dispatch(new SetToken(environment.serverType === ServerType.EXPRESS ? session : session.token));
     }
 
     if (environment.serverType === ServerType.EXPRESS) {

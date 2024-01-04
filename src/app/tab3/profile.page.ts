@@ -22,12 +22,7 @@ export class ProfilePage {
   ) {}
 
   logout() {
-    if (environment.serverType === ServerType.RAILS) {
-      this.authService.logoutAndNavigate().subscribe(response => console.log(response));
-    } else if (environment.serverType === ServerType.EXPRESS) {
-      this.storageService.deleteSession();
-      this.router.navigate(['/landing']);
-    }
+    this.authService.logoutAndNavigate().subscribe();
   }
 
   navigateTo(path: string) {

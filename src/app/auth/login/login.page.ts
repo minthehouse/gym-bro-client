@@ -60,9 +60,7 @@ export class LoginPage implements OnInit {
 
   onLogin(ngf): void {
     if (ngf.valid) {
-      this.authService.login(ngf.form.value).subscribe(response => {
-        console.log('response', response);
-      });
+      this.authService.login(ngf.form.value).subscribe();
     }
   }
 
