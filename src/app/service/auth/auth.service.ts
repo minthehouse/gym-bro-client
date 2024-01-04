@@ -11,6 +11,7 @@ import { IS_AUTH_ENABLED } from './auth.interceptor';
 import { buildAuthHeaders } from '../../utils/auth-utils';
 import { SetToken } from 'state/token.actions';
 import { SetWorkouts } from 'state/workout.actions';
+import { ServerType } from 'src/app/enums/server-type.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -147,7 +148,12 @@ export class AuthService {
     if (session) {
       this.store.dispatch(new SetToken(session.token));
     }
-    return session !== null && !this.isTokenExpired(session?.token?.expiry);
+
+    if (environment.serverType === ServerType.EXPRESS) {
+      return session !== null;
+    } else if (environment.serverType === ServerType.RAILS) {
+      return session !== null && !this.isTokenExpired(session?.token?.expiry);
+    }
   }
 
   public isTokenExpired(expiry: any): boolean {

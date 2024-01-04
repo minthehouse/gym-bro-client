@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
+import { environment } from 'src/environments/environment';
+import { ServerType } from '../enums/server-type.enum';
 
 const STORAGE_NAME = 'minthegym';
 
@@ -28,11 +30,17 @@ export class StorageService {
 
   public async getSession(): Promise<any> {
     const data = await this.get(STORAGE_NAME);
+
+    if (environment.serverType === ServerType.EXPRESS) {
+      return data;
+    }
+
     return data ? JSON.parse(data) : null;
   }
 
-  public saveSession(token): void {
-    this.set(STORAGE_NAME, JSON.stringify({ token }));
+  public saveSession(token: any): void {
+    const tokenString = environment.serverType === ServerType.EXPRESS ? token : JSON.stringify({ token });
+    this.set(STORAGE_NAME, tokenString);
   }
 
   public deleteSession(): void {
