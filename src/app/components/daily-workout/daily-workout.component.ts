@@ -54,7 +54,7 @@ export class DailyWorkoutComponent implements OnInit {
   onDateChange(event: any): void {
     const selectedDate = event.value;
     const selectedWorkout = this.entireWorkouts.find((workout: any) =>
-      this.isSameDate(new Date(workout.start_at), selectedDate),
+      this.isSameDate(new Date(workout.created_at), selectedDate),
     );
 
     if (selectedWorkout) {
