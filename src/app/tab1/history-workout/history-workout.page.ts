@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { Select } from '@ngxs/store';
 import { BackBtnComponent } from 'src/app/components/back-button/back-button.component';
@@ -16,10 +17,17 @@ import { WorkoutService } from 'src/app/service/workout.service';
 })
 export class HistoryWorkoutPage implements OnInit {
   @Select(state => state.workouts.list) workouts$;
-  constructor(private workoutService: WorkoutService) {}
+  constructor(private workoutService: WorkoutService, private activatedRoute: ActivatedRoute) {}
   currentSegment: string = 'daily';
-  workouts: any[];
-  ngOnInit() {}
+  workout: any;
+  ngOnInit() {
+    const params = this.activatedRoute.snapshot.paramMap;
+    const workoutId = params.get('id');
+
+    this.workoutService.getById(workoutId).subscribe(workout => {
+      this.workout = workout;
+    });
+  }
 
   segmentChanged(ev: any) {
     console.log('Segment changed', ev);

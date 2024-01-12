@@ -1,19 +1,4 @@
-<mat-form-field floatLabel="always" class="w-full">
-  <mat-label>Select Date to see Workout Details</mat-label>
-  <div class="date-picker-wrapper">
-    <input
-      matInput
-      [matDatepicker]="latestVisbilityDatePicker"
-      [formControl]="selectedDateControl"
-      (dateChange)="onDateChange($event)"
-      [matDatepickerFilter]="dateFilter"
-    />
-  </div>
-  <mat-datepicker-toggle matSuffix [for]="latestVisbilityDatePicker"></mat-datepicker-toggle>
-  <mat-datepicker #latestVisbilityDatePicker></mat-datepicker>
-</mat-form-field>
-
-<ion-list class="flex flex-col" *ngIf="selectedWorkout">
+<ion-list class="flex flex-col" *ngIf="workout">
   <ion-row class="ion-text-center">
     <ion-col size="3">
       <ion-label>Exercise Name</ion-label>
@@ -26,7 +11,7 @@
     </ion-col>
   </ion-row>
 
-  <ng-container *ngFor="let exercise of selectedWorkout.exercises">
+  <ng-container *ngFor="let exercise of workout.exercises">
     <ion-row class="ion-text-center mb-2">
       <ion-col size="3">
         <ion-label>{{ exercise.exercise_type_name }}</ion-label>

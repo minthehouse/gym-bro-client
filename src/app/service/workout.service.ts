@@ -25,6 +25,10 @@ export class WorkoutService {
     );
   }
 
+  getById(workoutId: string) {
+    return this.http.get<any>(`${this.apiUrl}/workout/${workoutId}`);
+  }
+
   finishWorkout(workoutData: any): any {
     const { user } = this.store.snapshot();
     const exercises_attributes = this.extractValuesFromHashMap(workoutData);

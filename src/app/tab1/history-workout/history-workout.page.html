@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <app-back-btn></app-back-btn>
     </ion-buttons>
-    <ion-title>history-track hey</ion-title>
+    <ion-title>Previous Workout Details</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -18,9 +18,9 @@
   </ion-segment>
 
   <ng-container *ngIf="currentSegment === 'daily'; else ProgressOverview">
-    <app-daily-workout [workouts]="workouts$ | async"></app-daily-workout>
+    <app-daily-workout [workout]="workout"></app-daily-workout>
   </ng-container>
   <ng-template #ProgressOverview>
-    <app-progressive-workout></app-progressive-workout>
+    <app-progressive-workout [workout]="workout"></app-progressive-workout>
   </ng-template>
 </ion-content>

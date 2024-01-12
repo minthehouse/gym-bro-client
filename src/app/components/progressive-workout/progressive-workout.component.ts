@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { WorkoutService } from 'src/app/service/workout.service';
@@ -27,7 +27,10 @@ import { MatButtonModule } from '@angular/material/button';
   ],
 })
 export class ProgresssiveWorkoutComponent implements OnInit {
+  @Input() workout: any;
+
   constructor(private workoutService: WorkoutService) {}
+
   workoutLists: any = [];
   range = new FormGroup({
     start: new FormControl<Date | null>(null),

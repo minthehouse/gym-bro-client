@@ -21,7 +21,7 @@ export const routes: Routes = [
     loadChildren: () => import('../components/success/success.routing').then(m => m.routes),
   },
   {
-    path: ':workoutId/details',
+    path: ':id/details',
     loadChildren: () => import('./history-workout/history-workout.routing').then(m => m.routes),
   },
 ];
