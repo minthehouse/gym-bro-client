@@ -10,7 +10,7 @@
   <div class="shadow overflow-hidden rounded-xl m-4">
     <ul role="list" class="divide-y" *ngIf="(workoutList$ | async) as pastWorkouts">
       <li
-        *ngFor="let item of pastWorkouts"
+        *ngFor="let item of pastWorkouts; let i = index"
         class="flex items-center justify-around h-20 gap-4 mx-4"
         (click)="onClick(item)"
       >
@@ -23,7 +23,7 @@
           </svg>
         </div>
         <div class="flex flex-col">
-          <p class="text-[17px] text-bluegray-950 dark:text-bluegray-50">Workout</p>
+          <p class="text-[17px] text-bluegray-950 dark:text-bluegray-50">Workout {{ i + 1 }}</p>
           <p class="flex items-center text-sm text-bluegray-750 dark:text-bluegray-250">
             {{ item.created_at | date:'medium' }}
           </p>
