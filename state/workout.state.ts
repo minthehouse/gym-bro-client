@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
 import { State, Action, StateContext } from '@ngxs/store';
-import { SetCurrentWorkout, SetWorkouts } from './workout.actions';
+import { SetCurrentWorkout, SetWorkoutToEdit, SetWorkouts } from './workout.actions';
+import { IExerciseDictionary, ISet } from './workout.interface';
 
-export class WorkoutStateModel {
-  public current: any;
-  public list: any;
+export interface Exercise {
+  [exerciseName: string]: ISet[];
+}
+
+export interface WorkoutStateModel {
+  current: IExerciseDictionary;
+  list: any[];
+  previous: IExerciseDictionary;
 }
 
 @State<WorkoutStateModel>({
@@ -12,6 +18,7 @@ export class WorkoutStateModel {
   defaults: {
     current: null,
     list: null,
+    previous: null,
   },
 })
 @Injectable()
@@ -22,23 +29,10 @@ export class WorkoutState {
   }
   @Action(SetCurrentWorkout)
   setCurrentWorkout({ setState }: StateContext<WorkoutStateModel>, { payload }: SetCurrentWorkout) {
-    // const filteredWorkout = removeEmptyArrays(payload);
-    // console.log('filteredWorkout', filteredWorkout);
     setState((state: WorkoutStateModel) => ({ ...state, current: payload }));
   }
+  @Action(SetWorkoutToEdit)
+  setWorkoutToEdit({ setState }: StateContext<WorkoutStateModel>, { payload }: SetCurrentWorkout) {
+    setState((state: WorkoutStateModel) => ({ ...state, previous: payload }));
+  }
 }
-
-const removeEmptyArrays = workout => {
-  // Get the keys of the workout object
-  const keys = Object.keys(workout);
-
-  // Filter out keys with empty arrays
-  const nonEmptyWorkout = keys
-    .filter(key => workout[key].length > 0)
-    .reduce((obj, key) => {
-      obj[key] = workout[key];
-      return obj;
-    }, {});
-
-  return nonEmptyWorkout;
-};
