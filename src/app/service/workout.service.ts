@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { map } from 'rxjs/operators';
 import { buildAuthHeaders } from '../utils/auth-utils';
-import { SetWorkouts } from 'state/workout.actions';
+import { SetWorkoutToEdit, SetWorkouts } from 'state/workout.actions';
+import { transformToExerciseDictionary, trasnformToExerciseAttributes } from '../transformer/exercise.transformer';
 
 @Injectable({
   providedIn: 'root',
@@ -26,12 +27,17 @@ export class WorkoutService {
   }
 
   getById(workoutId: string) {
-    return this.http.get<any>(`${this.apiUrl}/workout/${workoutId}`);
+    return this.http.get<any>(`${this.apiUrl}/workout/${workoutId}`).pipe(
+      map(workout => {
+        const parsedExercises = transformToExerciseDictionary(workout.exercises);
+        this.store.dispatch(new SetWorkoutToEdit(parsedExercises));
+      }),
+    );
   }
 
   finishWorkout(workoutData: any): any {
     const { user } = this.store.snapshot();
-    const exercises_attributes = this.extractValuesFromHashMap(workoutData);
+    const exercises_attributes = trasnformToExerciseAttributes(workoutData);
     const payload = {
       workout: {
         user_id: user.id,
