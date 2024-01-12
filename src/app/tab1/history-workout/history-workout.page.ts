@@ -7,13 +7,21 @@ import { BackBtnComponent } from 'src/app/components/back-button/back-button.com
 import { DailyWorkoutComponent } from 'src/app/components/daily-workout/daily-workout.component';
 import { ProgresssiveWorkoutComponent } from 'src/app/components/progressive-workout/progressive-workout.component';
 import { WorkoutService } from 'src/app/service/workout.service';
+import { TrackWorkoutPage } from '../track-workout/track-workout.page';
 
 @Component({
   selector: 'app-history-workout',
   templateUrl: './history-workout.page.html',
   styleUrls: ['./history-workout.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, DailyWorkoutComponent, ProgresssiveWorkoutComponent, BackBtnComponent],
+  imports: [
+    IonicModule,
+    CommonModule,
+    DailyWorkoutComponent,
+    ProgresssiveWorkoutComponent,
+    BackBtnComponent,
+    TrackWorkoutPage,
+  ],
 })
 export class HistoryWorkoutPage implements OnInit {
   @Select(state => state.workouts.list) workouts$;

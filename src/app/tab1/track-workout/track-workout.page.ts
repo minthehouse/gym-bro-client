@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Select, Store } from '@ngxs/store';
 import { WorkoutService } from 'src/app/service/workout.service';
-import { SetCurrentWorkout } from 'state/workout.actions';
+import { SetCurrentWorkout, SetWorkoutToEdit } from 'state/workout.actions';
 import { SearchModalComponent } from '../search-modal/search-modal.component';
 import { ESearchModalTitle } from 'src/app/enums/search-modal-title.enum';
 import { Router } from '@angular/router';
@@ -20,7 +20,10 @@ import { BackBtnComponent } from 'src/app/components/back-button/back-button.com
   imports: [IonicModule, FormsModule, CommonModule, ReactiveFormsModule, BackBtnComponent],
 })
 export class TrackWorkoutPage implements OnInit {
+  @Input() isEditMode = false;
   @Select(state => state.workouts.current) currentWorkout$: Observable<any>;
+  @Select(state => state.workouts.previous) previousWorkout$: Observable<any>;
+
   workoutForm: FormGroup;
 
   constructor(
@@ -39,10 +42,12 @@ export class TrackWorkoutPage implements OnInit {
   }
 
   ngOnInit() {
-    this.currentWorkout$.subscribe(currentWorkout => {
-      if (currentWorkout) {
-        for (const exerciseName in currentWorkout) {
-          const sets = currentWorkout[exerciseName];
+    const selectedWorkout$ = this.isEditMode ? this.previousWorkout$ : this.currentWorkout$;
+
+    selectedWorkout$.subscribe(selectedWorkout => {
+      if (selectedWorkout) {
+        for (const exerciseName in selectedWorkout) {
+          const sets = selectedWorkout[exerciseName];
           const formArray = this.createFormArrayFromSets(sets);
 
           if (this.workoutForm.get(exerciseName)) {
@@ -82,7 +87,7 @@ export class TrackWorkoutPage implements OnInit {
 
       exerciseControl.push(newSetFormGroup);
 
-      this.store.dispatch(new SetCurrentWorkout(this.workoutForm.value));
+      this.dispatchWorkoutAction();
     }
   }
 
@@ -101,7 +106,7 @@ export class TrackWorkoutPage implements OnInit {
     ]);
 
     this.workoutForm?.addControl(selectedExerciseType.name, newSetFormArray);
-    this.store.dispatch(new SetCurrentWorkout(this.workoutForm.value));
+    this.dispatchWorkoutAction();
   }
 
   getObjectKeys(obj: any): any[] {
@@ -154,7 +159,7 @@ export class TrackWorkoutPage implements OnInit {
       this.renumberSetNumbers(exerciseControl);
     }
 
-    this.store.dispatch(new SetCurrentWorkout(this.workoutForm.value));
+    this.dispatchWorkoutAction();
   }
 
   renumberSetNumbers(exerciseControl: FormArray) {
@@ -166,6 +171,12 @@ export class TrackWorkoutPage implements OnInit {
 
   private removeExerciseFromForm(exerciseName: string) {
     this.workoutForm.removeControl(exerciseName);
-    console.log('workoutForm hi hi', this.workoutForm);
+  }
+
+  private dispatchWorkoutAction() {
+    const action = this.isEditMode
+      ? new SetWorkoutToEdit(this.workoutForm.value)
+      : new SetCurrentWorkout(this.workoutForm.value);
+    this.store.dispatch(action);
   }
 }

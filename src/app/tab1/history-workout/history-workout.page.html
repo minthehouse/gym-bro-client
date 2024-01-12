@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content scrollY="true" class="ion-padding">
   <ion-segment class="mb-4" (ionChange)="segmentChanged($event)" value="daily">
     <ion-segment-button value="daily">
       <ion-label>Daily Overview</ion-label>
@@ -18,7 +18,7 @@
   </ion-segment>
 
   <ng-container *ngIf="currentSegment === 'daily'; else ProgressOverview">
-    <app-daily-workout [workout]="workout"></app-daily-workout>
+    <app-track-workout [isEditMode]="true"></app-track-workout>
   </ng-container>
   <ng-template #ProgressOverview>
     <app-progressive-workout [workout]="workout"></app-progressive-workout>

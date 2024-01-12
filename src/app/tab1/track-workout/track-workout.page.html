@@ -1,13 +1,13 @@
-<ion-header [translucent]="true">
+<ion-header *ngIf="!isEditMode" [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
       <app-back-btn></app-back-btn>
     </ion-buttons>
-    <ion-title>workout-track hey</ion-title>
+    <ion-title>Let's track your workout</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content [scrollY]="!isEditMode" class="ion-padding">
   <form [formGroup]="workoutForm" #ngForm="ngForm" (ngSubmit)="finish(ngForm)" novalidate>
     <!-- Render all workout lists -->
     <ng-container *ngFor="let exerciseName of workoutForm.controls | keyvalue">
@@ -64,6 +64,6 @@
       <ion-icon slot="start" name="add"></ion-icon>
       Add Exercise
     </ion-button>
-    <ion-button expand="block" type="submit">Finish Workout</ion-button>
+    <ion-button expand="block" type="submit"> {{ isEditMode ? 'Update' : 'Finish' }} Workout</ion-button>
   </form>
 </ion-content>
