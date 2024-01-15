@@ -10,9 +10,9 @@
 <ion-content>
   <form
     [ngClass]="{
-  'mb-6': isEditMode,
-  'ion-padding': !isEditMode
-}"
+      'mb-6': isEditMode,
+      'ion-padding': !isEditMode
+    }"
     [formGroup]="workoutForm"
     #ngForm="ngForm"
     (ngSubmit)="finish(ngForm)"
