@@ -7,8 +7,17 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [scrollY]="!isEditMode" class="ion-padding">
-  <form [formGroup]="workoutForm" #ngForm="ngForm" (ngSubmit)="finish(ngForm)" novalidate>
+<ion-content>
+  <form
+    [ngClass]="{
+  'mb-6': isEditMode,
+  'ion-padding': !isEditMode
+}"
+    [formGroup]="workoutForm"
+    #ngForm="ngForm"
+    (ngSubmit)="finish(ngForm)"
+    novalidate
+  >
     <!-- Render all workout lists -->
     <ng-container *ngFor="let exerciseName of workoutForm.controls | keyvalue">
       <ion-list class="flex flex-col">

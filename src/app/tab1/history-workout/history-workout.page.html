@@ -7,8 +7,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content scrollY="true">
-  <ion-segment class="mb-4" (ionChange)="segmentChanged($event)" value="daily">
+<ion-content scrollY="false" class="ion-padding">
+  <ion-segment (ionChange)="segmentChanged($event)" value="daily">
     <ion-segment-button value="daily">
       <ion-label>Daily Overview</ion-label>
     </ion-segment-button>
