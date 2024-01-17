@@ -13,6 +13,7 @@ export interface IExercise {
 }
 
 export interface ISet {
+  id?: number;
   set_number: number;
   weight: string | null;
   rep: string | null;

@@ -35,7 +35,21 @@ export class WorkoutService {
     );
   }
 
-  finishWorkout(workoutData: any): any {
+  updateWorkout(workoutData: any, workoutId: string): any {
+    const { user, workouts } = this.store.snapshot();
+    console.log('workouts', workouts);
+    const exercises_attributes = trasnformToExerciseAttributes(workoutData);
+    const payload = {
+      workout: {
+        user_id: user.id,
+        exercises_attributes,
+      },
+    };
+
+    return this.http.put(`${this.apiUrl}/workout/${workoutId}`, payload).pipe();
+  }
+
+  finishWorkout(workoutData: any, workoutIdToEdit?: string): any {
     const { user } = this.store.snapshot();
     const exercises_attributes = trasnformToExerciseAttributes(workoutData);
     const payload = {
@@ -45,12 +59,11 @@ export class WorkoutService {
       },
     };
 
-    return this.http.post(`${this.apiUrl}/workout`, payload).pipe();
-  }
-
-  private extractValuesFromHashMap(originalData): any[] {
-    const transformedData = ([] as any[]).concat(...Object.values(originalData));
-    return transformedData;
+    if (workoutIdToEdit) {
+      return this.updateWorkout(workoutData, workoutIdToEdit);
+    } else {
+      return this.http.post(`${this.apiUrl}/workout`, payload).pipe();
+    }
   }
 
   search(search_param: string) {

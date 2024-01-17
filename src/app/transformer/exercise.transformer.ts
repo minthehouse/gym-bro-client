@@ -11,6 +11,7 @@ export function transformToExerciseDictionary(originalData: IExercise[]): IExerc
     }
 
     const transformedSet: ISet = {
+      id: originalSet.id,
       set_number: exerciseDictionary[exerciseName].length + 1,
       weight: originalSet.weight ? originalSet.weight.toString() : null,
       rep: originalSet.rep ? originalSet.rep.toString() : null,

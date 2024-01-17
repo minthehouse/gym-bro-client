@@ -7,7 +7,7 @@ import { WorkoutService } from 'src/app/service/workout.service';
 import { SetCurrentWorkout, SetWorkoutToEdit } from 'state/workout.actions';
 import { SearchModalComponent } from '../search-modal/search-modal.component';
 import { ESearchModalTitle } from 'src/app/enums/search-modal-title.enum';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { BackBtnComponent } from 'src/app/components/back-button/back-button.component';
@@ -24,14 +24,15 @@ export class TrackWorkoutPage implements OnInit {
   @Select(state => state.workouts.current) currentWorkout$: Observable<any>;
   @Select(state => state.workouts.previous) previousWorkout$: Observable<any>;
 
-  workoutForm: FormGroup;
-
+  public workoutForm: FormGroup;
+  private workoutIdToEdit: string;
   constructor(
     private workoutService: WorkoutService,
     public modalController: ModalController,
     private store: Store,
     private router: Router,
     private fb: FormBuilder, // Add this line
+    private route: ActivatedRoute,
   ) {
     this.workoutForm = this.fb.group({});
   }
@@ -42,6 +43,10 @@ export class TrackWorkoutPage implements OnInit {
   }
 
   ngOnInit() {
+    if (this.isEditMode) {
+      this.setWorkoutIdInEditMode();
+    }
+
     const selectedWorkout$ = this.isEditMode ? this.previousWorkout$ : this.currentWorkout$;
 
     selectedWorkout$.subscribe(selectedWorkout => {
@@ -58,6 +63,14 @@ export class TrackWorkoutPage implements OnInit {
         }
       }
     });
+  }
+
+  setWorkoutIdInEditMode() {
+    this.route.paramMap
+      .subscribe(params => {
+        this.workoutIdToEdit = params.get('id');
+      })
+      .unsubscribe();
   }
 
   createFormArrayFromSets(sets: any[]): FormArray {
@@ -115,7 +128,7 @@ export class TrackWorkoutPage implements OnInit {
 
   finish(ngForm) {
     if (ngForm.form.valid) {
-      this.workoutService.finishWorkout(ngForm.value).subscribe(response => {
+      this.workoutService.finishWorkout(ngForm.value, this.workoutIdToEdit).subscribe(response => {
         if (response) {
           this.router.navigate(['/tabs/workout/success']);
         }
