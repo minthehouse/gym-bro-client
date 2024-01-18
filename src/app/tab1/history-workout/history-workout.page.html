@@ -21,6 +21,8 @@
     <app-track-workout [isEditMode]="true"></app-track-workout>
   </ng-container>
   <ng-template #ProgressOverview>
-    <app-progressive-workout [workout]="workout"></app-progressive-workout>
+    <ng-container>
+      <app-progressive-workout [workout]="workoutLoad"></app-progressive-workout>
+    </ng-container>
   </ng-template>
 </ion-content>
