@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { buildAuthHeaders } from '../utils/auth-utils';
 import { SetWorkoutToEdit, SetWorkouts } from 'state/workout.actions';
 import { transformToExerciseDictionary, trasnformToExerciseAttributes } from '../transformer/exercise.transformer';
+import { IWorkout } from 'state/workout.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -16,26 +17,28 @@ export class WorkoutService {
 
   constructor(private http: HttpClient, private store: Store) {}
 
-  getWorkouts(): Observable<any> {
+  getWorkouts(): Observable<IWorkout[]> {
     const { user } = this.store.snapshot();
 
     return this.http.get<any>(`${this.apiUrl}/users/${user.id}/workouts`).pipe(
       map(workouts => {
         this.store.dispatch(new SetWorkouts(workouts));
+        return workouts;
       }),
     );
   }
 
-  getById(workoutId: string) {
+  getById(workoutId: string): Observable<IWorkout> {
     return this.http.get<any>(`${this.apiUrl}/workout/${workoutId}`).pipe(
       map(workout => {
         const parsedExercises = transformToExerciseDictionary(workout.exercises);
         this.store.dispatch(new SetWorkoutToEdit(parsedExercises));
+        return workout;
       }),
     );
   }
 
-  updateWorkout(workoutData: any, workoutId: string): any {
+  updateWorkout(workoutData: any, workoutId: string): Observable<IWorkout> {
     const { user, workouts } = this.store.snapshot();
     console.log('workouts', workouts);
     const exercises_attributes = trasnformToExerciseAttributes(workoutData);
@@ -46,10 +49,10 @@ export class WorkoutService {
       },
     };
 
-    return this.http.put(`${this.apiUrl}/workout/${workoutId}`, payload).pipe();
+    return this.http.put<IWorkout>(`${this.apiUrl}/workout/${workoutId}`, payload);
   }
 
-  finishWorkout(workoutData: any, workoutIdToEdit?: string): any {
+  finishWorkout(workoutData: any, workoutIdToEdit?: string): Observable<IWorkout> {
     const { user } = this.store.snapshot();
     const exercises_attributes = trasnformToExerciseAttributes(workoutData);
     const payload = {
@@ -62,7 +65,7 @@ export class WorkoutService {
     if (workoutIdToEdit) {
       return this.updateWorkout(workoutData, workoutIdToEdit);
     } else {
-      return this.http.post(`${this.apiUrl}/workout`, payload).pipe();
+      return this.http.post<IWorkout>(`${this.apiUrl}/workout`, payload);
     }
   }
 

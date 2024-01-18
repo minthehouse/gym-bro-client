@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { BackBtnComponent } from 'src/app/components/back-button/back-button.component';
+import { IWorkout } from 'state/workout.interface';
 
 @Component({
   selector: 'app-track-workout',
@@ -128,8 +129,8 @@ export class TrackWorkoutPage implements OnInit {
 
   finish(ngForm) {
     if (ngForm.form.valid) {
-      this.workoutService.finishWorkout(ngForm.value, this.workoutIdToEdit).subscribe(response => {
-        if (response.success) {
+      this.workoutService.finishWorkout(ngForm.value, this.workoutIdToEdit).subscribe((response: IWorkout) => {
+        if (response) {
           this.router.navigate(['/tabs/workout/success']);
           this.isEditMode
             ? this.store.dispatch(new SetWorkoutToEdit(null))

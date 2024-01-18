@@ -1,3 +1,13 @@
+export interface IWorkout {
+  id: number;
+  created_at: string;
+  updated_at?: string;
+  start_at?: string;
+  end_at?: string;
+  user_id: number;
+  exercises: IExercise[];
+}
+
 export interface IExercise {
   id: number;
   workout_id: number;
@@ -23,4 +33,12 @@ export interface ISet {
 export interface IExerciseDictionary {
   // ExerciseDictionary that I use in forms
   [exerciseName: string]: ISet[];
+}
+
+export interface IFood {
+  name: string;
+  calories: number;
+  protein: number;
+  fat: number;
+  carbohydrates: number;
 }

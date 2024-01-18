@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Store } from '@ngxs/store';
 import { buildAuthHeaders } from '../utils/auth-utils';
+import { IFood } from 'state/workout.interface';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +14,8 @@ export class DietService {
 
   constructor(private http: HttpClient, private store: Store) {}
 
-  search(search_param: string, serving_weight: string) {
-    return this.http.get<any>(`${this.apiUrl}/foods/search`, { params: { search_param, serving_weight } });
+  search(search_param: string, serving_weight: string): Observable<IFood[]> {
+    return this.http.get<IFood[]>(`${this.apiUrl}/foods/search`, { params: { search_param, serving_weight } });
   }
 
   searchByDate(date: string) {
