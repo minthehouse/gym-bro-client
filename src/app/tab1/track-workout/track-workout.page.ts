@@ -129,8 +129,11 @@ export class TrackWorkoutPage implements OnInit {
   finish(ngForm) {
     if (ngForm.form.valid) {
       this.workoutService.finishWorkout(ngForm.value, this.workoutIdToEdit).subscribe(response => {
-        if (response) {
+        if (response.success) {
           this.router.navigate(['/tabs/workout/success']);
+          this.isEditMode
+            ? this.store.dispatch(new SetWorkoutToEdit(null))
+            : this.store.dispatch(new SetCurrentWorkout(null));
         }
       });
     }
