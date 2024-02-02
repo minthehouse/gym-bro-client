@@ -28,7 +28,7 @@ export class SearchModalComponent implements OnInit {
 
   performSearch() {
     if (this.service && this.searchQuery) {
-      this.service.search(this.searchQuery).subscribe(response => {
+      this.service.search(this.searchQuery, this.servingSizeValue.toString()).subscribe(response => {
         this.filteredSearchOptions = response;
       });
     }

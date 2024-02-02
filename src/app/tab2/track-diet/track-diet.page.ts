@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -29,6 +29,8 @@ import { SearchModalComponent } from 'src/app/tab1/search-modal/search-modal.com
   ],
 })
 export class TrackDietPage implements OnInit {
+  @Input() isEditMode = false;
+
   constructor(
     private modalController: ModalController,
     private dietService: DietService,
@@ -56,18 +58,18 @@ export class TrackDietPage implements OnInit {
   ngOnInit() {
     const today = new Date().toISOString();
 
-    this.dietService.getDietByDate(today).subscribe((diet: any) => {
-      if (diet) {
-        this.existingDietId = diet.id;
-        diet.foods.forEach(food => {
-          this.foodList[food.meal_type_id].push(food);
-        });
+    // this.dietService.getDietByDate(today).subscribe((diet: any) => {
+    //   if (diet) {
+    //     this.existingDietId = diet.id;
+    //     diet.foods.forEach(food => {
+    //       this.foodList[food.meal_type_id].push(food);
+    //     });
 
-        console.log('food list from top', this.foodList);
-      } else {
-        this.existingDietId = null;
-      }
-    });
+    //     console.log('food list from top', this.foodList);
+    //   } else {
+    //     this.existingDietId = null;
+    //   }
+    // });
   }
 
   async presentSearchModal() {

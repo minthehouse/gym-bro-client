@@ -106,16 +106,16 @@ export class HistoryDietPage implements OnInit {
     const selectedDate = event?.value?.toISOString();
 
     if (selectedDate) {
-      this.getDietByDate(selectedDate);
+      // this.getDietByDate(selectedDate);
     }
   }
 
-  private getDietByDate(dateInISOString) {
-    this.dietService.getDietByDate(dateInISOString).subscribe((diet: any) => {
-      if (diet) {
-        this.selectedDiet = diet;
-        this.selectedDateControl.setValue(diet.created_at);
-      }
-    });
-  }
+  // private getDietByDate(dateInISOString) {
+  //   this.dietService.getDietByDate(dateInISOString).subscribe((diet: any) => {
+  //     if (diet) {
+  //       this.selectedDiet = diet;
+  //       this.selectedDateControl.setValue(diet.created_at);
+  //     }
+  //   });
+  // }
 }
